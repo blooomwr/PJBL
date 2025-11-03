@@ -39,8 +39,8 @@
         background-color: #fdeedc;
         position: relative;
         padding: 60px 0 40px;
-        border-top-left-radius: 100% 20%;
-        border-top-right-radius: 100% 20%;
+        border-top-left-radius: 100% 100%;
+        border-top-right-radius: 100% 100%;
         font-family: 'Poppins', sans-serif;
         }
 
