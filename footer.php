@@ -17,14 +17,18 @@
 
   <style>
     body {
-      font-family: 'Playfair Display', serif;
-      background: linear-gradient(to bottom, #fef9ef, #fffaf3);
+      background: linear-gradient(to bottom, #fef9ef, #fffaf3);;
     }
-                html, body {
-        height: 100%;
-        margin: 0;
-        display: flex;
-        flex-direction: column;
+
+        body {
+            height: 100%;
+            margin: 0;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
         }
 
         main {
