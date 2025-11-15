@@ -80,15 +80,15 @@ body {
 
     <!-- Tombol Menu -->
     <div class="d-flex justify-content-center gap-5 mt-5">
-      <a href="edit_berita.php" class="text-decoration-none">
+      <a href="berita-admin.php" class="text-decoration-none">
         <div class="menu-circle"><i class="bi bi-pencil-square"></i></div>
       </a>
 
-      <a href="promo.php" class="text-decoration-none">
+      <a href="promo-admin.php" class="text-decoration-none">
         <div class="menu-circle"><i class="bi bi-wallet2"></i></div>
       </a>
 
-      <a href="produk.php" class="text-decoration-none">
+      <a href="produk-admin.php" class="text-decoration-none">
         <div class="menu-circle"><i class="bi bi-basket"></i></div>
       </a>
     </div>
