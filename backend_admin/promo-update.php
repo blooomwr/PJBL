@@ -4,6 +4,13 @@ include 'conn.php';
 // Atur header sebagai JSON
 header('Content-Type: application/json');
 
+// ================== PENJAGA KEAMANAN ==================
+if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
+    echo json_encode(['status' => 'error', 'message' => 'Akses ditolak. Silakan login ulang.']);
+    exit();
+}
+// ======================================================
+
 $id = $_POST['id_promo'];
 $nama = $_POST['nama'];
 $gambar_lama = $_POST['gambar_lama'];
@@ -24,6 +31,17 @@ if (isset($_FILES['gambar']) && $_FILES['gambar']['error'] == 0) {
 // 🔹 Update data promo
 $query = "UPDATE promo SET nama='$nama', gambar='$nama_file_db' WHERE id_promo='$id'";
 mysqli_query($conn, $query);
+
+// ================== LOGGING HISTORI ==================
+$id_admin_log = $_SESSION['id_user'];
+$nama_admin_log = $_SESSION['nama_user'];
+$aksi_log = "Mengubah promo";
+$detail_log = "$nama (ID: $id)";
+
+$log_sql = "INSERT INTO audit_log (id_admin, nama_admin, aksi, detail) 
+            VALUES ('$id_admin_log', '$nama_admin_log', '$aksi_log', '$detail_log')";
+mysqli_query($conn, $log_sql);
+// ================== AKHIR LOGGING ==================
 
 // Kirim status sukses sebagai JSON
 echo json_encode(['status' => 'success']);

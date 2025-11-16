@@ -4,9 +4,11 @@ include 'conn.php';
 // Atur header sebagai JSON
 header('Content-Type: application/json');
 
-// ======================================================
-// (PERBAIKAN) Hapus 'if (isset($_POST['update']))' 
-// karena 'name' dari tombol submit tidak terkirim via AJAX
+// ================== PENJAGA KEAMANAN ==================
+if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
+    echo json_encode(['status' => 'error', 'message' => 'Akses ditolak. Silakan login ulang.']);
+    exit();
+}
 // ======================================================
 
 $id = $_POST['id_produk'];
@@ -30,6 +32,17 @@ $query = "UPDATE produk
           WHERE id_produk='$id'";
 mysqli_query($conn, $query);
 
+// ================== LOGGING HISTORI ==================
+$id_admin_log = $_SESSION['id_user'];
+$nama_admin_log = $_SESSION['nama_user'];
+$aksi_log = "Mengubah produk";
+$detail_log = "$nama (ID: $id)";
+
+$log_sql = "INSERT INTO audit_log (id_admin, nama_admin, aksi, detail) 
+            VALUES ('$id_admin_log', '$nama_admin_log', '$aksi_log', '$detail_log')";
+mysqli_query($conn, $log_sql);
+// ================== AKHIR LOGGING ==================
+
 // 🔹 Upload gambar tambahan (jika ada)
 $folder = "../gambar_produk/";
 if (!is_dir($folder)) mkdir($folder, 0777, true);
@@ -48,8 +61,4 @@ if (isset($_FILES['gambar'])) {
 
 echo json_encode(['status' => 'success']);
 exit;
-
-// ======================================================
-// (PERBAIKAN) Hapus juga bagian 'else'
-// ======================================================
 ?>

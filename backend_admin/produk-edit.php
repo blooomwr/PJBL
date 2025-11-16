@@ -1,6 +1,12 @@
 <?php
 include 'conn.php'; 
 
+// ================== PENJAGA KEAMANAN ==================
+if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
+    die("Akses ditolak. Silakan login sebagai admin.");
+}
+// ======================================================
+
 $id = $_GET['id'];
 $query = mysqli_query($conn, "SELECT * FROM produk WHERE id_produk='$id'");
 $produk = mysqli_fetch_assoc($query);

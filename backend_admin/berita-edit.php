@@ -1,6 +1,18 @@
 <?php
 include 'conn.php';
 
+// ================== PENJAGA KEAMANAN ==================
+if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
+    // Karena ini file AJAX, kita bisa tampilkan pesan error
+    // atau tendang ke login
+    // Pilihan 1: Tampilkan error
+    die("Akses ditolak. Silakan login sebagai admin.");
+    // Pilihan 2: Tendang (Mungkin tidak berfungsi baik di modal)
+    // header("Location: ../login.php");
+    // exit();
+}
+// ======================================================
+
 $id = $_GET['id'];
 $query = mysqli_query($conn, "SELECT * FROM berita WHERE id_berita='$id'");
 $berita = mysqli_fetch_assoc($query);

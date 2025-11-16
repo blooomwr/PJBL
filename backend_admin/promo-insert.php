@@ -1,6 +1,13 @@
 <?php
 include 'conn.php';
 
+// ================== PENJAGA KEAMANAN ==================
+if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
+    header("Location: ../login.php");
+    exit();
+}
+// ======================================================
+
 if (isset($_POST['tambah'])) {
 
     $nama = $_POST['nama'];
@@ -27,6 +34,17 @@ if (isset($_POST['tambah'])) {
     $insert_promo = "INSERT INTO promo (id_promo, nama, gambar)
                       VALUES ('$id', '$nama', '$nama_file_db')";
     mysqli_query($conn, $insert_promo);
+
+    // ================== LOGGING HISTORI ==================
+    $id_admin_log = $_SESSION['id_user'];
+    $nama_admin_log = $_SESSION['nama_user'];
+    $aksi_log = "Menambah promo baru";
+    $detail_log = "$nama (ID: $id)";
+    
+    $log_sql = "INSERT INTO audit_log (id_admin, nama_admin, aksi, detail) 
+                VALUES ('$id_admin_log', '$nama_admin_log', '$aksi_log', '$detail_log')";
+    mysqli_query($conn, $log_sql);
+    // ================== AKHIR LOGGING ==================
 
     // 🔹 Kembali ke halaman promo
     header("Location: ../promo-admin.php?status=success");

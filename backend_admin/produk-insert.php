@@ -1,6 +1,13 @@
 <?php
 include 'conn.php';
 
+// ================== PENJAGA KEAMANAN ==================
+if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
+    header("Location: ../login.php");
+    exit();
+}
+// ======================================================
+
 if (isset($_POST['tambah'])) {
 
     // Ambil semua data dari form
@@ -9,12 +16,10 @@ if (isset($_POST['tambah'])) {
     $harga = $_POST['harga'];
     $stok = $_POST['stok'];
     $kategori = $_POST['kategori'];
+    $varian = $_POST['varian'];
+    $is_bestseller = isset($_POST['is_bestseller']) ? 'Yes' : 'No';
 
-    // Data baru
-    $varian = $_POST['varian']; // Ambil Varian
-    $is_bestseller = isset($_POST['is_bestseller']) ? 'Yes' : 'No'; // Cek jika checkbox ditandai
-
-    // 🔹 Buat ID Produk baru (contoh: P05, P06, dst.)
+    // 🔹 Buat ID Produk baru
     $q_id = mysqli_query($conn, "SELECT MAX(id_produk) AS max_id FROM produk");
     $d_id = mysqli_fetch_array($q_id);
     $no = (int) substr($d_id['max_id'], 1, 2);
@@ -28,6 +33,17 @@ if (isset($_POST['tambah'])) {
                       VALUES ('$id', '$nama', '$deskripsi', '$harga', '$varian', '$stok', '$kategori', '$is_bestseller')";
     mysqli_query($conn, $insert_produk);
 
+    // ================== LOGGING HISTORI ==================
+    $id_admin_log = $_SESSION['id_user'];
+    $nama_admin_log = $_SESSION['nama_user'];
+    $aksi_log = "Menambah produk baru";
+    $detail_log = "$nama (ID: $id)";
+    
+    $log_sql = "INSERT INTO audit_log (id_admin, nama_admin, aksi, detail) 
+                VALUES ('$id_admin_log', '$nama_admin_log', '$aksi_log', '$detail_log')";
+    mysqli_query($conn, $log_sql);
+    // ================== AKHIR LOGGING ==================
+
     // 🔹 Pastikan folder penyimpanan ada
     $folder = "../gambar_produk/";
     if (!is_dir($folder)) mkdir($folder, 0777, true);
@@ -39,7 +55,6 @@ if (isset($_POST['tambah'])) {
                 $nama_file = uniqid() . "_" . $_FILES['gambar']['name'][$key];
                 move_uploaded_file($tmp, $folder . $nama_file);
 
-                // Simpan ke tabel produk_gambar
                 $insert_gambar = "INSERT INTO produk_gambar (id_produk, nama_file) 
                                   VALUES ('$id', '$nama_file')";
                 mysqli_query($conn, $insert_gambar);

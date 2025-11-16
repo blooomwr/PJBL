@@ -1,5 +1,12 @@
 <?php 
 include 'backend_admin/conn.php'; 
+
+// ================== PENJAGA KEAMANAN ==================
+if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
+    header("Location: login.php");
+    exit();
+}
+// ======================================================
 ?>
 
 <!DOCTYPE html>
@@ -7,19 +14,10 @@ include 'backend_admin/conn.php';
 <head>
     <meta charset="UTF-8">
     <title>Edit Produk - Rumah Que Que</title>
-
-    <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-
-    <!-- DataTables -->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
-
     <link rel="stylesheet" href="dash.css">
-
-
 </head>
 
 <body>
@@ -40,33 +38,24 @@ include 'backend_admin/conn.php';
         <input type="checkbox" id="select-all"> Select All
     </div>
 
-    <!-- TOP CONTROLS: Show entries (left) | Kategori (center) | Search (right) -->
-<div class="top-controls">
-
-    <div class="top-left"></div>
-
-    <div class="top-center">
-        <select id="filterKategori" class="form-select">
-            <option value="">Semua Kategori</option>
-            <option value="makanan">Makanan</option>
-            <option value="kue">Kue</option>
-            <option value="minuman">Minuman</option>
-            <option value="lainnya">Lainnya</option>
-        </select>
+    <div class="top-controls">
+        <div class="top-left"></div>
+        <div class="top-center">
+            <select id="filterKategori" class="form-select">
+                <option value="">Semua Kategori</option>
+                <option value="makanan">Makanan</option>
+                <option value="kue">Kue</option>
+                <option value="minuman">Minuman</option>
+                <option value="lainnya">Lainnya</option>
+            </select>
+        </div>
+        <div class="top-right"></div>
     </div>
 
-    <div class="top-right"></div>
-
-</div>
-
-
-
-    <!-- Modal Tambah -->
     <div class="modal fade" id="modalTambah" tabindex="-1">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <form action="backend_admin/produk-insert.php" method="POST" enctype="multipart/form-data">
-                    
                     <div class="modal-header custom-header">
                         <a href="#" class="modal-back-btn" data-bs-dismiss="modal" aria-label="Close">
                             <i class="bi bi-arrow-left"></i>
@@ -74,29 +63,23 @@ include 'backend_admin/conn.php';
                         <h5 class="modal-title">Tambah Produk</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
-
                     <div class="modal-body">
-                        
                         <div class="mb-3">
                             <label class="form-label">Foto Produk (bisa lebih dari 1)</label>
                             <input type="file" name="gambar[]" class="form-control" accept="image/*" multiple required>
                         </div>
-
                         <div class="mb-3">
                             <label class="form-label">Nama Produk</label>
                             <input type="text" name="nama" class="form-control" required>
                         </div>
-
                         <div class="mb-3">
                             <label class="form-label">Harga</label>
                             <input type="number" name="harga" class="form-control" required>
                         </div>
-
                         <div class="mb-3">
                             <label class="form-label">Varian</label>
                             <input type="text" name="varian" class="form-control" placeholder="Contoh: Pedas, Original, 500gr, dll.">
                         </div>
-
                         <div class="mb-3">
                             <label class="form-label">Kategori</label>
                             <select name="kategori" class="form-select" required>
@@ -106,24 +89,20 @@ include 'backend_admin/conn.php';
                                 <option value="lainnya">Lainnya</option>
                             </select>
                         </div>
-
                         <div class="mb-3">
                             <label class="form-label">Deskripsi Produk</label>
                             <textarea name="deskripsi" class="form-control" rows="3"></textarea>
                         </div>
-
                         <div class="mb-3">
                             <label class="form-label">Stok</label>
                             <input type="number" name="stok" class="form-control" required>
                         </div>
-
                         <div class="form-check mb-3">
                             <input class="form-check-input" type="checkbox" name="is_bestseller" value="Yes" id="checkBestseller">
                             <label class="form-check-label" for="checkBestseller">
                                 Tandai Best Seller
                             </label>
                         </div>
-
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
@@ -134,7 +113,6 @@ include 'backend_admin/conn.php';
         </div>
     </div>
 
-    <!-- Modal Edit -->
     <div class="modal fade" id="modalEdit" tabindex="-1">
         <div class="modal-dialog modal-lg">
             <div class="modal-content" id="editContent">
@@ -146,16 +124,11 @@ include 'backend_admin/conn.php';
         </div>
     </div>
 
-    <!-- TABLE -->
     <div class="table-container">
         <table id="produkTable" class="table align-middle">
             <thead>
                 <tr>
-                    <th></th> <!-- checkbox -->
-                    <th></th> <!-- info -->
-                    <th class="d-none"></th> <!-- kategori (hidden) -->
-                    <th></th> <!-- aksi -->
-                </tr>
+                    <th></th> <th></th> <th class="d-none"></th> <th></th> </tr>
             </thead>
             <tbody>
             <?php
@@ -170,7 +143,6 @@ include 'backend_admin/conn.php';
                 <td class="checkbox-cell">
                     <input type="checkbox" class="cb-product" value="<?= $row['id_produk']; ?>">
                 </td>
-
                 <td>
                     <div class="d-flex align-items-center gap-3">
                         <img src="<?= $imgPath; ?>" class="product-img" alt="gambar">
@@ -180,16 +152,13 @@ include 'backend_admin/conn.php';
                         </div>
                     </div>
                 </td>
-
                 <td class="d-none kategori"><?= strtolower($row['kategori']); ?></td>
-
                 <td class="td-action">
                     <div class="edit-container">
                         <div class="last-edit">
                             <div>Terakhir edit :</div>
                             <div><?= htmlspecialchars($row['terakhir_edit']); ?></div>
                         </div>
-
                         <button class="edit-btn"
                             data-id="<?= $row['id_produk']; ?>"
                             data-bs-toggle="modal"
@@ -201,25 +170,19 @@ include 'backend_admin/conn.php';
             </tbody>
         </table>
     </div>
-
-</div> <!-- end container -->
-
-<!-- FORM DELETE HIDDEN -->
-<form id="deleteForm" action="backend_admin/produk-delete.php" method="POST">
+</div> <form id="deleteForm" action="backend_admin/produk-delete.php" method="POST">
     <input type="hidden" name="ids" id="delete_ids">
 </form>
 
 <?php include 'footer.php'; ?>
 
-<!-- ====================== JS =============================== -->
 <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
-
 <script>
 $(document).ready(function() {
-
+    // ... (Script Anda sudah benar) ...
     let table = $('#produkTable').DataTable({
         "lengthMenu": [5, 10, 25, 50],
         "ordering": false,
@@ -281,22 +244,17 @@ $(document).ready(function() {
             $("#deleteForm").submit();
         }
     });
-
-    // ======================================================
-    // 1. (BARU) AJAX UNTUK HAPUS GAMBAR DI DALAM MODAL
-    // ======================================================
-    // Kita pakai 'document' on click agar bisa mendeteksi tombol 
-    // yang baru dimuat oleh AJAX
+    
+    // AJAX HAPUS GAMBAR
     $(document).on('click', '.btn-hapus-gambar', function() {
         if (!confirm('Yakin ingin menghapus gambar ini?')) return;
         
         let btn = $(this);
         let id_gambar = btn.data('id');
-        let container = btn.closest('.img-container'); // Ambil container gambar
+        let container = btn.closest('.img-container'); 
 
         $.get('backend_admin/produk-delete-gambar.php', { id_gambar: id_gambar }, function(response) {
             if (response.status === 'success') {
-                // Hapus gambar dari modal secara visual
                 container.fadeOut(300, function() { $(this).remove(); });
             } else {
                 alert('Gagal menghapus gambar: ' + (response.message || 'Error tidak diketahui'));
@@ -304,28 +262,24 @@ $(document).ready(function() {
         }, 'json');
     });
 
-    // ======================================================
-    // 2. (BARU) AJAX UNTUK SIMPAN PERUBAHAN (UPLOAD)
-    // ======================================================
+    // AJAX SIMPAN PERUBAHAN
     $(document).on('submit', '#form-edit-produk', function(e) {
-        e.preventDefault(); // Hentikan form submit biasa
+        e.preventDefault(); 
 
         let formData = new FormData(this);
         let submitBtn = $(this).find('.btn-simpan-custom');
         submitBtn.prop('disabled', true).text('Menyimpan...');
 
         $.ajax({
-            url: 'backend_admin/produk-update.php', // Target tetap sama
+            url: 'backend_admin/produk-update.php', 
             type: 'POST',
             data: formData,
-            processData: false, // Wajib untuk FormData
-            contentType: false, // Wajib untuk FormData
+            processData: false, 
+            contentType: false, 
             dataType: 'json',
             success: function(response) {
                 if (response.status === 'success') {
-                    // Tutup modal
                     $('#modalEdit').modal('hide');
-                    // Refresh halaman utama untuk melihat perubahan
                     alert('Produk berhasil diperbarui!');
                     location.reload(); 
                 } else {
@@ -340,7 +294,6 @@ $(document).ready(function() {
             }
         });
     });
-
 });
 </script>
 

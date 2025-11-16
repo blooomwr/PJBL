@@ -1,7 +1,19 @@
 <?php
-// nanti kalau sudah ada login, nama admin bisa diambil dari session
-$nama_admin = "Admin";
-$id_admin = "J04032895829";
+// 1. Sertakan file koneksi & session
+// (Saya asumsikan conn.php ada di folder backend_admin)
+include 'backend_admin/conn.php'; 
+
+// 2. Keamanan: Cek jika user sudah login dan rolenya 'admin'
+// $_SESSION['role'] di-set oleh login.php
+if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
+    header("Location: login.php"); // Tendang ke login
+    exit();
+}
+
+// 3. Ambil data admin dari Session
+// Variabel ini di-set oleh login.php
+$nama_admin = $_SESSION['nama_user'];
+$id_admin = $_SESSION['id_user'];
 ?>
 
 <!DOCTYPE html>
@@ -94,12 +106,37 @@ body {
     </div>
 
     <!-- Riwayat MASIH CONTOH -->
-    <div class="history-box text-start">
-      <h4>Histori</h4>
-      <p style="line-height:1.6;">
-        Admin ID J040324768 mengubah stok "Ketan Serikaya" pada 13-07-2025 13:27
-      </p>
-    </div>
+<div class="history-box text-start">
+  <h4>Histori Aktivitas Terakhir</h4>
+
+  <?php
+  // Ambil 5 histori terakhir
+  // (Koneksi $conn sudah ada dari include di Langkah 2)
+  $histori_sql = "SELECT * FROM audit_log ORDER BY timestamp DESC LIMIT 5";
+  $histori_result = $conn->query($histori_sql);
+
+  if ($histori_result->num_rows > 0) {
+      while ($log = $histori_result->fetch_assoc()) {
+          // Format tanggal agar lebih rapi
+          $tanggal = date('d-m-Y H:i', strtotime($log['timestamp']));
+  ?>
+
+  <div style="border-bottom: 1px solid #dca950; padding-bottom: 10px; margin-bottom: 10px; line-height: 1.6;">
+    <p class="mb-0">
+      <strong><?= htmlspecialchars($log['nama_admin']); ?></strong> (<?= htmlspecialchars($log['id_admin']); ?>) 
+      melakukan aksi: <strong><?= htmlspecialchars($log['aksi']); ?></strong>
+      (<?= htmlspecialchars($log['detail']); ?>)
+    </p>
+    <small class="text-muted">Pada: <?= $tanggal; ?></small>
+  </div>
+
+  <?php
+      } // akhir while
+  } else {
+      echo '<p>Belum ada histori aktivitas.</p>';
+  }
+  ?>
+</div>
 
 </div>
 
