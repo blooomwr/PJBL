@@ -1,5 +1,12 @@
 <?php 
 include 'backend_admin/conn.php'; 
+session_start(); // Tambahkan ini
+
+// Cek apakah admin sudah login
+if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
+    header("Location: login.php");
+    exit();
+}
 ?>
 
 <!DOCTYPE html>

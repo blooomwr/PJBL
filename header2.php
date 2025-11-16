@@ -91,15 +91,12 @@
 <body>
 
   <header class="header-container">
-    <!-- Logo di kiri luar -->
     <div class="logo-container">
       <img src="NEW LOGO RQQ.png" alt="Rumah Que Que">
     </div>
 
-    <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-custom">
       <div class="container-fluid">
-        <!-- Menu Tengah -->
         <ul class="navbar-nav d-flex flex-row justify-content-center flex-grow-1">
           <li class="nav-item"><a class="nav-link" href="index.php">Beranda</a></li>
           <li class="nav-item"><a class="nav-link" href="katalog.php">Katalog</a></li>
@@ -107,11 +104,19 @@
           <li class="nav-item"><a class="nav-link" href="tentang.php">Tentang Kami</a></li>
         </ul>
 
-        <!-- Login dan Sign Up -->
         <div class="auth-links">
-          <a href="login.php">Login</a>
-          <span class="divider">|</span>
-          <a href="signup.php">Sign Up</a>
+          <?php if (isset($_SESSION['role']) && $_SESSION['role'] == 'pembeli'): ?>
+            <a href="profil.php" class="nav-link" style="padding: 0; margin: 0;">
+                <i class="bi bi-person-circle user-icon me-2"></i>
+                <?= htmlspecialchars($_SESSION['nama_user']); ?>
+            </a>
+            <span class="divider">|</span>
+            <a href="logout.php">Logout</a>
+          <?php else: ?>
+            <a href="login.php">Login</a>
+            <span class="divider">|</span>
+            <a href="signup.php">Sign Up</a>
+          <?php endif; ?>
         </div>
       </div>
     </nav>

@@ -1,8 +1,24 @@
 <?php
 // nanti kalau sudah ada login, nama admin bisa diambil dari session
-$nama_admin = "Admin";
-$id_admin = "J04032895829";
+session_start();
+
+// Cek apakah admin sudah login
+if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
+    header("Location: login.php");
+    exit();
+}
+
+$nama_admin = $_SESSION['nama_user'];
+$id_admin = $_SESSION['id_user']; // Menggunakan ID dari DB
 ?>
+
+<div class="d-flex align-items-center justify-content-center gap-4">
+    <div class="text-start">
+        <h3 class="mb-0">Selamat Datang, <?= htmlspecialchars($nama_admin) ?></h3>
+        <small><?= htmlspecialchars($id_admin) ?></small>
+        <a href="logout.php" class="btn btn-sm btn-danger mt-2">Logout</a>
+    </div>
+</div>
 
 <!DOCTYPE html>
 <html lang="id">

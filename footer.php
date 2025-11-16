@@ -39,78 +39,88 @@
         margin-top: auto; /* footer otomatis nempel di bawah */
         }
 
-        .footer {
-        background-color: #fdeedc;
-        position: relative;
-        padding: 60px 0 40px;
-        border-top-left-radius: 100% 100%;
-        border-top-right-radius: 100% 100%;
-        font-family: 'Poppins', sans-serif;
-        }
+        /* ... CSS lainnya di bagian <style> ... */
 
-        .footer-container {
-        max-width: 1100px;
-        margin: 0 auto;
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-start;
-        flex-wrap: wrap;
-        color: #555;
-        text-align: left;
-        }
+/* Footer */
+.footer {
+    background-color: #fdeedc;
+    position: relative;
+    padding: 60px 0 40px;
+    /* Sudut Bulat hanya di sisi atas */
+    border-top-left-radius: 50% 100%;
+    border-top-right-radius: 50% 100%;
+    font-family: 'Playfair Display', serif; /* Gunakan font yang sama dengan body */
+    margin-top: auto; /* Penting agar footer selalu di bawah */
+}
 
-        .footer-logo {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        }
+.footer-container {
+    max-width: 900px; /* Batasi lebar agar konten tidak terlalu menyebar */
+    margin: 0 auto;
+    display: flex;
+    /* Gunakan ruang yang tersedia */
+    justify-content: space-between; 
+    align-items: flex-start;
+    flex-wrap: wrap;
+    color: #555;
+    text-align: left;
+}
 
-        .footer-logo img {
-        width: 100px;
-        margin-bottom: 10px;
-        }
+.footer-logo {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    /* Beri ruang lebih di kiri */
+    flex: 0 0 150px; 
+}
 
-        .footer-logo h3 {
-        color: #d97325;
-        font-weight: 700;
-        font-size: 1.2rem;
-        }
+.footer-logo img {
+    width: 100px;
+    margin-bottom: 10px;
+}
 
-        .footer-logo h3 span {
-        color: #a84a00;
-        }
+.footer-links {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    /* Kolom di tengah */
+    flex: 0 0 200px; 
+    padding-top: 10px; /* Jarak agar sejajar dengan kolom kontak */
+}
 
-        .footer-links {
-        display: flex;
-        flex-direction: column;
-        gap: 8px;
-        }
+.footer-links a {
+    text-decoration: none;
+    color: #555;
+    font-size: 1.1rem; /* Perbesar sedikit agar mudah dibaca */
+}
 
-        .footer-links a {
-        text-decoration: none;
-        color: #555;
-        font-size: 0.9rem;
-        }
+.footer-links a:hover {
+    color: #d97325;
+}
 
-        .footer-links a:hover {
-        color: #d97325;
-        }
+.footer-contact {
+    /* Kolom Kanan */
+    flex: 0 0 350px; 
+    /* Sesuaikan agar tidak terlalu lebar di layout ini */
+    /* Pastikan ikon memiliki warna */
+}
 
-        .footer-contact h4 {
-        color: #444;
-        margin-bottom: 10px;
-        }
+.footer-contact h4 {
+    color: #444;
+    font-size: 1.5rem; 
+    margin-bottom: 10px;
+}
 
-        .footer-contact p {
-        margin: 4px 0;
-        font-size: 0.9rem;
-        }
+.footer-contact p {
+    margin: 4px 0;
+    /* Pastikan font size sesuai dengan kolom lain */
+    font-size: 1.1rem; 
+}
 
-        .footer-contact i {
-        margin-right: 6px;
-        color: #d97325;
-        }
-
+.footer-contact i {
+    margin-right: 6px;
+    color: #ae4c02; /* Ubah ke warna coklat tua agar terlihat jelas */
+    font-size: 1.1rem;
+}
   </style>
 </head>
 
@@ -130,9 +140,9 @@
 
     <div class="footer-contact">
       <h4>Hubungi kami</h4>
-      <p><i class="fa fa-phone"></i> +62 82123131234</p>
-      <p><i class="fa fa-envelope"></i> quequeque@gmail.com</p>
-      <p><i class="fa fa-map-marker"></i> Jl. Aur Auran</p>
+    <p><i class="bi bi-phone"></i> +62 82123131234</p>
+    <p><i class="bi bi-envelope"></i> quequeque@gmail.com</p>
+    <p><i class="bi bi-geo-alt"></i> Jl. Aur Auran</p>
     </div>
   </div>
 </footer>
