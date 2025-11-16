@@ -114,7 +114,7 @@
       text-align: center;
       color: #4b2b00;
 
-      width: 100vw;      /* full lebar viewport */ 
+      width: 100%;      /* full lebar viewport */ 
       margin: 0;         /* pastikan 0 */
       align-items: center;
 

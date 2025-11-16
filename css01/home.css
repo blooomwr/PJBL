@@ -1,0 +1,271 @@
+     body {
+      padding: 0;
+      background-color: #fff3e0; /* warna krem lembut */
+      font-family: 'Poppins', sans-serif !important;
+      color: #5c3d2e;
+      text-align: center;
+    }
+
+/* Hero */
+.hero-title {
+    font-size: 100px;
+    font-weight: 700;
+    color: #8a4300;
+}
+
+.hero-subtitle {
+    font-size: 22px;
+}
+
+.btnhero {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    align-items: flex-start;
+}
+
+.hero-image {
+    width: 10%;
+    height: 500px; /* WAJIB */
+    background-image: url('../img01/Hero.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.btnwistlist {
+text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #FF9A3D;          /* Warna oranye */
+  color: white;
+  font-weight: 500;
+  border: white 3px solid;
+  border-radius: 25px;
+  padding: 10px 25px;
+  font-size: 20px;
+  cursor: pointer;
+  box-shadow: 0px 3px 6px rgba(0,0,0,0.15);
+  transition: all 0.3s ease;
+}
+
+/* Hover */
+.btnwistlist:hover {
+  background: #AE4C02;          /* sedikit lebih tua */
+  transform: translateY(-2px);
+  box-shadow: 0px 6px 10px rgba(0,0,0,0.18);
+}
+
+.btnbelisekarang {
+text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: white;          /* Warna oranye */
+  color: #AE4C02;
+  font-weight: 500;
+  border: #AE4C02 2px solid;
+  border-radius: 25px;
+  padding: 10px 50px;
+  font-size: 20px;
+  cursor: pointer;
+  box-shadow: 0px 0px 6px rgba(0,0,0,0.15);
+  transition: all 0.3s ease;
+}
+
+/* Hover */
+.btnbelisekarang:hover {
+  background: #AE4C02;   
+  color: white;       /* sedikit lebih tua */
+  transform: translateY(-2px);
+  box-shadow: 0px 6px 10px rgba(0,0,0,0.18);
+}
+
+
+/* Produk */
+
+.judul-section {
+font-size: 50px;
+padding-top: 20px;
+margin: 20px auto;
+margin-bottom: 50px !important;
+}
+
+.produk-terlaris-box-oren {
+    background-color: #f5a623 !important;
+    border-radius: 1000px / 100px;
+    padding: 50px 20px 80px 20px;
+    text-align: center;
+    color: #4b2b00;
+
+    width: 100%;              /* FIX utamanya di sini */
+    height: auto;
+    margin-top: 100px ;           /* center otomatis */
+
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+
+.card-produk {
+    background: white;
+    padding: 20px;
+    border-radius: 20px;
+    box-shadow: 0px 4px 15px rgba(0,0,0,0.1);
+}
+
+.card-produk img {
+    width: 100%;
+    border-radius: 12px;
+}
+
+/* Testimoni */
+
+.col-md-4 {   
+    display: flex;       /* aktifkan flex */   
+    align-items: center;/* center secara vertikal */
+    justify-content: flex-start; /* tetap kiri */            /* pastikan tinggi mengikuti row */
+}
+
+.row.testimoni-row {
+    height: 500px; /* tinggi sesuai kebutuhan */
+}
+
+.card-testi {
+    background: white;
+    border-radius: 15px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+}
+
+.judul-testimoni {
+    font-size: 40px;
+    text-align: left;
+}
+
+.testimoni-scroll {
+    max-height: 540px;  /* tinggi scrollable */
+    overflow: hidden;      /* scroll vertikal */
+    padding-right: 10px; /* supaya scrollbar ga nempel */
+     touch-action: none;     /* matikan scroll dengan gesture */
+    -ms-touch-action: none; 
+}
+
+.testimoni-scroll {
+    -ms-overflow-style: none;  /* IE 10+ */
+    scrollbar-width: none;     /* Firefox */
+}
+
+.testimoni-scroll::-webkit-scrollbar {
+    display: none;
+}
+
+.card-testi {
+    background: white;
+    border-radius: 15px;
+    padding: 20px;
+    margin-bottom: 15px; /* jarak antar card */
+    text-align: center;
+    box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+}
+
+.arrow-btn {
+    font-size: 2rem;
+    color: #AE4C02; /* default oranye */
+    cursor: pointer;
+    transition: color 0.3s ease, transform 0.2s ease;
+}
+
+.arrow-btn:hover {
+    color: #6a2e00; /* lebih gelap saat hover */
+    transform: translateY( 1px);
+}
+
+.arrow-btn.disabled {
+    color: #ccc;   
+    cursor: not-allowed;
+    transform: none;
+}
+
+
+.judul-testimoni {
+    font-size: 40px;
+    text-align: left;
+}
+
+/* FAQ Layout */
+
+.faq-accordion {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  max-width: 1000px;     /* penting! biar tidak melebar 100% */
+  margin: 0 auto;        /* center */
+}
+
+.faq-item {
+  width: 100%;
+  margin-bottom: 0 !important; /* karena sudah pakai gap */
+}
+
+
+.faq-box {
+  width: 100%;
+}
+
+.judul-section {
+  margin-left: 120px !important;
+} 
+
+.faq-search {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 25px;
+}
+
+.faq-search input {
+  margin-right: 120px;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 12px;
+  box-shadow: 0px 2px 8px rgba(0,0,0,0.1);
+  outline: none;
+}
+
+/* Question Box */
+.faq-question {
+  background: #FFB835;
+  padding: 14px 18px;
+  border-radius: 6px;
+  font-weight: 600;
+  color: #4b2b00;
+  cursor: pointer;
+  transition: 0.25s;
+}
+
+/* Hover & active color */
+.faq-question:hover,
+.faq-question.active {
+  background: #ff9c00;
+}
+
+/* Answer Box (hidden by default) */
+.faq-answer {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.35s ease;
+  background: #FFE6C7;
+  border-radius: 0 0 6px 6px;
+  margin-top: 3px;
+}
+
+.faq-answer p {
+  margin: 0;
+  padding: 12px 18px;
+  font-size: 14px;
+}
+
+/* Make accordion items stacked with spacing */

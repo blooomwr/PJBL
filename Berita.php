@@ -1,0 +1,93 @@
+<?php
+//session_start();
+
+// misal setelah login berhasil
+//if (isset($_SESSION['user_logged_in']) && $_SESSION['user_logged_in'] === true) {
+ //   include 'header.php';  // untuk user yang sudah login
+//} else {
+    include 'header2.php';   // untuk user guest / belum login
+//}
+
+?>
+<!DOCTYPE html>
+<html lang="id">
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Exported Figma Design</title>
+  <link href="https://fonts.googleapis.com/css?family=Inter&display=swap" rel="stylesheet">
+    <link href="css01/berita.css" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <main>
+    <section class="hero">
+      <div class="hero-left">
+        <h1>Apresiasi untuk<br>Rumah Que-Que</h1>
+        <div class="meta">Kamis, 21 Maret 2022</div>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque gravida arcu ut ultricies bibendum. Integer vitae pharetra velit. Nam porttitor mauris nunc, in molestie nulla placerat non.</p>
+        <a class="btn-primary" href="#">Baca Selengkapnya</a>
+      </div>
+      <div class="hero-right">
+        <img src="img01/sertifikat3.png" alt="">
+        <!-- ganti src sesuai file image yang ingin dipakai -->
+      </div>
+    </section>
+
+    <section class="promo">
+      <div class="title">PROMO SAAT INI</div>
+      <div class="carousel">
+        <div class="arrow left">&#x2190;</div>
+        <div class="card">
+          <div class="inner">
+            <img src="" alt="products" style="width:140px;height:90px;object-fit:contain;margin-bottom:10px;filter:drop-shadow(0 6px 12px rgba(0,0,0,0.12))">
+            <div style="font-size:14px;letter-spacing:1px">Beli 3 varian Tacookies sekaligus</div>
+            <div style="font-family:'Playfair Display';font-size:26px;margin-top:6px">Disc 2%</div>
+          </div>
+        </div>
+        <div class="arrow right">&#x2192;</div>
+      </div>
+    </section>
+
+    <section class="activities">
+      <h2>Kegiatan Que-Que</h2>
+      <div class="grid">
+        <img src="https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=800&q=60" alt="kegiatan1">
+        <img src="https://images.unsplash.com/photo-1520975911709-9f6b9e0f4c0e?auto=format&fit=crop&w=1200&q=60" alt="kegiatan2">
+        <img src="https://images.unsplash.com/photo-1503424886302-1f3d05f18f1f?auto=format&fit=crop&w=800&q=60" alt="kegiatan3">
+      </div>
+    </section>
+
+    <section class="news">
+      <h2>Berita lainnya</h2>
+      <div class="cards">
+        <article class="card-news">
+          <h3>Kue Pisang Coklat Viral dan Jadi Buruan!</h3>
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque gravida arcu ut ultricies bibendum.</p>
+          <a href="#">Baca Selengkapnya →</a>
+        </article>
+
+        <article class="card-news">
+          <h3>Kue Pisang Coklat Viral dan Jadi Buruan!</h3>
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque gravida arcu ut ultricies bibendum.</p>
+          <a href="#">Baca Selengkapnya →</a>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <?php include 'footer.php'; ?>
+  <!-- sederhana script untuk panah (demo) -->
+  <script>
+    document.querySelectorAll('.arrow').forEach(a=>a.addEventListener('click', ()=>{
+      // demo kecil: beri efek scale pada card
+      const c=document.querySelector('.promo .card');
+      c.animate([{transform:'scale(1)'},{transform:'scale(0.96)'},{transform:'scale(1)'}],{duration:420});
+    }));
+  </script>
+</body>
+</html>
