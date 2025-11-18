@@ -1,14 +1,19 @@
 <?php
-//session_start();
+// PASTIKAN BARIS INI ADA DI AWAL SEMUA FILE HALAMAN
+// Ini akan memulai sesi dan koneksi database.
+include 'connlog.php'; 
 
-// misal setelah login berhasil
-//if (isset($_SESSION['user_logged_in']) && $_SESSION['user_logged_in'] === true) {
- //   include 'header.php';  // untuk user yang sudah login
-//} else {
-    include 'header2.php';   // untuk user guest / belum login
-//}
+// Cek apakah user sudah login sebagai pembeli
+if (isset($_SESSION['role']) && $_SESSION['role'] === 'pembeli') {
+    // Jika sudah login, muat header yang menampilkan ikon profil/logout
+    include 'header.php'; 
+} else {
+    // Jika belum login, muat header yang menampilkan tombol Login/Sign Up
+    include 'header2.php'; 
+}
 
 ?>
+
 <!DOCTYPE html>
 <html lang="id">
 

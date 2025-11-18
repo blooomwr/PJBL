@@ -1,6 +1,6 @@
-
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -87,6 +87,7 @@
         flex-direction: column;
         padding: 15px 20px;
       }
+
       .navbar-nav {
         margin: 10px 0;
       }
@@ -105,21 +106,25 @@
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-custom">
       <div class="container-fluid">
-        <!-- Menu di tengah -->
         <ul class="navbar-nav d-flex flex-row justify-content-center flex-grow-1">
-          <li class="nav-item"><a class="nav-link" href="index.php">Beranda</a></li>
+          <li class="nav-item"><a class="nav-link" href="HomeUtama.php">Beranda</a></li>
           <li class="nav-item"><a class="nav-link" href="katalog.php">Katalog</a></li>
           <li class="nav-item"><a class="nav-link" href="berita.php">Berita</a></li>
           <li class="nav-item"><a class="nav-link" href="tentang.php">Tentang Kami</a></li>
         </ul>
 
-        <!-- Ikon profil di pojok kanan dalam navbar -->
-        <a href="login.php" class="user-icon">
-          <i class="bi bi-person-circle"></i>
-        </a>
+        <div class="auth-links">
+          <a href="#" class="nav-link" style="padding: 0; margin: 0;">
+            <i class="bi bi-person-circle user-icon me-2"></i>
+            <?= htmlspecialchars($_SESSION['nama_user']); ?>
+          </a>
+          <span class="divider">|</span>
+          <a href="logout.php" class="nav-link">Logout</a>
+        </div>
       </div>
     </nav>
   </header>
 
 </body>
+
 </html>

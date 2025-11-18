@@ -1,6 +1,22 @@
 
 <?php
 
+// PASTIKAN BARIS INI ADA DI AWAL SEMUA FILE HALAMAN
+// Ini akan memulai sesi dan koneksi database.
+include 'connlog.php'; 
+
+// Cek apakah user sudah login sebagai pembeli
+if (isset($_SESSION['role']) && $_SESSION['role'] === 'pembeli') {
+    // Jika sudah login, muat header yang menampilkan ikon profil/logout
+    include 'header.php'; 
+} else {
+    // Jika belum login, muat header yang menampilkan tombol Login/Sign Up
+    include 'header2.php'; 
+}
+
+
+
+
 $kisah = file_get_contents('AssetTentangKami/kisah1.txt');
 
 ?>

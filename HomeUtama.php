@@ -1,15 +1,17 @@
-
 <?php
-//session_start();
+// File: HomeUtama.php
+// Pastikan file koneksi yang mengandung session_start() di-include di sini
+include 'connlog.php'; 
 
-// misal setelah login berhasil
-//if (isset($_SESSION['user_logged_in']) && $_SESSION['user_logged_in'] === true) {
- //   include 'header.php';  // untuk user yang sudah login
-//} else {
-    include 'header2.php';   // untuk user guest / belum login
-//}
+// Cek apakah user sudah login. Role 'pembeli' diset di callback.php
+if (isset($_SESSION['role']) && $_SESSION['role'] === 'pembeli') {
+    include 'header.php';  // Digunakan untuk user yang sudah login
+} else {
+    include 'header2.php';   // Digunakan untuk user guest / belum login
+}
 
 ?>
+
 <!DOCTYPE html>
 <html lang="id">
 <head>

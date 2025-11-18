@@ -1,5 +1,5 @@
 <?php
-include 'connlog.php'; // Menggunakan koneksi dan session
+include 'connlog.php'; 
 
 $error = '';
 
@@ -14,9 +14,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($result_admin && $result_admin->num_rows > 0) {
         $admin = $result_admin->fetch_assoc();
         
-        // Cek password. Karena password di admin.sql adalah '12345' (belum di-hash),
-        // saya akan menggunakan perbandingan langsung.
-        // **CATATAN PENTING**: Di proyek nyata, password HARUS di-hash.
+        // Cek password Admin (menggunakan perbandingan langsung karena di DB masih '12345')
         if ($password === $admin['password']) {
             $_SESSION['role'] = 'admin';
             $_SESSION['id_user'] = $admin['id_admin'];
@@ -25,20 +23,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             exit();
         }
     }
-
-    // 2. Cek di tabel PEMBELI
+    
+    // 2. Cek di tabel PEMBELI HANYA JIKA BUKAN ADMIN
     $sql_pembeli = "SELECT * FROM pembeli WHERE username = '$username' OR email_pembeli = '$username'";
     $result_pembeli = $conn->query($sql_pembeli);
 
     if ($result_pembeli && $result_pembeli->num_rows > 0) {
         $pembeli = $result_pembeli->fetch_assoc();
         
-        // Verifikasi password yang sudah di-hash
+        // Verifikasi password yang sudah di-hash untuk Pembeli
         if (password_verify($password, $pembeli['password'])) {
             $_SESSION['role'] = 'pembeli';
             $_SESSION['id_user'] = $pembeli['id_pembeli'];
             $_SESSION['nama_user'] = $pembeli['nama_pembeli'];
-            header("Location: index.php"); // Arahkan ke beranda pembeli
+            
+            header("Location: HomeUtama.php"); 
             exit();
         }
     }
@@ -46,6 +45,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Jika tidak ada yang cocok
     $error = "Username atau password salah.";
 }
+// ... (sisa kode HTML) ...
 ?>
 
 <!DOCTYPE html>
