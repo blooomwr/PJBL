@@ -101,10 +101,10 @@
       <div class="container-fluid">
         <!-- Menu Tengah -->
         <ul class="navbar-nav d-flex flex-row justify-content-center flex-grow-1">
-          <li class="nav-item"><a class="nav-link" href="index.php">Beranda</a></li>
+          <li class="nav-item"><a class="nav-link" href="HomeUtama.php">Beranda</a></li>
           <li class="nav-item"><a class="nav-link" href="katalog.php">Katalog</a></li>
           <li class="nav-item"><a class="nav-link" href="berita.php">Berita</a></li>
-          <li class="nav-item"><a class="nav-link" href="tentang.php">Tentang Kami</a></li>
+          <li class="nav-item"><a class="nav-link" href="Tentang Kami.php">Tentang Kami</a></li>
         </ul>
 
         <!-- Login dan Sign Up -->

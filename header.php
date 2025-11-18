@@ -110,7 +110,7 @@
           <li class="nav-item"><a class="nav-link" href="HomeUtama.php">Beranda</a></li>
           <li class="nav-item"><a class="nav-link" href="katalog.php">Katalog</a></li>
           <li class="nav-item"><a class="nav-link" href="berita.php">Berita</a></li>
-          <li class="nav-item"><a class="nav-link" href="tentang.php">Tentang Kami</a></li>
+          <li class="nav-item"><a class="nav-link" href="Tentang Kami.php">Tentang Kami</a></li>
         </ul>
 
         <div class="auth-links">
