@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 15, 2025 at 10:50 AM
+-- Generation Time: Nov 16, 2025 at 06:48 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -57,6 +57,20 @@ CREATE TABLE `berita` (
   `tanggal` datetime DEFAULT NULL,
   `is_berita_utama` varchar(3) DEFAULT 'No',
   `terakhir_edit` datetime DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `pembeli`
+--
+
+CREATE TABLE `pembeli` (
+  `id_pembeli` int(11) NOT NULL,
+  `email_pembeli` varchar(50) DEFAULT NULL,
+  `username` varchar(30) DEFAULT NULL,
+  `password` varchar(255) DEFAULT NULL,
+  `nama_pembeli` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -120,6 +134,14 @@ ALTER TABLE `berita`
   ADD PRIMARY KEY (`id_berita`);
 
 --
+-- Indexes for table `pembeli`
+--
+ALTER TABLE `pembeli`
+  ADD PRIMARY KEY (`id_pembeli`),
+  ADD UNIQUE KEY `email_pembeli` (`email_pembeli`),
+  ADD UNIQUE KEY `username` (`username`);
+
+--
 -- Indexes for table `produk`
 --
 ALTER TABLE `produk`
@@ -141,6 +163,12 @@ ALTER TABLE `promo`
 --
 -- AUTO_INCREMENT for dumped tables
 --
+
+--
+-- AUTO_INCREMENT for table `pembeli`
+--
+ALTER TABLE `pembeli`
+  MODIFY `id_pembeli` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `produk_gambar`
