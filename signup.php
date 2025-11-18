@@ -64,6 +64,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             padding: 20px;
             margin-top: 50px;
             text-align: center;
+            position: relative;
+        }
+
+        .back-link {
+            position: absolute;
+            top: 10x;
+            /* Disesuaikan agar berada di atas logo */
+            left: -50px;
+            font-size: 30px;
+            color: #ae4c02;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .back-link:hover {
+            color: #8a3c02;
         }
 
         .form-control {
@@ -142,6 +158,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <body>
 
     <div class="signup-container">
+        <a href="javascript:history.back()" class="back-link">
+            <i class="bi bi-arrow-left"></i>
+        </a>
         <img src="NEW LOGO RQQ.png" alt="Rumah Que Que" class="logo-top">
 
         <h2>Sign Up</h2>

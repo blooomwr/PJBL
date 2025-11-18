@@ -1,11 +1,15 @@
 <?php
 // File: auth_google.php
 session_start();
+include 'config_secrets.php'; // ⬅️ TAMBAHKAN INI
 
-// ==========================================================
-// !!! GANTI DENGAN KREDENSIAL DARI GOOGLE CLOUD CONSOLE !!!
-// ==========================================================
-$client_id = '450500029392-t6550sojd18q3p8kv7k6hj4okd6ltat5.apps.googleusercontent.com';
+// ... (existing code) ...
+
+// 🚨 GANTI BARIS LAMA INI:
+//$client_id = '450500029392-t6550sojd18q3p8kv7k6hj4okd6ltat5.apps.googleusercontent.com';
+// DENGAN:
+$client_id = GOOGLE_CLIENT_ID; 
+// ... (sisa kode) ...
 $redirect_uri = 'http://localhost/PJBL/callback.php'; 
 // ==========================================================
 

@@ -1,19 +1,18 @@
 <?php
 // File: callback.php
 include 'connlog.php'; 
+include 'config_secrets.php'; // ⬅️ TAMBAHKAN INI
 
 if (isset($_GET['code'])) {
     
-    // ==========================================================
-    // !!! GANTI DENGAN KREDENSIAL DARI GOOGLE CLOUD CONSOLE !!!
-    // ==========================================================
-    $client_id = '450500029392-t6550sojd18q3p8kv7k6hj4okd6ltat5.apps.googleusercontent.com';
-    $client_secret = 'KLBtTgQUSvyfDk1wbWR39d8nu6y';
+
+    $client_id = GOOGLE_CLIENT_ID;
+    $client_secret = GOOGLE_CLIENT_SECRET;
     $redirect_uri = 'http://localhost/PJBL/callback.php'; 
-    // ==========================================================
+    // ... (sisa kode) ...
 
     $code = $_GET['code'];
-    
+
     // 1. Cek Token CSRF
     if (!isset($_GET['state']) || !isset($_SESSION['oauth_state']) || $_GET['state'] !== $_SESSION['oauth_state']) {
         header("Location: signup.php?error=csrf_token_mismatch");
@@ -31,20 +30,29 @@ if (isset($_GET['code'])) {
         'grant_type' => 'authorization_code'
     ];
 
+    // ... (omitted code for Step 2) ...
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $token_url);
     curl_setopt($ch, CURLOPT_POST, true);
     curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($fields));
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     $response = curl_exec($ch);
+
+    // 🛑 TAMBAHKAN BARIS DEBUG INI 🛑
+    if (curl_errno($ch)) {
+        die("cURL Error (Token Exchange): " . curl_error($ch));
+    }
+    // 🛑 TAMBAHKAN BARIS DEBUG INI 🛑
+
     curl_close($ch);
-    
+
     $token_data = json_decode($response, true);
-    
+
     if (!isset($token_data['access_token'])) {
-        $error_msg = $token_data['error_description'] ?? 'Gagal mendapatkan Access Token dari Google.';
-        header("Location: signup.php?error=" . urlencode($error_msg));
-        exit();
+        // 🚨 GANTI KODE DI SINI 🚨
+
+        // Tampilkan respons mentah yang diterima dari Google
+        die("Gagal Tukar Token. Respon Mentah Google: " . $response);
     }
 
     $access_token = $token_data['access_token'];
@@ -65,42 +73,47 @@ if (isset($_GET['code'])) {
         exit();
     }
 
+    // ... (setelah $user_data berhasil didapatkan) ...
+
     // 4. Proses Login atau Register ke Database
     $email = $conn->real_escape_string($user_data['email']);
     $nama = $conn->real_escape_string($user_data['name'] ?? 'Pengguna Baru');
-    $username = explode('@', $email)[0]; 
+
+    // 🚨 FIX: Gunakan ID unik dari Google sebagai username dasar untuk menghindari konflik
+    // Tambahkan prefix 'google_' jika Anda memiliki ID unik dari Google di $user_data
+    $username_base = explode('@', $email)[0];
 
     // Cek apakah user sudah terdaftar
     $sql = "SELECT id_pembeli, nama_pembeli FROM pembeli WHERE email_pembeli = '$email'";
     $result = $conn->query($sql);
-    
+
     if ($result->num_rows > 0) {
         // A. LOGIN: User sudah ada
-        $pembeli = $result->fetch_assoc();
-        $_SESSION['role'] = 'pembeli';
-        $_SESSION['id_user'] = $pembeli['id_pembeli'];
-        $_SESSION['nama_user'] = $pembeli['nama_pembeli'];
-        header("Location: HomeUtama.php"); 
-        exit();
+        // ... (login logic sudah benar)
     } else {
         // B. REGISTER: User baru
+
+        // Cek dan buat username unik jika sudah ada
+        $username = $username_base;
+        $i = 1;
+        while ($conn->query("SELECT username FROM pembeli WHERE username = '$username'")->num_rows > 0) {
+            $username = $username_base . $i++;
+        }
+
         $sql_insert = "INSERT INTO pembeli (email_pembeli, username, nama_pembeli, password) 
-                       VALUES ('$email', '$username', '$nama', NULL)"; // Password NULL
-                       
+                       VALUES ('$email', '$username', '$nama', NULL)";
+
         if ($conn->query($sql_insert) === TRUE) {
-            // Login setelah register
-            $_SESSION['role'] = 'pembeli';
-            $_SESSION['id_user'] = $conn->insert_id;
-            $_SESSION['nama_user'] = $nama;
+            // Login setelah register (logic sudah benar)
+            // ...
             header("Location: HomeUtama.php?signup=google_success");
             exit();
         } else {
-            die("Gagal mendaftar user baru: " . $conn->error);
+            // 🚨 Tampilkan error database agar tahu penyebab gagal register
+            die("Gagal mendaftar user baru. Error SQL: " . $conn->error);
         }
     }
-
 } else {
     header("Location: signup.php?error=otorisasi_dibatalkan");
     exit();
 }
-?>

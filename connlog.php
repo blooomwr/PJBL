@@ -1,7 +1,11 @@
 <?php
+// File: connlog.php
+
+ob_start(); // ⬅️ TAMBAHKAN BARIS INI
+
 $servername = "localhost";
-$username = "root"; // <-- GANTI USERNAME
-$password = "";      // <-- GANTI PASSWORD (dikosongkan jika default)
+$username = "root"; 
+$password = "";      
 $dbname = "pjbl";
 
 // Membuat koneksi

@@ -1,0 +1,7 @@
+# File Konfigurasi Rahasia
+config_secrets.php
+
+# Folder Gambar & Log
+gambar_promo/
+gambar_berita/
+gambar_produk/

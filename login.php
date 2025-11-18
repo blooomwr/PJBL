@@ -1,5 +1,5 @@
 <?php
-include 'connlog.php'; 
+include 'connlog.php';
 
 $error = '';
 
@@ -13,7 +13,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if ($result_admin && $result_admin->num_rows > 0) {
         $admin = $result_admin->fetch_assoc();
-        
+
         // Cek password Admin (menggunakan perbandingan langsung karena di DB masih '12345')
         if ($password === $admin['password']) {
             $_SESSION['role'] = 'admin';
@@ -23,25 +23,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             exit();
         }
     }
-    
+
     // 2. Cek di tabel PEMBELI HANYA JIKA BUKAN ADMIN
     $sql_pembeli = "SELECT * FROM pembeli WHERE username = '$username' OR email_pembeli = '$username'";
     $result_pembeli = $conn->query($sql_pembeli);
 
     if ($result_pembeli && $result_pembeli->num_rows > 0) {
         $pembeli = $result_pembeli->fetch_assoc();
-        
+
         // Verifikasi password yang sudah di-hash untuk Pembeli
         if (password_verify($password, $pembeli['password'])) {
             $_SESSION['role'] = 'pembeli';
             $_SESSION['id_user'] = $pembeli['id_pembeli'];
             $_SESSION['nama_user'] = $pembeli['nama_pembeli'];
-            
-            header("Location: HomeUtama.php"); 
+
+            header("Location: HomeUtama.php");
             exit();
         }
     }
-    
+
     // Jika tidak ada yang cocok
     $error = "Username atau password salah.";
 }
@@ -50,6 +50,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -59,21 +60,39 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 
     <style>
-        body { 
-            font-family: 'Playfair Display', serif; 
-            background: linear-gradient(to bottom, #fdeedc, #fffaf3); 
+        body {
+            font-family: 'Playfair Display', serif;
+            background: linear-gradient(to bottom, #fdeedc, #fffaf3);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
         }
+
         .login-container {
             width: 100%;
             max-width: 450px;
             padding: 20px;
             margin-top: 100px;
             text-align: center;
+            position: relative;
         }
+
+        .back-link {
+            position: absolute;
+            top: -50px;
+            /* Disesuaikan agar berada di atas logo */
+            left: -50px;
+            font-size: 30px;
+            color: #ae4c02;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .back-link:hover {
+            color: #8a3c02;
+        }
+
         .form-control {
             background-color: #ffeccf !important;
             border: none !important;
@@ -82,6 +101,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             padding: 0 20px;
             margin-bottom: 20px;
         }
+
         .btn-login {
             background-color: #ae4c02 !important;
             border: none !important;
@@ -93,31 +113,46 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             transition: background-color 0.3s;
             margin-top: 15px;
         }
-        .btn-login:hover { background-color: #8a3c02 !important; }
-        .logo-top { width: 70px; margin-bottom: 50px; }
-        .form-group { position: relative; }
-        .toggle-password { 
-            position: absolute; 
-            right: 20px; 
-            top: 50%; 
-            transform: translateY(-50%); 
-            cursor: pointer; 
-            color: #777; 
+
+        .btn-login:hover {
+            background-color: #8a3c02 !important;
         }
+
+        .logo-top {
+            width: 70px;
+            margin-bottom: 50px;
+        }
+
+        .form-group {
+            position: relative;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #777;
+        }
+
         /* === TAMBAHKAN INI === */
         footer {
             width: 100%;
         }
-        /* ===================== */
 
+        /* ===================== */
     </style>
 </head>
 
 <body>
 
     <div class="login-container">
+        <a href="javascript:history.back()" class="back-link">
+            <i class="bi bi-arrow-left"></i>
+        </a>
         <img src="NEW LOGO RQQ.png" alt="Rumah Que Que" class="logo-top">
-        
+
         <h2>Login</h2>
 
         <?php if ($error): ?>
@@ -129,12 +164,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         <form action="" method="post">
             <input type="text" name="username" class="form-control" placeholder="Username" required>
-            
+
             <div class="form-group">
                 <input type="password" name="password" id="password" class="form-control" placeholder="Password" required>
                 <i class="bi bi-eye-slash toggle-password" data-target="password"></i>
             </div>
-            
+
             <button type="submit" class="btn btn-login">Login</button>
         </form>
 
@@ -142,7 +177,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     </div>
 
-    <?php include 'footer.php'; // Termasuk bagian footer ?>
+    <?php include 'footer.php'; // Termasuk bagian footer 
+    ?>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
@@ -158,4 +194,5 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         });
     </script>
 </body>
+
 </html>
