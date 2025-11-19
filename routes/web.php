@@ -25,14 +25,6 @@ Route::get('/berita', [PageController::class, 'berita'])->name('berita');
 // Tentang Kami
 Route::get('/tentang-kami', [PageController::class, 'tentangKami'])->name('tentangkami');
 
-
-/*
-|--------------------------------------------------------------------------
-| Rute Otentikasi Sosial (Socialite)
-|--------------------------------------------------------------------------
-*/
-
-
 /*
 |--------------------------------------------------------------------------
 | Rute Admin (Dilindungi)

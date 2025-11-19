@@ -1,0 +1,344 @@
+:root {
+  --bg: #f7e9d5;
+  --accent: #c66a21;
+  --accent-dark: #7a2e03;
+  --gold: #f1a92f;
+  --card: #fff6ef;
+  --shadow: rgba(60,30,10,0.15);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* GLOBAL */
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--bg);
+  color: #5b2a02;
+}
+
+main {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 40px 0 80px;
+}
+
+/* HERO SECTION */
+.hero {
+  display: flex;
+  gap: 60px;
+  align-items: center;
+  padding: 40px 0 20px;
+}
+
+.hero-left {
+  flex: 1;
+}
+
+.hero-right {
+  flex: 1;
+  max-width: 500px;
+  height: 380px;
+  border-radius: 40px;
+  overflow: hidden;
+  box-shadow: 0 18px 30px var(--shadow);
+}
+
+.hero-right img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.hero h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 48px;
+  line-height: 1.1;
+  margin-bottom: 16px;
+}
+
+.meta {
+  color: rgba(0,0,0,0.55);
+  font-size: 14px;
+  margin-bottom: 16px;
+}
+
+.hero p {
+  max-width: 470px;
+  line-height: 1.7;
+  color: rgba(0,0,0,0.75);
+  margin-bottom: 24px;
+}
+
+.btn-primary {
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #fff;
+  color: #ae4c02;
+  font-weight: 500;
+  border: #ae4c02 2px solid;
+  border-radius: 999px;
+  padding: 10px 46px;
+  font-size: 18px;
+  cursor: pointer;
+  box-shadow: 0 0 6px rgba(0,0,0,0.15);
+  transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+  background: #ae4c02;
+  color: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 10px rgba(0,0,0,0.18);
+}
+
+/*******************************************
+  PROMO SECTION
+*******************************************/
+/* PROMO — FULL WIDTH ORANGE CAPSULE */
+.promo {
+  width: 100vw;                 /* full layar */
+  margin-left: 50%;
+  transform: translateX(-50%);  /* biar benar-benar full */
+
+  background: #f5a623;
+  border-radius: 1000px / 180px; /* seperti box-oren, tapi lebih tinggi */
+  padding: 100px 20px 150px;     /* atas–samping–bawah */
+
+  text-align: center;
+  color: #4b2b00;
+
+  box-shadow: 0 4px 40px rgba(0, 0, 0, 0.15);
+
+  position: relative;
+  overflow: visible;   /* PENTING: agar tidak terpotong */
+}
+
+/* batasi konten di tengah */
+.promo .inner-wrapper {
+  max-width: 1120px;
+  margin: auto;
+}
+
+/* title */
+.promo .title {
+  font-family: 'Playfair Display', serif;
+  font-size: 40px;
+  letter-spacing: 6px;
+  margin-bottom: 40px;
+}
+
+/* Carousel */
+.promo .carousel {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+/* Panah */
+.promo .arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+
+  width: 56px;
+  height: 56px;
+  background: white;
+  border-radius: 50%;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  color: #7a2e03;
+  cursor: pointer;
+}
+
+.promo .arrow.left { left: -4%; }
+.promo .arrow.right { right: -4%; }
+
+/* CARD */
+.promo .card {
+  width: 420px;
+  height: 260px;
+  border-radius: 220px;
+  background: #fff6ef;
+  box-shadow: 0 18px 28px rgba(0,0,0,0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+/*******************************************
+  ACTIVITIES SECTION
+*******************************************/
+/*******************************************
+  ACTIVITIES SECTION (SCROLL / SWIPE)
+*******************************************/
+.activities {
+  padding: 60px 0 40px;
+  text-align: center;
+}
+
+.activities h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 40px;
+  margin-bottom: 26px;
+  color: var(--accent-dark);
+}
+
+/* strip horizontal yg bisa digeser */
+.activities-strip {
+  display: flex;
+  gap: 32px;
+  overflow-x: auto;               /* bisa geser kanan-kiri */
+  padding: 0 40px 10px;
+  scroll-snap-type: x mandatory;  /* snap ke tiap foto */
+}
+
+/* sembunyikan scrollbar (opsional) */
+.activities-strip::-webkit-scrollbar {
+  display: none;
+}
+.activities-strip {
+  -ms-overflow-style: none;  /* IE */
+  scrollbar-width: none;     /* Firefox */
+}
+
+/* tiap gambar */
+.activities-strip .item {
+  flex: 0 0 33.33%;           /* biar 3 kotak muat mirip desain */
+  scroll-snap-align: center;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 10px 18px var(--shadow);
+}
+
+.activities-strip img {
+  width: 100%;
+  height: 280px;
+  object-fit: cover;
+  display: block;
+}
+
+/* responsive: di HP tiap geser 1 foto gede */
+@media (max-width: 900px) {
+  .activities-strip {
+    padding: 0 20px 10px;
+    gap: 20px;
+  }
+
+  .activities-strip .item {
+    flex: 0 0 80%;
+  }
+
+  .activities-strip img {
+    height: 220px;
+  }
+}
+
+
+
+/*******************************************
+  NEWS SECTION
+*******************************************/
+.news {
+  padding: 40px 0 0;
+  text-align: center;
+}
+
+.news h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 40px;
+  margin-bottom: 24px;
+  color: var(--accent-dark);
+}
+
+.news .cards {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+}
+
+.card-news {
+  background: #fff;
+  padding: 18px 20px 22px;
+  width: 320px;
+  border-radius: 18px;
+  box-shadow: 0 10px 18px rgba(0,0,0,0.06);
+  text-align: left;
+}
+
+.card-news h3 {
+  font-family: 'Playfair Display', serif;
+  margin-bottom: 8px;
+  color: var(--accent-dark);
+  font-size: 18px;
+}
+
+.card-news p {
+  font-size: 13px;
+  line-height: 1.6;
+  color: rgba(0,0,0,0.7);
+}
+
+.card-news a {
+  display: inline-block;
+  margin-top: 12px;
+  color: var(--accent-dark);
+  font-weight: 600;
+  font-size: 13px;
+  text-decoration: none;
+}
+
+/*******************************************
+  FOOTER
+*******************************************/
+footer {
+  padding: 60px 6%;
+  margin-top: 40px;
+}
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+  main {
+    padding: 24px 16px 60px;
+  }
+
+  .hero {
+    flex-direction: column;
+  }
+
+  .hero-right {
+    width: 100%;
+    max-width: none;
+    height: 260px;
+  }
+
+  .promo {
+    border-radius: 80px;
+    padding: 60px 16px 80px;
+  }
+
+  .arrow.left { left: 4%; }
+  .arrow.right { right: 4%; }
+
+  .activities .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .news .cards {
+    flex-direction: column;
+    align-items: center;
+  }
+}
