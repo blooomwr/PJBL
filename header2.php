@@ -5,6 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Rumah Que-Que</title>
 
+  <ul class="navbar-nav d-flex flex-row justify-content-center flex-grow-1">
+    <li class="nav-item"><a class="nav-link" href="HomeUtama.php">Beranda</a></li>
+    <li class="nav-item"><a class="nav-link" href="katalog.php">Katalog</a></li>
+    <li class="nav-item"><a class="nav-link" href="Berita.php">Berita</a></li>
+    <li class="nav-item"><a class="nav-link" href="Tentang Kami.php">Tentang Kami</a></li>
+  </ul>
+
   <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 

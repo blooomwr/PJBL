@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 15, 2025 at 10:50 AM
+-- Generation Time: Nov 18, 2025 at 01:55 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -45,6 +45,42 @@ INSERT INTO `admin` (`id_admin`, `username`, `password`, `nama_admin`, `email_ad
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `audit_log`
+--
+
+CREATE TABLE `audit_log` (
+  `id_log` int(11) NOT NULL,
+  `id_admin` varchar(10) NOT NULL,
+  `nama_admin` varchar(50) NOT NULL,
+  `aksi` varchar(255) NOT NULL,
+  `detail` varchar(255) DEFAULT NULL,
+  `timestamp` datetime DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `audit_log`
+--
+
+INSERT INTO `audit_log` (`id_log`, `id_admin`, `nama_admin`, `aksi`, `detail`, `timestamp`) VALUES
+(1, 'A01', 'Syabib Ibrahim ', 'Menambah produk baru', 'Kue Api (ID: P01)', '2025-11-16 14:18:44'),
+(2, 'A01', 'Syabib Ibrahim ', 'Mengubah produk', 'Kue Apii (ID: P01)', '2025-11-16 14:23:06'),
+(3, 'A01', 'Syabib Ibrahim ', 'Menambah berita baru', 'erer (ID: B01)', '2025-11-16 14:27:50'),
+(4, 'A01', 'Syabib Ibrahim ', 'Menambah promo baru', 'Kue Api gratis (ID: R01)', '2025-11-16 14:33:03'),
+(5, 'A01', 'Syabib Ibrahim ', 'Mengubah berita', 'erer (ID: B01)', '2025-11-16 14:33:42'),
+(6, 'A01', 'Syabib Ibrahim ', 'Mengubah promo', 'Kue Api gratissss (ID: R01)', '2025-11-16 14:33:52'),
+(7, 'A01', 'Syabib Ibrahim ', 'Menambah berita baru', 'wwww (ID: B01)', '2025-11-16 14:36:53'),
+(8, 'A01', 'Syabib Ibrahim ', 'Menghapus berita', 'Total 1 berita dihapus. (IDs: \'B01\')', '2025-11-16 14:36:56'),
+(9, 'A01', 'Syabib Ibrahim ', 'Menghapus promo', 'Total 1 promo dihapus. (IDs: \'R01\')', '2025-11-16 14:37:01'),
+(10, 'A01', 'Syabib Ibrahim ', 'Menghapus produk', 'Total 1 produk dihapus. (IDs: \'P01\')', '2025-11-16 14:37:13'),
+(11, 'A01', 'Syabib Ibrahim ', 'Menambah produk baru', 'www (ID: P01)', '2025-11-16 14:37:26'),
+(12, 'A01', 'Syabib Ibrahim ', 'Menghapus produk', 'Total 1 produk dihapus. (IDs: \'P01\')', '2025-11-16 14:37:28'),
+(13, 'A01', 'Syabib Ibrahim ', 'Menambah produk baru', 'dadawdwa (ID: P01)', '2025-11-16 14:59:08'),
+(14, 'A01', 'Syabib Ibrahim ', 'Menghapus 1 gambar produk', 'File: 6919844c2ebf4_hanip sus.PNG (ID Gambar: 18)', '2025-11-16 14:59:11'),
+(15, 'A01', 'Syabib Ibrahim ', 'Menghapus produk', 'Total 1 produk dihapus. (IDs: \'P01\')', '2025-11-16 14:59:20');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `berita`
 --
 
@@ -58,6 +94,28 @@ CREATE TABLE `berita` (
   `is_berita_utama` varchar(3) DEFAULT 'No',
   `terakhir_edit` datetime DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `pembeli`
+--
+
+CREATE TABLE `pembeli` (
+  `id_pembeli` int(11) NOT NULL,
+  `email_pembeli` varchar(50) DEFAULT NULL,
+  `username` varchar(30) DEFAULT NULL,
+  `password` varchar(255) DEFAULT NULL,
+  `nama_pembeli` varchar(50) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `pembeli`
+--
+
+INSERT INTO `pembeli` (`id_pembeli`, `email_pembeli`, `username`, `password`, `nama_pembeli`) VALUES
+(1, 'syackz@gmail.com', 'smurfacc', '$2y$10$75StPBblChNttTmOat3DF.BfAd/Lu86LWMnmy4qt.AW2kQyOhIkrW', 'smurfacc'),
+(2, 'syabibibrahim@gmail.com', 'adminacc', '$2y$10$Z4l1/V0qRWfHpiOg6kZdtedlTP4DAWGRNNdhIuPUG.3UGrn4uPVjG', 'adminacc');
 
 -- --------------------------------------------------------
 
@@ -114,10 +172,24 @@ ALTER TABLE `admin`
   ADD UNIQUE KEY `username` (`username`);
 
 --
+-- Indexes for table `audit_log`
+--
+ALTER TABLE `audit_log`
+  ADD PRIMARY KEY (`id_log`);
+
+--
 -- Indexes for table `berita`
 --
 ALTER TABLE `berita`
   ADD PRIMARY KEY (`id_berita`);
+
+--
+-- Indexes for table `pembeli`
+--
+ALTER TABLE `pembeli`
+  ADD PRIMARY KEY (`id_pembeli`),
+  ADD UNIQUE KEY `email_pembeli` (`email_pembeli`),
+  ADD UNIQUE KEY `username` (`username`);
 
 --
 -- Indexes for table `produk`
@@ -143,10 +215,22 @@ ALTER TABLE `promo`
 --
 
 --
+-- AUTO_INCREMENT for table `audit_log`
+--
+ALTER TABLE `audit_log`
+  MODIFY `id_log` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+
+--
+-- AUTO_INCREMENT for table `pembeli`
+--
+ALTER TABLE `pembeli`
+  MODIFY `id_pembeli` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
 -- AUTO_INCREMENT for table `produk_gambar`
 --
 ALTER TABLE `produk_gambar`
-  MODIFY `id_gambar` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id_gambar` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- Constraints for dumped tables
