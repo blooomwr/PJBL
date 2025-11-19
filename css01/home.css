@@ -77,7 +77,7 @@ text-decoration: none;
 /* Hover */
 .btnbelisekarang:hover {
   background: #AE4C02;   
-  color: white;       /* sedikit lebih tua */
+  color: white;      
   transform: translateY(-2px);
   box-shadow: 0px 6px 10px rgba(0,0,0,0.18);
 }
