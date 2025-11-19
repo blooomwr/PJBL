@@ -46,23 +46,27 @@ Route::middleware(['auth:admin'])->prefix('admin')->group(function () {
 
 /*
 |--------------------------------------------------------------------------
-| Rute Otentikasi Standar (Manual Login/Logout)
+| Rute Otentikasi Dasar (Wajib untuk link di Header)
 |--------------------------------------------------------------------------
 */
 
-// Catatan: Jika Anda menggunakan Laravel Breeze/UI, rute ini mungkin sudah ada 
-// dan rute di bawah ini dapat diabaikan atau disesuaikan.
+// Anda harus membuat Controller dan View untuk /login dan /register.
+// Contoh di bawah menggunakan nama route standar Laravel.
+
+// Rute Login (GET untuk menampilkan form, POST untuk memproses login)
+Route::get('/login', [App\Http\Controllers\Auth\LoginController::class, 'showLoginForm'])->name('login');
+Route::post('/login', [App\Http\Controllers\Auth\LoginController::class, 'login']);
+
+
+// Rute Register (GET untuk menampilkan form, POST untuk memproses pendaftaran)
+Route::get('/register', [App\Http\Controllers\Auth\RegisterController::class, 'showRegistrationForm'])->name('register');
+Route::post('/register', [App\Http\Controllers\Auth\RegisterController::class, 'register']);
+
 
 // Rute Logout (Menggantikan logout.php)
 Route::post('/logout', function () {
-    // Logout dari guard 'web' (pembeli)
     Auth::guard('web')->logout(); 
-    // Jika Anda juga mengelola logout Admin, Anda bisa menambahkannya di sini atau di rute terpisah.
-    
     return redirect()->route('home');
 })->name('logout');
 
 
-// Anda juga perlu memastikan rute /login dan /register sudah terdefinisi.
-// Jika menggunakan Breeze/UI, rute ini sudah terintegrasi.
-// Jika tidak, Anda perlu mendefinisikan rute GET dan POST untuk login/register Anda.
