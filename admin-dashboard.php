@@ -1,19 +1,16 @@
 <?php
-// 1. Sertakan file koneksi & session
-// (Saya asumsikan conn.php ada di folder backend_admin)
-include 'backend_admin/conn.php'; 
+// Panggil Class Dashboard
+require_once 'backend_admin/Dashboard.php'; 
 
-// 2. Keamanan: Cek jika user sudah login dan rolenya 'admin'
-// $_SESSION['role'] di-set oleh login.php
-if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
-    header("Location: login.php"); // Tendang ke login
-    exit();
-}
+// Inisialisasi Object (Otomatis cek login & start session)
+$dashboard = new Dashboard();
 
-// 3. Ambil data admin dari Session
-// Variabel ini di-set oleh login.php
+// Ambil Data Admin dari Session
 $nama_admin = $_SESSION['nama_user'];
 $id_admin = $_SESSION['id_user'];
+
+// Ambil Data Histori via Method Class
+$logs = $dashboard->getRecentLogs();
 ?>
 
 <!DOCTYPE html>
@@ -81,16 +78,14 @@ body {
 
 <div class="dashboard-box text-center">
     
-    <!-- Bagian Profil MASIH CONTOH -->
     <div class="d-flex align-items-center justify-content-center gap-4">
-      <img src="NEW LOGO RQQ.png" class="profile-img">
+      <img src="assets/NEW LOGO RQQ.png" class="profile-img">
       <div class="text-start">
-        <h3 class="mb-0">Selamat Datang, <?= $nama_admin ?></h3>
-        <small><?= $id_admin ?></small>
+        <h3 class="mb-0">Selamat Datang, <?= htmlspecialchars($nama_admin) ?></h3>
+        <small><?= htmlspecialchars($id_admin) ?></small>
       </div>
     </div>
 
-    <!-- Tombol Menu -->
     <div class="d-flex justify-content-center gap-5 mt-5">
       <a href="berita-admin.php" class="text-decoration-none">
         <div class="menu-circle"><i class="bi bi-pencil-square"></i></div>
@@ -105,38 +100,27 @@ body {
       </a>
     </div>
 
-    <!-- Riwayat MASIH CONTOH -->
-<div class="history-box text-start">
-  <h4>Histori Aktivitas Terakhir</h4>
+    <div class="history-box text-start">
+      <h4>Histori Aktivitas Terakhir</h4>
 
-  <?php
-  // Ambil 5 histori terakhir
-  // (Koneksi $conn sudah ada dari include di Langkah 2)
-  $histori_sql = "SELECT * FROM audit_log ORDER BY timestamp DESC LIMIT 5";
-  $histori_result = $conn->query($histori_sql);
-
-  if ($histori_result->num_rows > 0) {
-      while ($log = $histori_result->fetch_assoc()) {
-          // Format tanggal agar lebih rapi
-          $tanggal = date('d-m-Y H:i', strtotime($log['timestamp']));
-  ?>
-
-  <div style="border-bottom: 1px solid #dca950; padding-bottom: 10px; margin-bottom: 10px; line-height: 1.6;">
-    <p class="mb-0">
-      <strong><?= htmlspecialchars($log['nama_admin']); ?></strong> (<?= htmlspecialchars($log['id_admin']); ?>) 
-      melakukan aksi: <strong><?= htmlspecialchars($log['aksi']); ?></strong>
-      (<?= htmlspecialchars($log['detail']); ?>)
-    </p>
-    <small class="text-muted">Pada: <?= $tanggal; ?></small>
-  </div>
-
-  <?php
-      } // akhir while
-  } else {
-      echo '<p>Belum ada histori aktivitas.</p>';
-  }
-  ?>
-</div>
+      <?php if (!empty($logs)): ?>
+          <?php foreach ($logs as $log): ?>
+              <?php $tanggal = date('d-m-Y H:i', strtotime($log['timestamp'])); ?>
+              
+              <div style="border-bottom: 1px solid #dca950; padding-bottom: 10px; margin-bottom: 10px; line-height: 1.6;">
+                <p class="mb-0">
+                  <strong><?= htmlspecialchars($log['nama_admin']); ?></strong> (<?= htmlspecialchars($log['id_admin']); ?>) 
+                  melakukan aksi: <strong><?= htmlspecialchars($log['aksi']); ?></strong>
+                  (<?= htmlspecialchars($log['detail']); ?>)
+                </p>
+                <small class="text-muted">Pada: <?= $tanggal; ?></small>
+              </div>
+          <?php endforeach; ?>
+      <?php else: ?>
+          <p>Belum ada histori aktivitas.</p>
+      <?php endif; ?>
+      
+    </div>
 
 </div>
 

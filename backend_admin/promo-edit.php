@@ -1,15 +1,13 @@
 <?php
-include 'conn.php';
+require_once 'Promo.php';
 
-// ================== PENJAGA KEAMANAN ==================
-if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
-    die("Akses ditolak. Silakan login sebagai admin.");
-}
-// ======================================================
-
+// Inisialisasi Object
+$promoObj = new Promo();
+$promoObj->requireAdmin();
 $id = $_GET['id'];
-$query = mysqli_query($conn, "SELECT * FROM promo WHERE id_promo='$id'");
-$promo = mysqli_fetch_assoc($query);
+
+// Ambil Data Promo via Class
+$promo = $promoObj->getById($id);
 ?>
 
 <div class="modal-header custom-header">
@@ -28,7 +26,6 @@ $promo = mysqli_fetch_assoc($query);
     <h6>Gambar Promo Saat Ini</h6>
     <div class="mb-3">
         <?php 
-        // Path gambar di modal HARUS tanpa ../
         $imgPath = $promo['gambar'] ? 'gambar_promo/'.$promo['gambar'] : 'no-image.png'; 
         ?>
         <img src="<?php echo $imgPath; ?>" class="rounded" width="150" style="object-fit:cover;">

@@ -1,0 +1,430 @@
+/* === RESET AMAN === */
+/* Hanya reset box-sizing, JANGAN reset margin/padding global (*) karena merusak Header */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #fffbf2;
+    font-family: 'Poppins', sans-serif;
+    margin: 0; /* Reset margin body saja */
+    overflow-x: hidden;
+}
+
+.detail-container {
+    max-width: 1150px;
+    margin: 40px auto 80px;
+    padding: 0 20px;
+    min-height: 80vh;
+}
+
+/* === LAYOUT UTAMA (2 KOLOM) === */
+.product-layout {
+    display: flex;
+    gap: 50px;
+    align-items: flex-start;
+}
+
+/* --- BAGIAN KIRI: GALERI --- */
+.gallery-area {
+    flex: 0 0 400px; /* Lebar tetap agar stabil */
+    max-width: 400px;
+    position: sticky;
+    top: 100px; 
+    z-index: 10;
+}
+
+.main-img-frame {
+    width: 100%;
+    height: 400px;
+    background: #fff;
+    border-radius: 20px;
+    border: 1px solid #e0e0e0;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 15px;
+}
+
+.main-img-frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.thumb-row {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+.thumb-item {
+    width: 60px;
+    height: 60px;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    object-fit: cover;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.thumb-item:hover {
+    border-color: #AE4C02;
+    transform: scale(1.05);
+}
+
+/* --- BAGIAN KANAN: INFO AREA --- */
+.info-area {
+    flex: 1;
+    position: relative;
+}
+
+/* Tombol Wishlist di Pojok Kanan Atas */
+.wishlist-top-btn {
+    position: absolute;
+    top: 0;
+    right: 0;
+    text-decoration: none;
+    color: #ff9f43;
+    font-weight: 600;
+    border: 2px solid #ff9f43;
+    padding: 8px 20px;
+    border-radius: 50px;
+    font-size: 0.9rem;
+    transition: 0.3s;
+    background: #fff;
+}
+.wishlist-top-btn:hover {
+    background: #ff9f43;
+    color: white;
+}
+
+.prod-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem;
+    color: #3e2723;
+    margin-bottom: 10px;
+    line-height: 1.2;
+    padding-right: 160px; /* Memberi ruang agar tidak nabrak tombol wishlist */
+}
+
+.meta-info {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.stock-badge {
+    background: #eee;
+    color: #666;
+    padding: 4px 12px;
+    border-radius: 5px;
+    font-size: 0.85rem;
+}
+
+.rating-text {
+    margin-left: 10px;
+    color: #666;
+    cursor: pointer;
+    transition: 0.3s;
+    font-size: 0.9rem;
+}
+.rating-text:hover { opacity: 0.7; }
+
+.prod-price {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.2rem;
+    color: #3e2723;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.divider-line {
+    height: 1px;
+    background: #e0e0e0;
+    margin: 20px 0;
+    width: 100%;
+}
+
+/* Style Varian */
+.variant-label {
+    font-weight: 700;
+    margin-bottom: 8px;
+    display: block;
+    color: #000;
+}
+
+.variant-btn {
+    background: #dcdcdc;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    margin-right: 8px;
+    margin-bottom: 8px;
+    cursor: pointer;
+    transition: 0.2s;
+    color: #555;
+    font-weight: 500;
+}
+
+.variant-btn:hover, .variant-btn.active {
+    background: #eecfa1;
+    color: #5c3a21;
+}
+
+/* Style Deskripsi */
+.desc-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    color: #555;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 5px;
+    display: inline-block;
+}
+
+.desc-box {
+    color: #666;
+    line-height: 1.6;
+    font-size: 0.9rem;
+    text-align: justify;
+}
+
+/* Tombol Aksi */
+.btn-action-group {
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 100%;
+    max-width: 400px;
+}
+
+.btn-wa-order {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    text-decoration: none;
+    color: #000;
+    border: 1px solid #8B4513;
+    padding: 12px;
+    border-radius: 50px;
+    font-weight: 600;
+    transition: 0.3s;
+    background: white;
+    width: 100%;
+}
+.btn-wa-order:hover { background: #f9f9f9; }
+.btn-wa-order i { color: #25D366; font-size: 1.2rem; }
+
+.btn-add-wishlist {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background: linear-gradient(to right, #FF9F43, #FF8C00);
+    border: none;
+    color: white;
+    padding: 12px;
+    border-radius: 50px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+    width: 100%;
+    box-shadow: 0 4px 10px rgba(255, 140, 0, 0.3);
+}
+.btn-add-wishlist:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(255, 140, 0, 0.4);
+}
+
+/* === PRODUK LAINNYA (CAROUSEL) === */
+.related-section {
+    margin-top: 60px;
+    position: relative;
+}
+
+.related-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+}
+
+.related-grid-wrapper {
+    position: relative; 
+    padding: 0 10px;
+}
+
+.related-grid {
+    display: flex;
+    gap: 20px;
+    overflow-x: auto;
+    padding: 10px 5px 20px 5px;
+    scroll-behavior: smooth;
+    width: 100%;
+    -ms-overflow-style: none; 
+    scrollbar-width: none; 
+}
+.related-grid::-webkit-scrollbar { display: none; }
+
+.related-card {
+    min-width: 220px;
+    background: white;
+    padding: 10px;
+    border-radius: 15px;
+    text-align: center;
+    text-decoration: none;
+    color: inherit;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    transition: 0.3s;
+    flex-shrink: 0;
+}
+
+.related-card:hover {
+    transform: translateY(-5px);
+    border-color: #ff9f43;
+    border: 1px solid #ff9f43;
+}
+
+.related-card img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+/* Tombol Panah */
+.scroll-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    width: 45px;
+    height: 45px;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 50%;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    color: #AE4C02;
+    font-size: 1.2rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.3s;
+}
+.scroll-btn:hover { background: #AE4C02; color: white; border-color: #AE4C02; }
+.scroll-btn.left { left: -35px; }
+.scroll-btn.right { right: -35px; }
+
+/* === MODAL RATING === */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.5);
+    z-index: 2000;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-rating-box {
+    background: #fffbf2;
+    padding: 30px;
+    border-radius: 20px;
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    position: relative;
+}
+
+.close-modal {
+    position: absolute;
+    top: 15px; right: 20px;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #888;
+}
+
+.star-input {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin: 20px 0;
+    flex-direction: row-reverse;
+}
+
+.star-input input { display: none; }
+
+.star-input label {
+    font-size: 2rem;
+    color: #ccc;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.star-input input:checked ~ label,
+.star-input label:hover,
+.star-input label:hover ~ label {
+    color: #ffc107;
+}
+
+.input-kode {
+    width: 100%;
+    padding: 10px;
+    border: 2px solid #ddd;
+    border-radius: 10px;
+    margin-bottom: 15px;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.btn-submit-rating {
+    background: #AE4C02;
+    color: white;
+    border: none;
+    padding: 10px 30px;
+    border-radius: 30px;
+    font-weight: bold;
+    cursor: pointer;
+    width: 100%;
+}
+.btn-submit-rating:hover { background: #8a3c02; }
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+    .product-layout { flex-direction: column; }
+    .gallery-area { flex: none; width: 100%; max-width: 100%; position: static; }
+    .info-area { width: 100%; }
+    
+    /* Di mobile, judul turun sedikit dan padding kanan dihapus */
+    .prod-title { padding-right: 0; margin-top: 20px; }
+    .wishlist-top-btn { position: relative; display: inline-block; margin-bottom: 10px; top: 0; }
+    
+    .info-split-layout { flex-direction: column; }
+    .info-right-col { width: 100%; }
+    
+    .scroll-btn { display: none; }
+}
+
+/* LAYOUT KHUSUS SPLIT (DESKRIPSI KIRI - TOMBOL KANAN) */
+.info-split-layout {
+    display: flex;
+    gap: 40px;
+    align-items: flex-start;
+}
+
+.info-left-col { flex: 1; }
+
+.info-right-col {
+    width: 280px;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}

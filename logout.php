@@ -4,6 +4,6 @@ session_unset();
 session_destroy();
 
 // Arahkan kembali ke halaman utama
-header("Location: HomeUtama.php");
+header("Location: Home.php");
 exit();
 ?>

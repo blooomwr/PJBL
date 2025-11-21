@@ -1,12 +1,8 @@
 <?php 
-include 'backend_admin/conn.php'; 
-
-// ================== PENJAGA KEAMANAN ==================
-if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
-    header("Location: login.php");
-    exit();
-}
-// ======================================================
+// Menggunakan Class Promo (OOP)
+require_once 'backend_admin/Promo.php'; 
+$promoObj = new Promo();
+$promoObj->requireAdmin();
 ?>
 
 <!DOCTYPE html>
@@ -120,8 +116,12 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
             </thead>
             <tbody>
             <?php
-            $query = mysqli_query($conn, "SELECT * FROM promo ORDER BY terakhir_edit DESC");
-            while ($row = mysqli_fetch_assoc($query)) {
+            // === PERBAIKAN UTAMA ===
+            // Menggunakan Method query() dari object $promoObj
+            $sql = "SELECT * FROM promo ORDER BY terakhir_edit DESC";
+            $result = $promoObj->query($sql); 
+
+            while ($row = $result->fetch_assoc()) {
                 $imgPath = $row['gambar'] ? 'gambar_promo/'.$row['gambar'] : 'no-image.png';
             ?>
             <tr>

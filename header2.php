@@ -1,128 +1,111 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Rumah Que-Que</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500&display=swap" rel="stylesheet">
 
-  <ul class="navbar-nav d-flex flex-row justify-content-center flex-grow-1">
-    <li class="nav-item"><a class="nav-link" href="HomeUtama.php">Beranda</a></li>
-    <li class="nav-item"><a class="nav-link" href="katalog.php">Katalog</a></li>
-    <li class="nav-item"><a class="nav-link" href="Berita.php">Berita</a></li>
-    <li class="nav-item"><a class="nav-link" href="Tentang Kami.php">Tentang Kami</a></li>
-  </ul>
+<style>
+  /* === STYLE HEADER === */
+  .header-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    margin: 20px auto;
+    position: relative;
+    z-index: 1000;
+  }
 
-  <!-- Bootstrap CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  .logo-container {
+    position: flex;
+    left: 40px;
+  }
 
-  <!-- Google Font -->
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500&display=swap" rel="stylesheet">
+  .logo-container img {
+    height: 60px;
+    width: auto;
+  }
 
-  <style>
-    body {
-      font-family: 'Playfair Display', serif;
-      background-color: #fdf3e3;
-    }
+  .navbar-custom {
+    background-color: #AE4C02;
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-width: 900px;
+    
+    /* FIX UKURAN */
+    height: 60px !important;
+    padding: 0 40px !important;
+    box-sizing: border-box !important; 
+  }
 
-    .header-container {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 15px;
-      margin: 20px auto;
-      position: relative;
-    }
+  .navbar-nav { margin: auto; }
 
-    /* Logo kiri */
-    .logo-container {
-      position: flex;
-      left: 40px;
-    }
+  .nav-link {
+    color: #fffaf3 !important;
+    font-size: 18px;
+    font-weight: 500;
+    margin: 0 20px;
+    transition: color 0.3s ease;
+    
+    /* FIX FONT & POSISI */
+    font-family: 'Playfair Display', serif !important;
+    line-height: 60px !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+  }
 
-    .logo-container img {
-      height: 60px;
-      width: auto;
-    }
+  .nav-link:hover { color: #ffd9b3 !important; }
 
-    /* Navbar oval */
+  .auth-links {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    height: 100%;
+  }
+
+  .auth-links a {
+    color: #fffaf3;
+    text-decoration: none;
+    font-size: 18px;
+    transition: color 0.3s ease;
+    font-family: 'Playfair Display', serif !important;
+    line-height: 60px !important; 
+  }
+
+  .auth-links a:hover { color: #ffd9b3; }
+
+  .divider { color: #fffaf3; }
+
+  @media (max-width: 992px) {
     .navbar-custom {
-      background-color: #AE4C02;
-      border-radius: 50px;
-      padding: 10px 40px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      min-width: 900px;
+      min-width: auto;
+      width: 90%;
+      height: auto !important;
+      padding: 10px 20px !important;
+      flex-direction: column;
     }
+    .nav-link { line-height: normal !important; padding: 10px 0 !important; }
+  }
+</style>
 
-    /* Menu tengah */
-    .navbar-nav {
-      margin: auto;
-    }
+<header class="header-container">
+  <div class="logo-container">
+    <img src="assets/NEW LOGO RQQ.png" alt="Rumah Que Que">
+  </div>
 
-    .nav-link {
-      color: #fffaf3 !important;
-      font-size: 18px;
-      font-weight: 500;
-      margin: 0 20px;
-      transition: color 0.3s ease;
-    }
+  <nav class="navbar navbar-expand-lg navbar-custom">
+    <div class="container-fluid p-0">
+      <ul class="navbar-nav d-flex flex-row justify-content-center flex-grow-1">
+        <li class="nav-item"><a class="nav-link" href="home.php">Beranda</a></li>
+        <li class="nav-item"><a class="nav-link" href="katalog.php">Katalog</a></li>
+        <li class="nav-item"><a class="nav-link" href="berita.php">Berita</a></li>
+        <li class="nav-item"><a class="nav-link" href="tentang.php">Tentang Kami</a></li>
+      </ul>
 
-    .nav-link:hover {
-      color: #ffd9b3 !important;
-    }
-
-    /* Login & Sign Up kanan */
-    .auth-links {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .auth-links a {
-      color: #fffaf3;
-      text-decoration: none;
-      font-size: 18px;
-      transition: color 0.3s ease;
-    }
-
-    .auth-links a:hover {
-      color: #ffd9b3;
-    }
-
-    .divider {
-      color: #fffaf3;
-    }
-  </style>
-</head>
-<body>
-
-  <header class="header-container">
-    <!-- Logo di kiri luar -->
-    <div class="logo-container">
-      <img src="NEW LOGO RQQ.png" alt="Rumah Que Que">
-    </div>
-
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-custom">
-      <div class="container-fluid">
-        <!-- Menu Tengah -->
-        <ul class="navbar-nav d-flex flex-row justify-content-center flex-grow-1">
-          <li class="nav-item"><a class="nav-link" href="index.php">Beranda</a></li>
-          <li class="nav-item"><a class="nav-link" href="katalog.php">Katalog</a></li>
-          <li class="nav-item"><a class="nav-link" href="berita.php">Berita</a></li>
-          <li class="nav-item"><a class="nav-link" href="tentang.php">Tentang Kami</a></li>
-        </ul>
-
-        <!-- Login dan Sign Up -->
-        <div class="auth-links">
-          <a href="login.php">Login</a>
-          <span class="divider">|</span>
-          <a href="signup.php">Sign Up</a>
-        </div>
+      <div class="auth-links">
+        <a href="login.php">Login</a>
+        <span class="divider">|</span>
+        <a href="signup.php">Sign Up</a>
       </div>
-    </nav>
-  </header>
-
-</body>
-</html>
+    </div>
+  </nav>
+</header>

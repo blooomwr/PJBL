@@ -1,12 +1,10 @@
 <?php 
-include 'backend_admin/conn.php'; 
+// Ganti include lama dengan Class Produk
+require_once 'backend_admin/Produk.php';
 
-// ================== PENJAGA KEAMANAN ==================
-if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
-    header("Location: login.php");
-    exit();
-}
-// ======================================================
+// Inisialisasi Object (Otomatis cek login di constructor)
+$produkObj = new Produk();
+$produkObj->checkAuth();
 ?>
 
 <!DOCTYPE html>
@@ -68,10 +66,20 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
                             <label class="form-label">Foto Produk (bisa lebih dari 1)</label>
                             <input type="file" name="gambar[]" class="form-control" accept="image/*" multiple required>
                         </div>
+                        
                         <div class="mb-3">
                             <label class="form-label">Nama Produk</label>
                             <input type="text" name="nama" class="form-control" required>
                         </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Kode Review (Opsional)</label>
+                            <input type="text" name="kode_review" class="form-control" 
+                                   placeholder="Isi manual (8 karakter) atau biarkan kosong untuk auto-generate" 
+                                   maxlength="8">
+                            <small class="text-muted">Contoh: PROMO001. Jika kosong, sistem akan membuatnya otomatis.</small>
+                        </div>
+
                         <div class="mb-3">
                             <label class="form-label">Harga</label>
                             <input type="number" name="harga" class="form-control" required>
@@ -132,11 +140,17 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
             </thead>
             <tbody>
             <?php
-            $query = mysqli_query($conn, "SELECT * FROM produk ORDER BY id_produk DESC");
-            while ($row = mysqli_fetch_assoc($query)) {
+            // Ambil data menggunakan Method Class Produk
+            $query = "SELECT * FROM produk ORDER BY id_produk DESC";
+            $result = $produkObj->query($query);
+
+            while ($row = $result->fetch_assoc()) {
                 $id = $row['id_produk'];
-                $gbr = mysqli_query($conn, "SELECT nama_file FROM produk_gambar WHERE id_produk='$id' LIMIT 1");
-                $gambar = mysqli_fetch_assoc($gbr);
+                // Ambil 1 gambar
+                $gbrQuery = "SELECT nama_file FROM produk_gambar WHERE id_produk='$id' LIMIT 1";
+                $gbrResult = $produkObj->query($gbrQuery);
+                $gambar = $gbrResult->fetch_assoc();
+                
                 $imgPath = $gambar ? 'gambar_produk/'.$gambar['nama_file'] : 'no-image.png';
             ?>
             <tr>
@@ -148,7 +162,10 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
                         <img src="<?= $imgPath; ?>" class="product-img" alt="gambar">
                         <div>
                             <div class="product-title"><?= htmlspecialchars($row['nama']); ?></div>
-                            <div class="product-date">ID: <?= $row['id_produk']; ?></div>
+                            <div class="product-date">
+                                ID: <?= $row['id_produk']; ?> | 
+                                <span style="color:#ae4c02; font-weight:bold;">Kode: <?= htmlspecialchars($row['kode_review']); ?></span>
+                            </div>
                         </div>
                     </div>
                 </td>
@@ -170,7 +187,9 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
             </tbody>
         </table>
     </div>
-</div> <form id="deleteForm" action="backend_admin/produk-delete.php" method="POST">
+</div> 
+
+<form id="deleteForm" action="backend_admin/produk-delete.php" method="POST">
     <input type="hidden" name="ids" id="delete_ids">
 </form>
 
@@ -182,17 +201,11 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
 <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
 <script>
 $(document).ready(function() {
-    // ... (Script Anda sudah benar) ...
     let table = $('#produkTable').DataTable({
         "lengthMenu": [5, 10, 25, 50],
         "ordering": false,
-        "columnDefs": [
-            { "orderable": false, "targets": "_all" }
-        ],
-        "language": {
-            "search": "",
-            "searchPlaceholder": "Cari"
-        },
+        "columnDefs": [ { "orderable": false, "targets": "_all" } ],
+        "language": { "search": "", "searchPlaceholder": "Cari" },
         initComplete: function () {
             setTimeout(function () {
                 let wrapper = $('#produkTable').parents('.dataTables_wrapper');
@@ -201,14 +214,14 @@ $(document).ready(function() {
                 if (lengthBox.length) $('.top-left').empty().append(lengthBox);
                 if (searchBox.length) $('.top-right').empty().append(searchBox);
 
-                // CSS ini mungkin tidak perlu lagi jika sdh di dash.css
                 lengthBox.css({"display": "flex", "align-items": "center", "margin": "0"});
                 searchBox.css({"display": "flex", "align-items": "center", "margin": "0"});
             }, 5);
         }
     });
 
-    // FILTER KATEGORI
+    $('#filterKategori').on('change', function () { table.draw(); });
+
     $.fn.dataTable.ext.search.push(function(settings, data, dataIndex) {
         let selected = $('#filterKategori').val().toLowerCase();
         let kategori = (data[2] || "").toLowerCase();
@@ -216,16 +229,8 @@ $(document).ready(function() {
         return kategori === selected;
     });
 
-    $('#filterKategori').on('change', function () {
-        table.draw();
-    });
+    $("#select-all").click(function() { $(".cb-product").prop('checked', this.checked); });
 
-    // SELECT ALL
-    $("#select-all").click(function() {
-        $(".cb-product").prop('checked', this.checked);
-    });
-
-    // LOAD EDIT MODAL
     $('#modalEdit').on('show.bs.modal', function(event) {
         let id = $(event.relatedTarget).data('id');
         $('#editContent').html('<div class="p-5 text-center text-muted"><div class="spinner-border"></div><p class="mt-3">Memuat data...</p></div>');
@@ -234,7 +239,6 @@ $(document).ready(function() {
         });
     });
 
-    // DELETE MULTIPLE
     $("#btnDelete").click(function() {
         let selected = [];
         $(".cb-product:checked").each(function() { selected.push($(this).val()); });
@@ -245,10 +249,8 @@ $(document).ready(function() {
         }
     });
     
-    // AJAX HAPUS GAMBAR
     $(document).on('click', '.btn-hapus-gambar', function() {
         if (!confirm('Yakin ingin menghapus gambar ini?')) return;
-        
         let btn = $(this);
         let id_gambar = btn.data('id');
         let container = btn.closest('.img-container'); 
@@ -262,10 +264,8 @@ $(document).ready(function() {
         }, 'json');
     });
 
-    // AJAX SIMPAN PERUBAHAN
     $(document).on('submit', '#form-edit-produk', function(e) {
         e.preventDefault(); 
-
         let formData = new FormData(this);
         let submitBtn = $(this).find('.btn-simpan-custom');
         submitBtn.prop('disabled', true).text('Menyimpan...');
@@ -288,14 +288,12 @@ $(document).ready(function() {
                 }
             },
             error: function(jqXHR, textStatus, errorThrown) {
-                alert('Terjadi kesalahan. Gagal terhubung ke server. ' + textStatus);
-                console.error("AJAX Error:", textStatus, errorThrown, jqXHR.responseText);
+                alert('Terjadi kesalahan: ' + textStatus);
                 submitBtn.prop('disabled', false).text('Simpan Perubahan');
             }
         });
     });
 });
 </script>
-
 </body>
 </html>

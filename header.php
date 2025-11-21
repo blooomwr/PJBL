@@ -1,130 +1,118 @@
-<!DOCTYPE html>
-<html lang="id">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500&display=swap" rel="stylesheet">
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Rumah Que-Que</title>
+<style>
+  /* === STYLE HEADER === */
+  .header-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    margin: 20px auto;
+    position: relative;
+    z-index: 1000;
+  }
 
-  <!-- Bootstrap CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  .logo-container {
+    position: flex;
+    left: 40px;
+  }
 
-  <!-- Bootstrap Icons -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+  .logo-container img {
+    height: 60px;
+    width: auto;
+  }
 
-  <!-- Google Font -->
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500&display=swap" rel="stylesheet">
+  /* === NAVBAR === */
+  .navbar-custom {
+    background-color: #AE4C02;
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-width: 900px;
+    
+    /* FIX UKURAN */
+    height: 60px !important;
+    padding: 0 40px !important;
+    box-sizing: border-box !important; 
+  }
 
-  <style>
-    body {
-      font-family: 'Playfair Display', serif;
-      background: linear-gradient(to bottom, #fef9ef, #fffaf3);
-    }
+  .navbar-nav { margin: auto; }
 
-    /* Container utama */
-    .header-container {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 15px;
-      margin: 20px auto;
-      position: relative;
-    }
+  .nav-link {
+    color: #fffaf3 !important;
+    font-size: 18px;
+    font-weight: 500;
+    margin: 0 20px;
+    transition: color 0.3s ease;
+    
+    /* FIX FONT & POSISI */
+    font-family: 'Playfair Display', serif !important;
+    line-height: 60px !important; 
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+  }
 
-    /* Logo di kiri luar */
-    .logo-container {
-      position: flex;
-      left: 40px;
-    }
+  .nav-link:hover { color: #ffe6c7 !important; }
 
-    .logo-container img {
-      height: 60px;
-      width: auto;
-    }
+  .auth-links {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    height: 100%;
+  }
 
-    /* Navbar oval */
+  .auth-links a, .user-icon {
+    color: #fffaf3;
+    text-decoration: none;
+    font-size: 18px;
+    transition: color 0.3s ease;
+    font-family: 'Playfair Display', serif !important;
+    line-height: normal;
+    display: flex;
+    align-items: center;
+  }
+
+  .auth-links a:hover { color: #ffe6c7; }
+  
+  .divider { color: #fffaf3; }
+
+  @media (max-width: 992px) {
     .navbar-custom {
-      background-color: #AE4C02;
-      border-radius: 50px;
-      padding: 10px 40px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      min-width: 900px;
+      min-width: auto;
+      width: 90%;
+      height: auto !important;
+      padding: 10px 20px !important;
+      flex-direction: column;
     }
+    .nav-link { line-height: normal !important; padding: 10px 0 !important; }
+  }
+</style>
 
-    /* Menu di tengah */
-    .navbar-nav {
-      margin: auto;
-    }
+<header class="header-container">
+  <div class="logo-container">
+    <img src="assets/NEW LOGO RQQ.png" alt="Rumah Que Que">
+  </div>
 
-    .nav-link {
-      color: #fffaf3 !important;
-      font-size: 18px;
-      font-weight: 500;
-      margin: 0 20px;
-      transition: color 0.3s ease;
-    }
+  <nav class="navbar navbar-expand-lg navbar-custom">
+    <div class="container-fluid p-0">
+      <ul class="navbar-nav d-flex flex-row justify-content-center flex-grow-1">
+        <li class="nav-item"><a class="nav-link" href="home.php">Beranda</a></li>
+        <li class="nav-item"><a class="nav-link" href="katalog.php">Katalog</a></li>
+        <li class="nav-item"><a class="nav-link" href="berita.php">Berita</a></li>
+        <li class="nav-item"><a class="nav-link" href="tentang.php">Tentang Kami</a></li>
+      </ul>
 
-    .nav-link:hover {
-      color: #ffe6c7 !important;
-    }
-
-    /* Ikon profil di kanan dalam navbar */
-    .user-icon {
-      color: #fffaf3;
-      font-size: 26px;
-      text-decoration: none;
-      transition: color 0.3s ease;
-    }
-
-    .user-icon:hover {
-      color: #ffe6c7;
-    }
-
-    @media (max-width: 992px) {
-      .navbar-custom {
-        flex-direction: column;
-        padding: 15px 20px;
-      }
-
-      .navbar-nav {
-        margin: 10px 0;
-      }
-    }
-  </style>
-</head>
-
-<body>
-
-  <header class="header-container">
-    <!-- Logo di kiri luar -->
-    <div class="logo-container">
-      <img src="NEW LOGO RQQ.png" alt="Rumah Que Que">
-    </div>
-
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-custom">
-      <div class="container-fluid">
-        <ul class="navbar-nav d-flex flex-row justify-content-center flex-grow-1">
-          <li class="nav-item"><a class="nav-link" href="HomeUtama.php">Beranda</a></li>
-          <li class="nav-item"><a class="nav-link" href="katalog.php">Katalog</a></li>
-          <li class="nav-item"><a class="nav-link" href="berita.php">Berita</a></li>
-          <li class="nav-item"><a class="nav-link" href="Tentang Kami.php">Tentang Kami</a></li>
-        </ul>
-
-        <div class="auth-links">
-          <a href="#" class="nav-link" style="padding: 0; margin: 0;">
-            <i class="bi bi-person-circle user-icon me-2"></i>
-            <?= htmlspecialchars($_SESSION['nama_user']); ?>
-          </a>
-          <span class="divider">|</span>
-          <a href="logout.php" class="nav-link">Logout</a>
-        </div>
+      <div class="auth-links">
+        <a href="#" style="margin-right: 10px;">
+          <i class="bi bi-person-circle user-icon me-2"></i>
+          <?= isset($_SESSION['nama_user']) ? htmlspecialchars($_SESSION['nama_user']) : 'User'; ?>
+        </a>
+        <span class="divider">|</span>
+        <a href="logout.php" style="margin-left: 10px;">Logout</a>
       </div>
-    </nav>
-  </header>
-
-</body>
-
-</html>
+    </div>
+  </nav>
+</header>

@@ -1,5 +1,7 @@
 <?php 
-include 'backend_admin/conn.php'; 
+require_once 'backend_admin/Berita.php'; 
+$beritaObj = new Berita();
+$beritaObj->requireAdmin();
 
 // ================== PENJAGA KEAMANAN ==================
 if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
@@ -172,8 +174,9 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
             </thead>
             <tbody>
             <?php
-            $query = mysqli_query($conn, "SELECT * FROM berita ORDER BY terakhir_edit DESC");
-            while ($row = mysqli_fetch_assoc($query)) {
+            $query = "SELECT * FROM berita ORDER BY terakhir_edit DESC";
+            $result = $beritaObj->query($query);
+            while ($row = $result->fetch_assoc()) {
                 $imgPath = $row['foto'] ? 'gambar_berita/'.$row['foto'] : 'no-image.png';
             ?>
             <tr>

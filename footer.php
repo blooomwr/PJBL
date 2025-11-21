@@ -119,13 +119,13 @@
  <footer class="footer">
   <div class="footer-container">
     <div class="footer-logo">
-      <img src="NEW LOGO RQQ.png" alt="Rumah Que Que">
+      <img src="assets/NEW LOGO RQQ.png" alt="Rumah Que Que">
     </div>
 
     <div class="footer-links">
-      <a href="#">Beranda</a>
-      <a href="#">Katalog Produk</a>
-      <a href="#">Tentang Kami</a>
+      <a href="home.php">Beranda</a>
+      <a href="katalog.php">Katalog Produk</a>
+      <a href="tentang.php">Tentang Kami</a>
     </div>
 
     <div class="footer-contact">

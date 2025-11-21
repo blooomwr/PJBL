@@ -161,7 +161,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <a href="javascript:history.back()" class="back-link">
             <i class="bi bi-arrow-left"></i>
         </a>
-        <img src="NEW LOGO RQQ.png" alt="Rumah Que Que" class="logo-top">
+        <img src="assets/NEW LOGO RQQ.png" alt="Rumah Que Que" class="logo-top">
 
         <h2>Sign Up</h2>
 

@@ -1,17 +1,15 @@
 <?php
-include 'conn.php'; 
+require_once 'Produk.php';
 
-// ================== PENJAGA KEAMANAN ==================
-if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
-    die("Akses ditolak. Silakan login sebagai admin.");
-}
-// ======================================================
-
+// Inisialisasi Object
+$produkObj = new Produk();
+$produkObj->checkAuth();
 $id = $_GET['id'];
-$query = mysqli_query($conn, "SELECT * FROM produk WHERE id_produk='$id'");
-$produk = mysqli_fetch_assoc($query);
-?>
 
+// Ambil Data Produk & Gambar
+$produk = $produkObj->getById($id);
+$gambarList = $produkObj->getImages($id);
+?>
 <div class="modal-header custom-header">
   <a href="#" class="modal-back-btn" data-bs-dismiss="modal" aria-label="Close">
       <i class="bi bi-arrow-left"></i>
@@ -27,9 +25,8 @@ $produk = mysqli_fetch_assoc($query);
     <h6>Gambar Produk Saat Ini</h6>
     <div class="d-flex flex-wrap gap-3 mt-2 mb-3">
       <?php
-      $gambar_q = mysqli_query($conn, "SELECT * FROM produk_gambar WHERE id_produk='$id'");
-      if (mysqli_num_rows($gambar_q) > 0) {
-        while ($g = mysqli_fetch_assoc($gambar_q)) {
+      if (!empty($gambarList)) {
+        foreach ($gambarList as $g) {
           echo '
           <div class="position-relative img-container">
             <img src="gambar_produk/'.$g['nama_file'].'" class="rounded" width="100" height="100" style="object-fit:cover;">
@@ -57,6 +54,13 @@ $produk = mysqli_fetch_assoc($query);
     <div class="mb-3">
       <label class="form-label">Nama Produk</label>
       <input type="text" name="nama" class="form-control" value="<?php echo htmlspecialchars($produk['nama']); ?>" required>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Kode Review</label>
+      <input type="text" name="kode_review" class="form-control" 
+             value="<?php echo htmlspecialchars($produk['kode_review']); ?>" 
+             maxlength="8" style="text-transform: uppercase; font-weight: bold; color: #AE4C02;" required>
     </div>
 
     <div class="mb-3">

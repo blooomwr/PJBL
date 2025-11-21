@@ -1,49 +1,20 @@
 <?php
-include 'conn.php';
+// Buffer output untuk mencegah teks "bocor"
+ob_start();
 
-// Atur header sebagai JSON
+require_once 'Promo.php';
+
+// Bersihkan semua output sebelum mengirim JSON
+ob_clean();
+
 header('Content-Type: application/json');
 
-// ================== PENJAGA KEAMANAN ==================
-if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
-    echo json_encode(['status' => 'error', 'message' => 'Akses ditolak. Silakan login ulang.']);
-    exit();
+$promo = new Promo();
+$promo->requireAdmin();
+if ($promo->update($_POST, $_FILES)) {
+    echo json_encode(['status' => 'success']);
+} else {
+    echo json_encode(['status' => 'error', 'message' => 'Gagal update database']);
 }
-// ======================================================
-
-$id = $_POST['id_promo'];
-$nama = $_POST['nama'];
-$gambar_lama = $_POST['gambar_lama'];
-
-// 🔹 Logika Foto
-$nama_file_db = $gambar_lama; 
-$folder = "../gambar_promo/"; // Path server-side perlu ../
-if (!is_dir($folder)) mkdir($folder, 0777, true);
-
-if (isset($_FILES['gambar']) && $_FILES['gambar']['error'] == 0) {
-    if (!empty($gambar_lama) && file_exists($folder . $gambar_lama)) {
-        unlink($folder . $gambar_lama);
-    }
-    $nama_file_db = uniqid() . "_" . $_FILES['gambar']['name'];
-    move_uploaded_file($_FILES['gambar']['tmp_name'], $folder . $nama_file_db);
-}
-
-// 🔹 Update data promo
-$query = "UPDATE promo SET nama='$nama', gambar='$nama_file_db' WHERE id_promo='$id'";
-mysqli_query($conn, $query);
-
-// ================== LOGGING HISTORI ==================
-$id_admin_log = $_SESSION['id_user'];
-$nama_admin_log = $_SESSION['nama_user'];
-$aksi_log = "Mengubah promo";
-$detail_log = "$nama (ID: $id)";
-
-$log_sql = "INSERT INTO audit_log (id_admin, nama_admin, aksi, detail) 
-            VALUES ('$id_admin_log', '$nama_admin_log', '$aksi_log', '$detail_log')";
-mysqli_query($conn, $log_sql);
-// ================== AKHIR LOGGING ==================
-
-// Kirim status sukses sebagai JSON
-echo json_encode(['status' => 'success']);
 exit;
 ?>

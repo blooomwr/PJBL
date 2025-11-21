@@ -15,7 +15,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $admin = $result_admin->fetch_assoc();
 
         // Cek password Admin (menggunakan perbandingan langsung karena di DB masih '12345')
-        if ($password === $admin['password']) {
+        if (password_verify($password, $admin['password'])) {
             $_SESSION['role'] = 'admin';
             $_SESSION['id_user'] = $admin['id_admin'];
             $_SESSION['nama_user'] = $admin['nama_admin'];
@@ -37,7 +37,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $_SESSION['id_user'] = $pembeli['id_pembeli'];
             $_SESSION['nama_user'] = $pembeli['nama_pembeli'];
 
-            header("Location: HomeUtama.php");
+            header("Location: Home.php");
             exit();
         }
     }
@@ -151,7 +151,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <a href="javascript:history.back()" class="back-link">
             <i class="bi bi-arrow-left"></i>
         </a>
-        <img src="NEW LOGO RQQ.png" alt="Rumah Que Que" class="logo-top">
+        <img src="assets/NEW LOGO RQQ.png" alt="Rumah Que Que" class="logo-top">
 
         <h2>Login</h2>
 

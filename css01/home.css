@@ -86,10 +86,12 @@ text-decoration: none;
 /* Produk */
 
 .judul-section {
-font-size: 50px;
-padding-top: 20px;
-margin: 20px auto;
-margin-bottom: 50px !important;
+    font-size: 50px;
+    padding-top: 20px;
+    margin: 20px auto;            /* Margin auto kiri-kanan wajib untuk center */
+    margin-bottom: 50px !important;
+    text-align: center;           /* Pastikan text rata tengah */
+    width: 100%;                  /* Pastikan lebar full agar center bekerja */
 }
 
 .produk-terlaris-box-oren {

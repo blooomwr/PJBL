@@ -1,0 +1,240 @@
+/* css01/katalog.css */
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: 'Inria Serif', serif;
+    background: linear-gradient(to bottom, #fef9ef, #fffaf3);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+main { flex: 1; padding: 40px 20px; }
+
+.catalog-header { text-align: center; margin: 0 0 40px; position: relative; }
+
+.catalog-title {
+    font-size: clamp(2.5rem, 5vw, 3.5rem);
+    font-weight: 700;
+    color: #5c3317;
+    margin-bottom: 0;
+    font-family: 'Inria Serif', serif;
+}
+
+/* Container Controls */
+.catalog-controls-form {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 40px;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.filter-section { display: flex; gap: 15px; flex-wrap: wrap; }
+
+/* Custom Select Style */
+.custom-select {
+    background-color: #f5e6d3;
+    border: none;
+    border-radius: 20px;
+    padding: 8px 35px 8px 20px; 
+    font-size: 0.9rem;
+    color: #5c3317;
+    cursor: pointer;
+    font-family: 'Inria Serif', serif;
+    font-weight: 500;
+    appearance: none; 
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%235c3317%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px top 50%;
+    background-size: 10px auto;
+    transition: background-color 0.3s;
+}
+
+.custom-select:hover { background-color: #e8d4bb; }
+.custom-select:focus { outline: 2px solid #ff8c42; }
+
+.right-section { display: flex; gap: 15px; align-items: center; flex-wrap: wrap; }
+
+.wishlist-btn {
+    background-color: #fff;
+    border: 2px solid #ff8c42;
+    border-radius: 25px;
+    padding: 8px 16px;
+    font-size: 0.9rem;
+    color: #ff8c42;
+    cursor: pointer;
+    font-family: 'Inria Serif', serif;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    white-space: nowrap;
+    font-weight: 500;
+    text-decoration: none;
+}
+
+.wishlist-btn:hover { background-color: #ff8c42; color: #fff; }
+
+.search-box {
+    display: flex;
+    align-items: center;
+    background-color: #fff;
+    border-radius: 20px;
+    padding: 8px 16px;
+    border: 1px solid #ddd;
+    width: 220px;
+}
+
+.search-box input {
+    border: none;
+    outline: none;
+    font-family: 'Inria Serif', serif;
+    font-size: 0.9rem;
+    width: 100%;
+    padding: 0 8px;
+}
+
+.search-box button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #ff8c42;
+}
+
+.products-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 30px 20px;
+    max-width: 1200px;
+    margin: 0 auto 40px;
+    padding: 0;
+}
+
+.product-card {
+    background-color: transparent;
+    text-align: center;
+    position: relative;
+    transition: transform 0.3s;
+}
+
+.product-card:hover { transform: translateY(-5px); }
+
+.product-image-container {
+    position: relative;
+    background-color: #fff;
+    border-radius: 15px;
+    padding: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.product-image {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1;
+    object-fit: cover;
+    border-radius: 10px;
+    display: block;
+}
+
+.best-seller-badge {
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    z-index: 10;
+}
+
+.best-seller-img {
+    width: 70px;
+    height: 70px;
+    object-fit: contain;
+    filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.2));
+}
+
+.product-info {
+    background-color: #fff;
+    border-radius: 15px;
+    padding: 10px 15px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+
+.product-name {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 4px;
+    line-height: 1.3;
+    font-family: 'Inria Serif', serif;
+}
+
+.product-price {
+    font-size: 0.85rem;
+    color: #666;
+    font-weight: 400;
+    font-family: 'Inria Serif', serif;
+    margin-bottom: 0;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin: 50px 0 60px;
+    flex-wrap: wrap;
+}
+
+.page-link {
+    width: 40px;
+    height: 40px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: transparent;
+    color: #999;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    font-size: 1rem;
+    border: 1px solid transparent;
+}
+
+.page-link:hover { color: #5c3317; background-color: #f5f5f5; }
+
+.page-link.active {
+    background-color: transparent;
+    color: #5c3317;
+    font-weight: 700;
+    border-bottom: 2px solid #5c3317;
+}
+
+/* Responsive Breakpoints */
+@media (max-width: 1200px) {
+    .products-grid { grid-template-columns: repeat(3, 1fr); gap: 25px 15px; }
+}
+@media (max-width: 992px) {
+    .catalog-controls-form { flex-direction: column; align-items: stretch; }
+    .right-section { justify-content: space-between; width: 100%; }
+    .search-box { width: 100%; max-width: none; flex:1; }
+    .products-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; }
+}
+@media (max-width: 768px) {
+    .catalog-title { font-size: 2.5rem; }
+    .products-grid { gap: 15px; }
+}
+@media (max-width: 480px) {
+    .catalog-title { font-size: 2rem; }
+    .right-section { flex-direction: column; align-items: stretch; }
+    .products-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+    .product-card { padding: 5px; }
+}

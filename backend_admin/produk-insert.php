@@ -1,69 +1,14 @@
 <?php
-include 'conn.php';
-
-// ================== PENJAGA KEAMANAN ==================
-if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
-    header("Location: ../login.php");
-    exit();
-}
-// ======================================================
+require_once 'Produk.php';
 
 if (isset($_POST['tambah'])) {
-
-    // Ambil semua data dari form
-    $nama = $_POST['nama'];
-    $deskripsi = $_POST['deskripsi'];
-    $harga = $_POST['harga'];
-    $stok = $_POST['stok'];
-    $kategori = $_POST['kategori'];
-    $varian = $_POST['varian'];
-    $is_bestseller = isset($_POST['is_bestseller']) ? 'Yes' : 'No';
-
-    // 🔹 Buat ID Produk baru
-    $q_id = mysqli_query($conn, "SELECT MAX(id_produk) AS max_id FROM produk");
-    $d_id = mysqli_fetch_array($q_id);
-    $no = (int) substr($d_id['max_id'], 1, 2);
-    $no++;
-    $char = "P";
-    $id = $char . sprintf("%02s", $no);
-
-
-    // 🔹 Insert produk ke tabel utama
-    $insert_produk = "INSERT INTO produk (id_produk, nama, deskripsi, harga, varian, stok, kategori, is_bestseller)
-                      VALUES ('$id', '$nama', '$deskripsi', '$harga', '$varian', '$stok', '$kategori', '$is_bestseller')";
-    mysqli_query($conn, $insert_produk);
-
-    // ================== LOGGING HISTORI ==================
-    $id_admin_log = $_SESSION['id_user'];
-    $nama_admin_log = $_SESSION['nama_user'];
-    $aksi_log = "Menambah produk baru";
-    $detail_log = "$nama (ID: $id)";
-    
-    $log_sql = "INSERT INTO audit_log (id_admin, nama_admin, aksi, detail) 
-                VALUES ('$id_admin_log', '$nama_admin_log', '$aksi_log', '$detail_log')";
-    mysqli_query($conn, $log_sql);
-    // ================== AKHIR LOGGING ==================
-
-    // 🔹 Pastikan folder penyimpanan ada
-    $folder = "../gambar_produk/";
-    if (!is_dir($folder)) mkdir($folder, 0777, true);
-
-    // 🔹 Upload banyak gambar
-    if (isset($_FILES['gambar']) && count($_FILES['gambar']['name']) > 0) {
-        foreach ($_FILES['gambar']['tmp_name'] as $key => $tmp) {
-            if ($_FILES['gambar']['error'][$key] == 0) {
-                $nama_file = uniqid() . "_" . $_FILES['gambar']['name'][$key];
-                move_uploaded_file($tmp, $folder . $nama_file);
-
-                $insert_gambar = "INSERT INTO produk_gambar (id_produk, nama_file) 
-                                  VALUES ('$id', '$nama_file')";
-                mysqli_query($conn, $insert_gambar);
-            }
-        }
+    $produk = new Produk();
+    $produk->checkAuth();
+    if ($produk->create($_POST, $_FILES)) {
+        header("Location: ../produk-admin.php?status=success");
+    } else {
+        header("Location: ../produk-admin.php?status=error");
     }
-
-    // 🔹 Kembali ke halaman produk
-    header("Location: ../produk-admin.php?status=success");
     exit;
 }
 ?>
