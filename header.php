@@ -1,9 +1,11 @@
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inria+Serif:wght@400;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 <style>
-  /* === STYLE HEADER === */
+  /* === STYLE DASAR (GLOBAL) === */
   .header-container {
     display: flex;
     align-items: center;
@@ -12,11 +14,8 @@
     margin: 20px auto;
     position: relative;
     z-index: 1000;
-  }
-
-  .logo-container {
-    position: flex;
-    left: 40px;
+    width: 100%;
+    padding: 0 15px;
   }
 
   .logo-container img {
@@ -24,70 +23,108 @@
     width: auto;
   }
 
-  /* === NAVBAR === */
+  /* === NAVBAR CUSTOM === */
   .navbar-custom {
     background-color: #AE4C02;
     border-radius: 50px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    min-width: 900px;
-    
-    /* FIX UKURAN */
-    height: 60px !important;
-    padding: 0 40px !important;
-    box-sizing: border-box !important; 
+    /* Padding default (mobile/tablet) */
+    padding: 10px 20px !important; 
+    min-height: 60px;
+    width: 100%; /* Default full width di mobile */
   }
 
-  .navbar-nav { margin: auto; }
-
+  /* Link Navigasi */
   .nav-link {
     color: #fffaf3 !important;
     font-size: 18px;
     font-weight: 500;
-    margin: 0 20px;
+    font-family: 'Inria Serif', serif !important;
     transition: color 0.3s ease;
-    
-    /* FIX FONT & POSISI */
-    font-family: 'Playfair Display', serif !important;
-    line-height: 60px !important; 
-    padding-top: 0 !important;
-    padding-bottom: 0 !important;
+    /* Margin default kecil agar aman di tablet */
+    margin: 0 5px; 
   }
 
   .nav-link:hover { color: #ffe6c7 !important; }
 
+  /* User/Auth Section */
   .auth-links {
     display: flex;
     align-items: center;
-    gap: 10px;
-    height: 100%;
+    gap: 10px; /* Jarak default */
+    color: #fffaf3;
+    font-family: 'Inria Serif', serif !important;
   }
 
-  .auth-links a, .user-icon {
+  .auth-links a {
     color: #fffaf3;
     text-decoration: none;
     font-size: 18px;
     transition: color 0.3s ease;
-    font-family: 'Playfair Display', serif !important;
-    line-height: normal;
-    display: flex;
-    align-items: center;
+  }
+  
+  .auth-links a:hover { color: #ffe6c7; }
+  .divider { color: #fffaf3; margin: 0 5px; }
+
+  .navbar-toggler { border: none; padding: 0; }
+  .navbar-toggler:focus { box-shadow: none; }
+  .navbar-toggler-icon {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 250, 243, 1%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
   }
 
-  .auth-links a:hover { color: #ffe6c7; }
-  
-  .divider { color: #fffaf3; }
-
-  @media (max-width: 992px) {
-    .navbar-custom {
-      min-width: auto;
-      width: 90%;
-      height: auto !important;
-      padding: 10px 20px !important;
-      flex-direction: column;
+  /* === KHUSUS DESKTOP (Layar > 992px) === */
+  @media (min-width: 992px) {
+    .header-container {
+      width: auto; /* Kembali ke auto agar di tengah */
+      padding: 0;
     }
-    .nav-link { line-height: normal !important; padding: 10px 0 !important; }
+
+    .navbar-custom {
+      width: auto; /* Tidak full width */
+      min-width: 900px; /* Kembalikan lebar minimum agar terlihat gagah */
+      padding: 0 50px !important; /* Padding dalam navbar lebih lega */
+      flex-direction: row;
+    }
+
+    .navbar-nav {
+      margin: auto;
+      gap: 30px; /* JARAK ANTAR MENU (Beranda, Katalog, dll) */
+    }
+
+    .nav-link {
+      margin: 0 15px !important; /* Tambahan margin kiri-kanan tiap menu */
+      font-size: 19px; /* Opsional: Font sedikit lebih besar di desktop */
+    }
+
+    .auth-links {
+      gap: 20px; /* Jarak antar elemen login/logout lebih lega */
+      margin-left: 20px;
+    }
+  }
+
+  /* === KHUSUS MOBILE (Layar < 992px) === */
+  @media (max-width: 991px) {
+    .header-container {
+      flex-direction: column;
+      gap: 10px;
+    }
+    
+    .navbar-collapse {
+      margin-top: 15px;
+      text-align: center;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      padding-top: 10px;
+    }
+
+    .nav-link {
+      padding: 10px 0; /* Memberi jarak vertikal antar menu saat di-expand */
+      margin: 0; /* Reset margin samping di mobile */
+    }
+
+    .auth-links {
+      justify-content: center;
+      margin-top: 15px;
+      padding-bottom: 10px;
+    }
   }
 </style>
 
@@ -98,21 +135,31 @@
 
   <nav class="navbar navbar-expand-lg navbar-custom">
     <div class="container-fluid p-0">
-      <ul class="navbar-nav d-flex flex-row justify-content-center flex-grow-1">
-        <li class="nav-item"><a class="nav-link" href="home.php">Beranda</a></li>
-        <li class="nav-item"><a class="nav-link" href="katalog.php">Katalog</a></li>
-        <li class="nav-item"><a class="nav-link" href="berita.php">Berita</a></li>
-        <li class="nav-item"><a class="nav-link" href="tentang.php">Tentang Kami</a></li>
-      </ul>
+      
+      <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
 
-      <div class="auth-links">
-        <a href="#" style="margin-right: 10px;">
-          <i class="bi bi-person-circle user-icon me-2"></i>
-          <?= isset($_SESSION['nama_user']) ? htmlspecialchars($_SESSION['nama_user']) : 'User'; ?>
-        </a>
-        <span class="divider">|</span>
-        <a href="logout.php" style="margin-left: 10px;">Logout</a>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav mx-auto">
+          <li class="nav-item"><a class="nav-link" href="home.php">Beranda</a></li>
+          <li class="nav-item"><a class="nav-link" href="katalog.php">Katalog</a></li>
+          <li class="nav-item"><a class="nav-link" href="berita.php">Berita</a></li>
+          <li class="nav-item"><a class="nav-link" href="tentang.php">Tentang Kami</a></li>
+        </ul>
+
+        <div class="auth-links">
+          <a href="#" class="d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#profileModal">
+            <i class="bi bi-person-circle user-icon me-2"></i>
+            <?= isset($_SESSION['nama_user']) ? htmlspecialchars($_SESSION['nama_user']) : 'User'; ?>
+          </a>
+          
+          <span class="divider">|</span>
+          <a href="logout.php">Logout</a>
+        </div>
       </div>
+      
     </div>
   </nav>
 </header>
+<?php include 'backend_admin/modal-profil.php'; ?>

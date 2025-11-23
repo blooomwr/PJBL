@@ -36,7 +36,7 @@ function tgl_indo($tanggal){
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= htmlspecialchars($berita['judul']); ?> - Rumah Que-Que</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inria+Serif:wght@300;400;700&display=swap" rel="stylesheet">
     <link href="css01/detail-berita.css?v=<?= time(); ?>" rel="stylesheet">
 </head>
 <body>

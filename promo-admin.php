@@ -81,6 +81,10 @@ $promoObj->requireAdmin();
                             <label class="form-label">Nama Promo</label>
                             <input type="text" name="nama" class="form-control" required>
                         </div>
+                        <div class="mb-3">
+                            <label class="form-label">Kode Promo (Maks. 10 Karakter)</label>
+                            <input type="text" name="kode_promo" class="form-control" maxlength="10" required>
+                        </div>
 
                         <div class="mb-3">
                             <label class="form-label">Gambar Promo (Hanya 1)</label>
@@ -116,8 +120,7 @@ $promoObj->requireAdmin();
             </thead>
             <tbody>
             <?php
-            // === PERBAIKAN UTAMA ===
-            // Menggunakan Method query() dari object $promoObj
+            // === QUERY DATABASE ===
             $sql = "SELECT * FROM promo ORDER BY terakhir_edit DESC";
             $result = $promoObj->query($sql); 
 
@@ -134,6 +137,11 @@ $promoObj->requireAdmin();
                         <img src="<?= $imgPath; ?>" class="product-img" alt="gambar">
                         <div>
                             <div class="product-title"><?= htmlspecialchars($row['nama']); ?></div>
+                            
+                            <div class="small text-muted">
+                                Kode: <span style="color:#ae4c02; font-weight:bold;"><?= htmlspecialchars($row['kode_promo']); ?></span>
+                            </div>
+                            
                         </div>
                     </div>
                 </td>

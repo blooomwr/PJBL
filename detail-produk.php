@@ -48,7 +48,10 @@ $varianList = !empty($produk['varian']) ? explode(',', $produk['varian']) : [];
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= htmlspecialchars($produk['nama']); ?> - Detail Produk</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inria+Serif:wght@300;400;700&display=swap" rel="stylesheet">
+    
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
     <link href="css01/detail-produk.css?v=<?= time(); ?>" rel="stylesheet">
 </head>
@@ -130,8 +133,8 @@ $varianList = !empty($produk['varian']) ? explode(',', $produk['varian']) : [];
                     <div class="info-left-col">
                         <?php if (!empty($varianList) && $varianList[0] != ''): ?>
                             <div style="margin-bottom: 20px;">
-                                <p style="font-weight:600; margin-bottom:8px;">Pilih Varian:</p>
-                                <div style="display:flex; gap:10px;">
+                                <p style="font-weight:700; margin-bottom:8px;">Pilih Varian:</p>
+                                <div style="display:flex; gap:10px; flex-wrap:wrap;">
                                     <?php foreach ($varianList as $v): ?>
                                         <button class="variant-btn" onclick="selectVariant(this)"><?= trim($v); ?></button>
                                     <?php endforeach; ?>
@@ -140,7 +143,7 @@ $varianList = !empty($produk['varian']) ? explode(',', $produk['varian']) : [];
                         <?php endif; ?>
 
                         <div class="desc-box">
-                            <h4>Deskripsi Produk</h4>
+                            <h4 class="desc-title">Deskripsi Produk</h4>
                             <p><?= nl2br(htmlspecialchars($produk['deskripsi'])); ?></p>
                         </div>
                     </div>
@@ -148,7 +151,7 @@ $varianList = !empty($produk['varian']) ? explode(',', $produk['varian']) : [];
                     <div class="info-right-col">
                         
                         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:5px;">
-                            <span style="font-weight:600;">Jumlah:</span>
+                            <span style="font-weight:700;">Jumlah:</span>
                             <div style="display:flex; align-items:center; border:1px solid #ccc; border-radius:50px; padding:5px; background:white;">
                                 <button onclick="updateQty(-1)" style="background:none; border:none; font-size:1.2rem; cursor:pointer; color:#555; padding:0 10px;">-</button>
                                 <input type="text" id="qtyValue" value="1" readonly style="width:30px; text-align:center; border:none; font-weight:bold; font-size:1rem; outline:none;">
@@ -171,19 +174,17 @@ $varianList = !empty($produk['varian']) ? explode(',', $produk['varian']) : [];
         <div class="related-section">
             <h3 class="related-title">Produk Lainnya</h3>
             <div class="related-grid-wrapper">
-                <button class="scroll-btn left" onclick="scrollRelated(-1)"><i class="bi bi-chevron-left"></i></button>
                 
                 <div class="related-grid" id="relatedGrid">
                     <?php while ($lain = $resultLainnya->fetch_assoc()): ?>
                         <?php $imgLain = !empty($lain['gambar']) ? 'gambar_produk/' . $lain['gambar'] : 'assets/no-image.png'; ?>
                         <a href="detail-produk.php?id=<?= $lain['id_produk']; ?>" class="related-card">
                             <img src="<?= $imgLain; ?>" alt="<?= htmlspecialchars($lain['nama']); ?>">
-                            <h5 class="mt-2 mb-1" style="font-family:'Playfair Display', serif; font-weight:700;"><?= htmlspecialchars($lain['nama']); ?></h5>
+                            <h5 class="mt-2 mb-1" style="font-family:'Inria Serif', serif; font-weight:700;"><?= htmlspecialchars($lain['nama']); ?></h5>
                             <div class="text-danger fw-bold">Rp <?= number_format($lain['harga'], 0, ',', '.'); ?></div>
                         </a>
                     <?php endwhile; ?>
                 </div>
-                <button class="scroll-btn right" onclick="scrollRelated(1)"><i class="bi bi-chevron-right"></i></button>
             </div>
         </div>
 
@@ -215,10 +216,6 @@ $varianList = !empty($produk['varian']) ? explode(',', $produk['varian']) : [];
             document.getElementById('mainImage').src = element.src;
             document.querySelectorAll('.thumb-item').forEach(img => img.style.borderColor = '#ddd');
             element.style.borderColor = '#AE4C02';
-        }
-        function selectVariant(btn) {
-            document.querySelectorAll('.variant-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
         }
         function scrollRelated(dir) {
             document.getElementById('relatedGrid').scrollBy({ left: dir * 240, behavior: 'smooth' });
@@ -262,71 +259,60 @@ $varianList = !empty($produk['varian']) ? explode(',', $produk['varian']) : [];
             })
             .catch(error => { console.error('Error:', error); alert("Terjadi kesalahan koneksi."); });
         });
+
         let selectedVariant = ""; 
 
-    // Fungsi saat tombol varian diklik
-    function selectVariant(btn) {
-        // Reset semua tombol
-        document.querySelectorAll('.variant-btn').forEach(b => b.classList.remove('active'));
-        // Aktifkan tombol yang diklik
-        btn.classList.add('active');
-        // Simpan nilai text tombol ke variabel
-        selectedVariant = btn.innerText;
-    }
-
-    // --- LOGIKA TAMBAH KE WISHLIST ---
-    const btnWishlist = document.querySelector('.btn-add-wishlist');
-    
-    // Cek apakah produk ini punya varian? (Dari PHP)
-    const hasVariants = <?= (!empty($varianList) && $varianList[0] != '') ? 'true' : 'false'; ?>;
-
-    btnWishlist.addEventListener('click', function() {
-        // 1. Validasi Varian
-        if (hasVariants && selectedVariant === "") {
-            alert("Harap pilih varian rasa terlebih dahulu!");
-            return;
+        // Fungsi saat tombol varian diklik
+        function selectVariant(btn) {
+            document.querySelectorAll('.variant-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            selectedVariant = btn.innerText;
         }
 
-        // 2. Siapkan Data
-        const formData = new FormData();
-        formData.append('action', 'add');
-        formData.append('id_produk', '<?= $id_produk; ?>');
-        formData.append('qty', currentQty); // Dari variabel global counter
-        formData.append('varian', selectedVariant);
+        // --- LOGIKA TAMBAH KE WISHLIST ---
+        const btnWishlist = document.querySelector('.btn-add-wishlist');
+        const hasVariants = <?= (!empty($varianList) && $varianList[0] != '') ? 'true' : 'false'; ?>;
 
-        // 3. Kirim AJAX
-        // Ubah teks tombol biar user tau lagi loading
-        const originalText = btnWishlist.innerHTML;
-        btnWishlist.innerHTML = '<i class="bi bi-hourglass-split"></i> Menyimpan...';
-        btnWishlist.disabled = true;
-
-        fetch('backend_admin/wishlist-action.php', {
-            method: 'POST',
-            body: formData
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.status === 'success') {
-                alert(data.message); // "Berhasil masuk wishlist"
-                // Opsional: Arahkan ke halaman wishlist
-                // window.location.href = 'wishlist.php'; 
-            } else {
-                alert(data.message); // Pesan error (misal: belum login)
-                if(data.message.includes('login')) {
-                    window.location.href = 'login.php';
-                }
+        btnWishlist.addEventListener('click', function() {
+            if (hasVariants && selectedVariant === "") {
+                alert("Harap pilih varian rasa terlebih dahulu!");
+                return;
             }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert("Terjadi kesalahan koneksi.");
-        })
-        .finally(() => {
-            // Balikin tombol ke semula
-            btnWishlist.innerHTML = originalText;
-            btnWishlist.disabled = false;
+
+            const formData = new FormData();
+            formData.append('action', 'add');
+            formData.append('id_produk', '<?= $id_produk; ?>');
+            formData.append('qty', currentQty);
+            formData.append('varian', selectedVariant);
+
+            const originalText = btnWishlist.innerHTML;
+            btnWishlist.innerHTML = '<i class="bi bi-hourglass-split"></i> Menyimpan...';
+            btnWishlist.disabled = true;
+
+            fetch('backend_admin/wishlist-action.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    alert(data.message);
+                } else {
+                    alert(data.message);
+                    if(data.message.includes('login')) {
+                        window.location.href = 'login.php';
+                    }
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert("Terjadi kesalahan koneksi.");
+            })
+            .finally(() => {
+                btnWishlist.innerHTML = originalText;
+                btnWishlist.disabled = false;
+            });
         });
-    });
     </script>
 
 </body>

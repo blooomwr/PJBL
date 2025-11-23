@@ -42,6 +42,11 @@ $promo = $promoObj->getById($id);
       <input type="text" name="nama" class="form-control" value="<?php echo htmlspecialchars($promo['nama']); ?>" required>
     </div>
 
+    <div class="mb-3">
+      <label class="form-label">Kode Promo</label>
+      <input type="text" name="kode_promo" class="form-control" maxlength="10" value="<?php echo htmlspecialchars($promo['kode_promo']); ?>" required>
+    </div>
+
   </div>
 
   <div class="modal-footer">

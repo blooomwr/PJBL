@@ -20,6 +20,8 @@ $produkObj = new Produk();
 $promoObj = new Promo();
 
 $id_user = $_SESSION['id_user'];
+// AMBIL NAMA PEMBELI DARI SESSION (Sesuaikan key session nama Anda)
+$namaPembeli = isset($_SESSION['nama_user']) ? $_SESSION['nama_user'] : 'Pelanggan';
 
 if (isset($_GET['remove'])) {
     $wishlistObj->removeItem($_GET['remove']);
@@ -34,7 +36,7 @@ $keyword = $_GET['cari'] ?? '';
 
 $items = $wishlistObj->getUserWishlist($id_user, $keyword, $kategori, $sort);
 
-// Checkout Logic
+// --- LOGIKA CHECKOUT WA (DIPERBARUI) ---
 $totalHargaSemua = 0;
 $waMessage = "Halo Admin Rumah Que-Que, saya ingin memesan:%0A%0A";
 $hasItems = false;
@@ -46,11 +48,16 @@ if ($items && $items->num_rows > 0) {
         $subtotal = $row['harga'] * $row['jumlah'];
         $totalHargaSemua += $subtotal;
         $varianText = !empty($row['varian']) ? " (" . $row['varian'] . ")" : "";
+        
+        // Format per item: - Nama Barang (Varian) x Jumlah = Rp Subtotal
         $waMessage .= "- " . $row['nama'] . $varianText . " x " . $row['jumlah'] . " = Rp " . number_format($subtotal, 0, ',', '.') . "%0A";
         $hasItems = true;
     }
 }
+
+// Tambahkan Total & Nama Pembeli
 $waMessage .= "%0A*Total Pembayaran: Rp " . number_format($totalHargaSemua, 0, ',', '.') . "*";
+$waMessage .= "%0A*Atas nama:* " . $namaPembeli; // <-- BAGIAN INI DITAMBAHKAN
 $waMessage .= "%0A%0AMohon info nomor rekening untuk pembayaran. Terima kasih!";
 
 // Data Tambahan
@@ -65,9 +72,12 @@ $listPromo = $promoObj->query("SELECT * FROM promo ORDER BY terakhir_edit DESC")
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Wishlist Saya - Rumah Que Que</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@400;500;600&family=Inria+Serif:wght@400;700&display=swap" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inria+Serif:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
     
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
     <link href="css01/wishlist.css?v=<?= time(); ?>" rel="stylesheet">
 </head>
 <body>
@@ -153,8 +163,8 @@ $listPromo = $promoObj->query("SELECT * FROM promo ORDER BY terakhir_edit DESC")
         <?php endif; ?>
 
         <div style="max-width:1200px; margin:80px auto 20px; display:flex; justify-content:space-between; align-items:center;">
-            <h2 style="font-family: 'Playfair Display', serif; color: #5c3317; margin:0;">Lihat Produk lain dari Que Que</h2>
-            <a href="katalog.php" style="text-decoration:none; color:#AE4C02; font-weight:600;">Lihat Semua &rarr;</a>
+            <h2 style="font-family: 'Inria Serif', serif; color: #5c3317; margin:0;">Lihat Produk lain dari Que Que</h2>
+            <a href="katalog.php" style="text-decoration:none; color:#AE4C02; font-weight:600; font-family: 'Inria Serif', serif;">Lihat Semua &rarr;</a>
         </div>
 
         <div class="products-grid">
@@ -173,39 +183,72 @@ $listPromo = $promoObj->query("SELECT * FROM promo ORDER BY terakhir_edit DESC")
                 </div>
             <?php endwhile; ?>
         </div>
-
-        <section class="promo">
-          <div class="inner-wrapper">
-            <div class="title">PROMO SAAT INI</div>
-            <div class="carousel">
-              <div class="arrow left" id="btnPrev"><i class="bi bi-arrow-left"></i></div>
-
-              <div class="promo-carousel-container" id="promoContainer">
-                <?php 
-                if ($listPromo->num_rows > 0) {
-                    while($promo = $listPromo->fetch_assoc()) {
-                        $imgPromo = !empty($promo['gambar']) ? 'gambar_promo/'.$promo['gambar'] : 'assets/no-image.png';
-                ?>
-                    <div class="promo-card">
-                        <img src="<?= $imgPromo; ?>">
-                        <div><?= htmlspecialchars($promo['nama']); ?></div>
-                    </div>
-                <?php 
-                    }
-                } else {
-                    echo '<p>Tidak ada promo saat ini.</p>';
-                }
-                ?>
-              </div>
-
-              <div class="arrow right" id="btnNext"><i class="bi bi-arrow-right"></i></div>
-            </div>
-          </div>
-        </section>
-
     </main>
 
+    <section class="promo">
+      <div class="inner-wrapper">
+        <div class="title">PROMO SAAT INI</div>
+        <div class="carousel">
+          <div class="arrow left" id="btnPrev"><i class="bi bi-arrow-left"></i></div>
+
+          <div class="promo-carousel-container" id="promoContainer">
+            <?php 
+            if ($listPromo->num_rows > 0) {
+                while($promo = $listPromo->fetch_assoc()) {
+                    $imgPromo = !empty($promo['gambar']) ? 'gambar_promo/'.$promo['gambar'] : 'assets/no-image.png';
+                    $namaPromo = htmlspecialchars($promo['nama'], ENT_QUOTES);
+                    $kodePromo = htmlspecialchars($promo['kode_promo'], ENT_QUOTES); 
+            ?>
+                <div class="promo-card" onclick="showPromoDetail('<?= $namaPromo; ?>', '<?= $imgPromo; ?>', '<?= $kodePromo; ?>')">
+                    <img src="<?= $imgPromo; ?>">
+                    <div><?= $namaPromo; ?></div>
+                    <div style="font-size: 0.8rem; color: #ae4c02; margin-top:5px;">Klik untuk detail</div>
+                </div>
+            <?php 
+                }
+            } else {
+                echo '<p>Tidak ada promo saat ini.</p>';
+            }
+            ?>
+          </div>
+
+          <div class="arrow right" id="btnNext"><i class="bi bi-arrow-right"></i></div>
+        </div>
+      </div>
+    </section>
+
+    <div class="modal fade" id="promoModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content promo-modal-content">
+          <div class="modal-body text-center p-4 position-relative">
+            <button type="button" class="btn-close position-absolute top-0 end-0 m-3" data-bs-dismiss="modal" aria-label="Close"></button>
+            
+            <div class="mb-4">
+                 <img id="modalPromoImg" src="" alt="Promo" class="img-fluid rounded" style="max-height: 250px; object-fit: cover;">
+            </div>
+
+            <h3 id="modalPromoName" class="mb-3" style="font-family: 'Playfair Display', serif; color: #5b2a02; font-weight: bold;">
+                Nama Promo
+            </h3>
+
+            <p class="text-uppercase fw-bold mb-2" style="letter-spacing: 2px; font-size: 0.9rem;">KODE</p>
+
+            <div class="code-box-wrapper mb-3">
+                <span id="modalPromoCode" class="promo-code-box">KODE123</span>
+            </div>
+
+            <p class="text-muted small">
+                Berikan kode ini saat proses pemesanan<br>besar/kecil huruf berlaku.
+            </p>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
     <?php include 'footer.php'; ?>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
         function updateQty(id_detail, change) {
@@ -223,7 +266,7 @@ $listPromo = $promoObj->query("SELECT * FROM promo ORDER BY terakhir_edit DESC")
             });
         }
 
-        // Promo Scroll
+        // Promo Slider Logic
         const container = document.getElementById('promoContainer');
         const btnPrev = document.getElementById('btnPrev');
         const btnNext = document.getElementById('btnNext');
@@ -231,11 +274,20 @@ $listPromo = $promoObj->query("SELECT * FROM promo ORDER BY terakhir_edit DESC")
 
         if(btnNext && container) {
             btnNext.addEventListener('click', () => {
-                container.scrollLeft += scrollAmount;
+                container.scrollBy({ left: scrollAmount, behavior: 'smooth' });
             });
             btnPrev.addEventListener('click', () => {
-                container.scrollLeft -= scrollAmount;
+                container.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
             });
+        }
+
+        // Promo Modal Logic
+        function showPromoDetail(nama, gambar, kode) {
+            document.getElementById('modalPromoName').innerText = nama;
+            document.getElementById('modalPromoImg').src = gambar;
+            document.getElementById('modalPromoCode').innerText = kode;
+            var myModal = new bootstrap.Modal(document.getElementById('promoModal'));
+            myModal.show();
         }
     </script>
 

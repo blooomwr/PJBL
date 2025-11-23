@@ -13,35 +13,37 @@ $kisah = file_get_contents('AssetTentangKami/kisah1.txt');
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tentang Kami - Rumah Que Que</title>
     
-    <link href="css01/tentangkami.css" rel="stylesheet">
+    <link href="css01/tentangkami.css?v=<?= time(); ?>" rel="stylesheet">
 
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inria+Serif:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
     <style>
-        /* === 1. PERBAIKAN UKURAN (BOX MODEL) === */
-        /* Memastikan padding tidak membuat elemen melebar/membesar */
+        /* === 1. RESET BOX MODEL === */
         * {
             box-sizing: border-box;
         }
 
-        /* === 2. OVERRIDE STYLE HEADER KHUSUS HALAMAN INI === */
+        /* === 2. HEADER TRANSPARAN KHUSUS HALAMAN INI === */
         header.header-container {
-            position: absolute !important; /* Melayang di atas gambar */
-            top: 20px !important;          /* Jarak dari atas (sama seperti margin halaman lain) */
+            position: absolute !important; 
+            top: 20px !important;          
             left: 0;
             width: 100%;
             z-index: 999; 
             background: transparent !important; 
             margin: 0 !important; 
             
-            /* Memaksa font header kembali ke Playfair Display agar ukurannya sama persis */
-            font-family: 'Playfair Display', serif !important;
+            /* Paksa font header jadi Inria Serif */
+            font-family: 'Inria Serif', serif !important;
         }
 
-        /* Memastikan link di dalam navbar juga ikut font Playfair */
+        /* Pastikan link navbar juga Inria Serif */
         header.header-container .nav-link, 
         header.header-container .auth-links a {
-            font-family: 'Playfair Display', serif !important;
+            font-family: 'Inria Serif', serif !important;
         }
 
         /* === 3. Style Body === */
@@ -65,6 +67,7 @@ $kisah = file_get_contents('AssetTentangKami/kisah1.txt');
         <div class="image-container"></div>
 
         <h1 class="title">Kisah Manis Di Balik Kue</h1>
+        
         <div class="description">
             <?php echo nl2br($kisah); ?>
         </div>

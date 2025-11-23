@@ -1,21 +1,21 @@
 <?php
 // Panggil Class Berita & Promo
 require_once 'backend_admin/Berita.php'; 
-require_once 'backend_admin/Promo.php'; // [BARU] Include Class Promo
+require_once 'backend_admin/Promo.php'; 
 
 $beritaObj = new Berita();
-$promoObj = new Promo(); // [BARU] Inisialisasi Object Promo
+$promoObj = new Promo(); 
 
-// Cek login untuk header (Sama seperti sebelumnya)
+// Cek login untuk header
 if (isset($_SESSION['role']) && $_SESSION['role'] === 'pembeli') {
     include 'header.php'; 
 } else {
     include 'header2.php'; 
 }
 
-// --- LOGIKA OOP UNTUK MENGAMBIL DATA ---
+// --- LOGIKA OOP ---
 
-// 1. Ambil Berita Utama (Tetap pakai $beritaObj)
+// 1. Ambil Berita Utama
 $q_main = $beritaObj->query("SELECT * FROM berita WHERE is_berita_utama = 'Yes' LIMIT 1");
 $berita_utama = $q_main->fetch_assoc();
 
@@ -24,14 +24,13 @@ if (!$berita_utama) {
     $berita_utama = $q_main->fetch_assoc();
 }
 
-// 2. Ambil Promo (SEKARANG PAKAI $promoObj)
-// Karena Class Promo belum punya method khusus 'getAll', kita pakai query manual lewat object-nya
-// atau lebih bagus lagi, buat method getAll() di Class Promo.
+// 2. Ambil Promo
 $q_promo = $promoObj->query("SELECT * FROM promo ORDER BY terakhir_edit DESC");
 
-// 3. Ambil Berita Lainnya (Tetap pakai $beritaObj)
+// 3. Ambil Berita Lainnya
 $id_exclude = isset($berita_utama['id_berita']) ? $berita_utama['id_berita'] : '';
 $q_news = $beritaObj->query("SELECT * FROM berita WHERE id_berita != '$id_exclude' ORDER BY tanggal DESC LIMIT 3");
+
 function tgl_indo($tanggal){
 	$bulan = array (1 => 'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember');
 	$pecahkan = explode('-', date('Y-m-d', strtotime($tanggal)));
@@ -48,97 +47,12 @@ function tgl_indo($tanggal){
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inria+Serif:wght@300;400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
 
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
-  <link href="css01/berita.css" rel="stylesheet">
-  
-  <style>
-    /* === PERBAIKAN FONT (FORCE PLAYFAIR) === */
-    header.header-container,
-    header.header-container .nav-link,
-    header.header-container .auth-links a {
-        font-family: 'Playfair Display', serif !important;
-    }
-
-    h1, h2, h3, .title, .promo-card div {
-        font-family: 'Playfair Display', serif !important;
-    }
-
-    /* === CSS LAINNYA === */
-    .hero-right img {
-        object-fit: cover;
-        width: 100%;
-        height: auto;
-        max-height: 400px;
-        border-radius: 12px;
-    }
-
-    .carousel {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        position: relative;
-        width: 100%;
-        gap: 15px;
-    }
-
-    .promo-carousel-container {
-        display: flex;
-        gap: 30px; 
-        overflow-x: auto; 
-        scroll-behavior: smooth; 
-        padding: 20px 10px;
-        width: 100%;
-        max-width: 1000px; 
-        -ms-overflow-style: none;  
-        scrollbar-width: none;  
-    }
-    
-    .promo-carousel-container::-webkit-scrollbar { display: none; }
-
-    .promo-card {
-        min-width: 300px; 
-        max-width: 300px;
-        background-color: #fffaf3;
-        border-radius: 100px; 
-        padding: 30px 20px;
-        text-align: center;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-        flex-shrink: 0; 
-        transition: transform 0.3s;
-    }
-
-    .promo-card:hover { transform: translateY(-5px); }
-
-    .promo-card img {
-        width: 120px;
-        height: 120px;
-        object-fit: contain;
-        margin-bottom: 15px;
-    }
-
-    .arrow {
-        font-size: 2rem;
-        color: #fff;
-        cursor: pointer;
-        z-index: 10;
-        user-select: none;
-        background-color: #8a4b1e;
-        border-radius: 50%;
-        width: 50px;
-        height: 50px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-shrink: 0;
-    }
-    .arrow:hover { background-color: #5c3a21; }
-  </style>
+  <link href="css01/berita.css?v=<?= time(); ?>" rel="stylesheet">
 </head>
 <body>
 
@@ -172,32 +86,26 @@ function tgl_indo($tanggal){
         if ($q_promo->num_rows > 0) {
             while($promo = $q_promo->fetch_assoc()) {
                 $imgPromo = !empty($promo['gambar']) ? 'gambar_promo/'.$promo['gambar'] : 'img01/default-promo.png';
+                $namaPromo = htmlspecialchars($promo['nama'], ENT_QUOTES);
+                $kodePromo = htmlspecialchars($promo['kode_promo'], ENT_QUOTES);
         ?>
-            <div class="promo-card">
+            <div class="promo-card" onclick="showPromoDetail('<?= $namaPromo; ?>', '<?= $imgPromo; ?>', '<?= $kodePromo; ?>')">
                 <img src="<?php echo $imgPromo; ?>">
-                <div style="color:#333;">
-                    <?php echo htmlspecialchars($promo['nama']); ?>
+                <div>
+                    <?php echo $namaPromo; ?>
                 </div>
+                <div style="font-size: 0.8rem; color: #ae4c02; margin-top:5px;">Klik untuk detail</div>
             </div>
         <?php 
             }
         } else {
-            echo '<p style="color:white;">Tidak ada promo saat ini.</p>';
+            echo '<p style="color:white; font-family:\'Inria Serif\', serif;">Tidak ada promo saat ini.</p>';
         }
         ?>
       </div>
 
       <div class="arrow right" id="btnNext"><i class="bi bi-arrow-right"></i></div>
     </div>
-  </div>
-</section>
-
-<section class="activities">
-  <h2>Kegiatan Que-Que</h2>
-  <div class="activities-strip">
-    <div class="item"><img src="https://images.unsplash.com/photo-1544025162-d76694265947" alt="1"></div>
-    <div class="item"><img src="https://images.unsplash.com/photo-1556910103-1c02745a30bf" alt="2"></div>
-    <div class="item"><img src="https://images.unsplash.com/photo-1503424886302-1f3d05f18f1f" alt="3"></div>
   </div>
 </section>
 
@@ -211,7 +119,7 @@ function tgl_indo($tanggal){
         <article class="card-news">
         <h3><?php echo htmlspecialchars($news['judul']); ?></h3>
         <p><?php echo htmlspecialchars($news['deskripsi']); ?></p>
-        <small style="color:#888;"><?php echo tgl_indo($news['tanggal']); ?></small>
+        <small style="color:#ae4c02; font-weight:bold;"><?php echo tgl_indo($news['tanggal']); ?></small>
         <a href="detail-berita.php?id=<?php echo $news['id_berita']; ?>">Baca Selengkapnya →</a>
         </article>
     <?php 
@@ -221,21 +129,67 @@ function tgl_indo($tanggal){
   </div>
 </section>
 
+<div class="modal fade" id="promoModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content promo-modal-content">
+      <div class="modal-body text-center p-4 position-relative">
+        <button type="button" class="btn-close position-absolute top-0 end-0 m-3" data-bs-dismiss="modal" aria-label="Close"></button>
+        
+        <div class="mb-4">
+             <img id="modalPromoImg" src="" alt="Promo" class="img-fluid rounded" style="max-height: 250px; object-fit: cover;">
+        </div>
+
+        <h3 id="modalPromoName" class="mb-3" style="font-family: 'Playfair Display', serif; color: #5b2a02; font-weight: bold;">
+            Nama Promo
+        </h3>
+
+        <p class="text-uppercase fw-bold mb-2" style="letter-spacing: 2px; font-size: 0.9rem;">KODE</p>
+
+        <div class="code-box-wrapper mb-3">
+            <span id="modalPromoCode" class="promo-code-box">KODE123</span>
+        </div>
+
+        <p class="text-muted small">
+            Berikan kode ini saat proses pemesanan<br>besar/kecil huruf berlaku.
+        </p>
+
+      </div>
+    </div>
+  </div>
+</div>
+
 <?php include 'footer.php'; ?>
 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
 <script>
+    // Slider Logic
     const container = document.getElementById('promoContainer');
     const btnPrev = document.getElementById('btnPrev');
     const btnNext = document.getElementById('btnNext');
-    const scrollAmount = 330; 
+    const scrollAmount = 320; 
 
-    btnNext.addEventListener('click', () => {
-        container.scrollLeft += scrollAmount;
-    });
+    if(btnNext && btnPrev && container) {
+        btnNext.addEventListener('click', () => {
+            container.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+        });
 
-    btnPrev.addEventListener('click', () => {
-        container.scrollLeft -= scrollAmount;
-    });
+        btnPrev.addEventListener('click', () => {
+            container.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+        });
+    }
+
+    // Modal Logic
+    function showPromoDetail(nama, gambar, kode) {
+        // Set data ke dalam modal
+        document.getElementById('modalPromoName').innerText = nama;
+        document.getElementById('modalPromoImg').src = gambar;
+        document.getElementById('modalPromoCode').innerText = kode;
+
+        // Tampilkan Modal Bootstrap
+        var myModal = new bootstrap.Modal(document.getElementById('promoModal'));
+        myModal.show();
+    }
 </script>
 
 </body>

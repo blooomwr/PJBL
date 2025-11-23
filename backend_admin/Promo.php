@@ -6,7 +6,6 @@ class Promo {
 
     public function __construct() {
         $this->db = new Database();
-        // HAPUS checkAuth() agar bisa diakses publik
     }
 
     public function requireAdmin() {
@@ -42,16 +41,18 @@ class Promo {
         $this->requireAdmin();
         $id = $this->generateId();
         $nama = $this->db->escape($data['nama']);
+        $kode = $this->db->escape($data['kode_promo']); 
         
         $nama_file_db = "";
         if (isset($file['gambar']) && $file['gambar']['error'] == 0) {
             $nama_file_db = $this->uploadImage($file['gambar']);
         }
 
-        $sql = "INSERT INTO promo (id_promo, nama, gambar) VALUES ('$id', '$nama', '$nama_file_db')";
+        $sql = "INSERT INTO promo (id_promo, nama, kode_promo, gambar) VALUES ('$id', '$nama', '$kode', '$nama_file_db')";
 
         if ($this->db->conn->query($sql)) {
-            $this->logHistory("Menambah promo baru", "$nama (ID: $id)");
+            // PERBAIKAN: Menampilkan Nama, Kode, DAN ID
+            $this->logHistory("Menambah promo baru", "$nama (Kode: $kode) (ID: $id)");
             return true;
         }
         return false;
@@ -61,6 +62,8 @@ class Promo {
         $this->requireAdmin();
         $id = $this->db->escape($data['id_promo']);
         $nama = $this->db->escape($data['nama']);
+        $kode = $this->db->escape($data['kode_promo']);
+        
         $gambar_lama = $this->db->escape($data['gambar_lama']);
         $nama_file_db = $gambar_lama;
 
@@ -69,10 +72,11 @@ class Promo {
             $nama_file_db = $this->uploadImage($file['gambar']);
         }
 
-        $sql = "UPDATE promo SET nama='$nama', gambar='$nama_file_db' WHERE id_promo='$id'";
+        $sql = "UPDATE promo SET nama='$nama', kode_promo='$kode', gambar='$nama_file_db' WHERE id_promo='$id'";
 
         if ($this->db->conn->query($sql)) {
-            $this->logHistory("Mengubah promo", "$nama (ID: $id)");
+            // PERBAIKAN: Menampilkan Nama, Kode, DAN ID
+            $this->logHistory("Mengubah promo", "$nama (Kode: $kode) (ID: $id)");
             return true;
         }
         return false;
@@ -84,17 +88,19 @@ class Promo {
 
         $idList = "'" . implode("','", $ids) . "'";
         
+        // Hapus file fisik dulu
         $q = "SELECT gambar FROM promo WHERE id_promo IN ($idList)";
         $res = $this->db->conn->query($q);
         while ($row = $res->fetch_assoc()) {
             $this->deletePhysicalImage($row['gambar']);
         }
 
+        // Hapus data di database
         $sql = "DELETE FROM promo WHERE id_promo IN ($idList)";
         if ($this->db->conn->query($sql)) {
-            $count = count($ids);
             $cleanIds = str_replace("'", "", $idList);
-            $this->logHistory("Menghapus promo", "Total $count dihapus.");
+            // PERBAIKAN: Menampilkan daftar ID yang dihapus
+            $this->logHistory("Menghapus promo", "ID yang dihapus: $cleanIds");
             return true;
         }
         return false;
