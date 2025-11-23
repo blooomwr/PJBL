@@ -181,7 +181,10 @@
       <h4>Hubungi kami</h4>
       <p><i class="bi bi-telephone-fill"></i> +62 82123131234</p>
       <p><i class="bi bi-envelope-fill"></i> quequeque@gmail.com</p>
-      <p><i class="bi bi-geo-alt-fill"></i> Jl. Aur Auran</p>
+      <p style="max-width:300px; white-space:normal; word-wrap:break-word;">
+      <i class="bi bi-geo-alt-fill"></i> Samping Klinik LNA, Jl. Cemped Jl. Bangbarung Raya No.2A,
+      Bantarjati, Bogor Utara, Bogor City, West Java 16153 </p>
+
     </div>
   </div>
 </footer>
