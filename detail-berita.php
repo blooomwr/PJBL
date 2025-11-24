@@ -1,5 +1,5 @@
 <?php
-require_once 'backend_admin/Berita.php';
+require_once 'backend/models/Berita.php';
 $beritaObj = new Berita();
 
 // Validasi ID

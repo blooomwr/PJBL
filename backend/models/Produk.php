@@ -1,5 +1,5 @@
 <?php
-require_once 'Database.php';
+require_once __DIR__ . '/../config/Database.php';
 
 class Produk {
     private $db;
@@ -16,7 +16,7 @@ class Produk {
                 echo json_encode(['status' => 'error', 'message' => 'Akses ditolak.']);
                 exit();
             } else {
-                header("Location: ../login.php");
+                header("Location: ../../login.php");
                 exit();
             }
         }
@@ -164,7 +164,7 @@ class Produk {
             $q = "SELECT nama_file FROM produk_gambar WHERE id_produk='$id'";
             $res = $this->db->conn->query($q);
             while ($row = $res->fetch_assoc()) {
-                $path = "../gambar_produk/" . $row['nama_file'];
+                $path = "../../gambar_produk/" . $row['nama_file'];
                 if (file_exists($path)) unlink($path);
             }
         }
@@ -185,7 +185,7 @@ class Produk {
         $res = $this->db->conn->query($q);
         $data = $res->fetch_assoc();
         if ($data) {
-            $path = "../gambar_produk/" . $data['nama_file'];
+            $path = "../../gambar_produk/" . $data['nama_file'];
             if (file_exists($path)) unlink($path);
             $this->db->conn->query("DELETE FROM produk_gambar WHERE id_gambar='$id_gambar'");
             $this->logHistory("Menghapus gambar", $data['nama_file']);
@@ -261,7 +261,7 @@ class Produk {
     }
 
     private function uploadImages($id_produk, $files) {
-        $folder = "../gambar_produk/";
+        $folder = "../../gambar_produk/";
         if (!is_dir($folder)) mkdir($folder, 0777, true);
         if (isset($files['gambar'])) {
             foreach ($files['gambar']['tmp_name'] as $key => $tmp) {

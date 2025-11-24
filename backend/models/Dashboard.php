@@ -1,5 +1,6 @@
 <?php
-require_once 'Database.php';
+
+require_once __DIR__ . '/../config/database.php';
 
 class Dashboard {
     private $db;
@@ -12,7 +13,7 @@ class Dashboard {
     // Cek Keamanan
     private function checkAuth() {
         if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
-            header("Location: ../login.php");
+            header("Location: ../../login.php");
             exit();
         }
     }

@@ -1,5 +1,5 @@
 <?php
-require_once 'Produk.php'; 
+require_once __DIR__ . '/../models/Produk.php'; 
 
 $produkObj = new Produk(); // Start Session
 

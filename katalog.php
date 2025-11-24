@@ -1,6 +1,6 @@
 <?php 
 // Pastikan file 'katalog-logic.php' ada di folder yang sama dengan file ini
-require 'backend/katalog-logic.php'; 
+require 'backend/controllers/katalog-logic.php'; 
 ?>
 
 <!DOCTYPE html>

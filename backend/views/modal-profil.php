@@ -9,10 +9,10 @@ if (isset($_SESSION['id_user'])) {
     
     // 1. KONEKSI DATABASE
     // Sesuaikan path ke file database Anda
-    if (file_exists('backend_admin/Database.php')) {
-        require_once 'backend_admin/Database.php';
-    } elseif (file_exists('Database.php')) {
-        require_once 'Database.php';
+    if (file_exists(__DIR__ . '/../config/database.php')) {
+        require_once __DIR__ . '/../config/database.php';
+    } elseif (file_exists(__DIR__ . '/../config/database.php')) {
+        require_once __DIR__ . '/../config/database.php';
     }
     
     if (!isset($db)) {

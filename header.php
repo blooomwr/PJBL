@@ -162,4 +162,4 @@
     </div>
   </nav>
 </header>
-<?php include 'backend_admin/modal-profil.php'; ?>
+<?php include 'backend/views/modal-profil.php'; ?>

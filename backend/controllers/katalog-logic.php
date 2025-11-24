@@ -1,6 +1,6 @@
 <?php
 // Panggil Class Produk (ini otomatis include Database.php dan start session)
-require_once 'backend_admin/Produk.php'; 
+require_once __DIR__ . '/../models/Produk.php'; 
 
 // Inisialisasi Object
 $produkModel = new Produk();

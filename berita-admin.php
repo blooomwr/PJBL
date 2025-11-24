@@ -1,5 +1,6 @@
 <?php 
-require_once 'backend_admin/Berita.php'; 
+ob_start();
+require_once 'backend/models/Berita.php'; 
 $beritaObj = new Berita();
 $beritaObj->requireAdmin();
 
@@ -101,7 +102,7 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
     <div class="modal fade" id="modalTambahBerita" tabindex="-1">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
-                <form action="backend_admin/berita-insert.php" method="POST" enctype="multipart/form-data">
+                <form action="backend/controllers/berita-insert.php" method="POST" enctype="multipart/form-data">
                     
                     <div class="modal-header custom-header">
                         <a href="#" class="modal-back-btn" data-bs-dismiss="modal" aria-label="Close">
@@ -216,7 +217,7 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
         </table>
     </div>
 
-</div> <form id="deleteForm" action="backend_admin/berita-delete.php" method="POST">
+</div> <form id="deleteForm" action="backend/controllers/berita-delete.php" method="POST">
     <input type="hidden" name="ids" id="delete_ids">
 </form>
 
@@ -261,7 +262,7 @@ $(document).ready(function() {
     $('#modalEditBerita').on('show.bs.modal', function(event) {
         let id = $(event.relatedTarget).data('id');
         $('#editBeritaContent').html('<div class="p-5 text-center text-muted"><div class="spinner-border"></div><p class="mt-3">Memuat data...</p></div>');
-        $.get('backend_admin/berita-edit.php', { id: id }, function(data) {
+        $.get('backend/views/berita-edit.php', { id: id }, function(data) {
             $('#editBeritaContent').html(data);
         });
     });
@@ -288,7 +289,7 @@ $(document).ready(function() {
         submitBtn.prop('disabled', true).text('Menyimpan...');
 
         $.ajax({
-            url: 'backend_admin/berita-update.php', // Path ke file update
+            url: 'backend/controllers/berita-update.php', // Path ke file update
             type: 'POST',
             data: formData,
             processData: false, // Wajib untuk FormData

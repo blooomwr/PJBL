@@ -11,9 +11,9 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'pembeli') {
 }
 
 // 3. Panggil Backend
-require_once 'backend_admin/Wishlist.php'; 
-require_once 'backend_admin/Produk.php'; 
-require_once 'backend_admin/Promo.php'; 
+require_once 'backend/models/Wishlist.php'; 
+require_once 'backend/models/Produk.php'; 
+require_once 'backend/models/Promo.php'; 
 
 $wishlistObj = new Wishlist();
 $produkObj = new Produk();
@@ -252,7 +252,7 @@ $listPromo = $promoObj->query("SELECT * FROM promo ORDER BY terakhir_edit DESC")
 
     <script>
         function updateQty(id_detail, change) {
-            fetch('backend_admin/wishlist-action.php', {
+            fetch('backend/controllers/wishlist-action.php', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 body: `action=update&id=${id_detail}&change=${change}`

@@ -1,7 +1,7 @@
 <?php
 // Panggil Class Berita & Promo
-require_once 'backend_admin/Berita.php'; 
-require_once 'backend_admin/Promo.php'; 
+require_once 'backend/models/Berita.php'; 
+require_once 'backend/models/Promo.php'; 
 
 $beritaObj = new Berita();
 $promoObj = new Promo(); 

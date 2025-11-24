@@ -1,6 +1,6 @@
 <?php
 // Panggil Class Dashboard
-require_once 'backend_admin/Dashboard.php'; 
+require_once 'backend/models/Dashboard.php'; 
 
 // Inisialisasi Object (Otomatis cek login & start session)
 $dashboard = new Dashboard();

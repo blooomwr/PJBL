@@ -1,5 +1,5 @@
 <?php
-require_once 'backend_admin/Produk.php'; 
+require_once 'backend/models/Produk.php'; 
 
 // Validasi ID
 if (!isset($_GET['id'])) {
@@ -251,7 +251,7 @@ $varianList = !empty($produk['varian']) ? explode(',', $produk['varian']) : [];
             const rating = document.querySelector('input[name="rating"]:checked');
             if (!rating) { alert("Silakan pilih jumlah bintang!"); return; }
             const formData = new FormData(this);
-            fetch('backend_admin/submit-rating.php', { method: 'POST', body: formData })
+            fetch('backend/config/submit-rating.php', { method: 'POST', body: formData })
             .then(response => response.json())
             .then(data => {
                 alert(data.message);
@@ -289,7 +289,7 @@ $varianList = !empty($produk['varian']) ? explode(',', $produk['varian']) : [];
             btnWishlist.innerHTML = '<i class="bi bi-hourglass-split"></i> Menyimpan...';
             btnWishlist.disabled = true;
 
-            fetch('backend_admin/wishlist-action.php', {
+            fetch('backend/controllers/wishlist-action.php', {
                 method: 'POST',
                 body: formData
             })

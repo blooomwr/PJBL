@@ -1,6 +1,6 @@
 <?php 
 // Ganti include lama dengan Class Produk
-require_once 'backend_admin/Produk.php';
+require_once 'backend/models/Produk.php';
 
 // Inisialisasi Object (Otomatis cek login di constructor)
 $produkObj = new Produk();
@@ -53,7 +53,7 @@ $produkObj->checkAuth();
     <div class="modal fade" id="modalTambah" tabindex="-1">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
-                <form action="backend_admin/produk-insert.php" method="POST" enctype="multipart/form-data">
+                <form action="backend/controllers/produk-insert.php" method="POST" enctype="multipart/form-data">
                     <div class="modal-header custom-header">
                         <a href="#" class="modal-back-btn" data-bs-dismiss="modal" aria-label="Close">
                             <i class="bi bi-arrow-left"></i>
@@ -189,7 +189,7 @@ $produkObj->checkAuth();
     </div>
 </div> 
 
-<form id="deleteForm" action="backend_admin/produk-delete.php" method="POST">
+<form id="deleteForm" action="backend/controllers/produk-delete.php" method="POST">
     <input type="hidden" name="ids" id="delete_ids">
 </form>
 
@@ -234,7 +234,7 @@ $(document).ready(function() {
     $('#modalEdit').on('show.bs.modal', function(event) {
         let id = $(event.relatedTarget).data('id');
         $('#editContent').html('<div class="p-5 text-center text-muted"><div class="spinner-border"></div><p class="mt-3">Memuat data...</p></div>');
-        $.get('backend_admin/produk-edit.php', { id: id }, function(data) {
+        $.get('backend/views/produk-edit.php', { id: id }, function(data) {
             $('#editContent').html(data);
         });
     });
@@ -255,7 +255,7 @@ $(document).ready(function() {
         let id_gambar = btn.data('id');
         let container = btn.closest('.img-container'); 
 
-        $.get('backend_admin/produk-delete-gambar.php', { id_gambar: id_gambar }, function(response) {
+        $.get('backend/controllers/produk-delete-gambar.php', { id_gambar: id_gambar }, function(response) {
             if (response.status === 'success') {
                 container.fadeOut(300, function() { $(this).remove(); });
             } else {
@@ -271,7 +271,7 @@ $(document).ready(function() {
         submitBtn.prop('disabled', true).text('Menyimpan...');
 
         $.ajax({
-            url: 'backend_admin/produk-update.php', 
+            url: 'backend/controllers/produk-update.php', 
             type: 'POST',
             data: formData,
             processData: false, 

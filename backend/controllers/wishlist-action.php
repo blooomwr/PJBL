@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/Wishlist.php'; // Pake __DIR__ agar aman
+require_once __DIR__ . '/../models/wishlist.php'; // Pake __DIR__ agar aman
 header('Content-Type: application/json');
 
 // 1. INSTANSIASI DULU (Agar Session Start di Database.php jalan)

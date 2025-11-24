@@ -1,5 +1,5 @@
 <?php
-require_once 'Database.php';
+require_once __DIR__ . '/../config/database.php';
 
 class Promo {
     private $db;
@@ -14,7 +14,7 @@ class Promo {
                 echo json_encode(['status' => 'error', 'message' => 'Akses ditolak.']);
                 exit();
             } else {
-                header("Location: ../login.php");
+                header("Location: ../../login.php");
                 exit();
             }
         }
@@ -117,7 +117,7 @@ class Promo {
     }
 
     private function uploadImage($file) {
-        $folder = "../gambar_promo/";
+        $folder = "../../gambar_promo/";
         if (!is_dir($folder)) mkdir($folder, 0777, true);
         $nama_file = uniqid() . "_" . $file['name'];
         move_uploaded_file($file['tmp_name'], $folder . $nama_file);
@@ -126,7 +126,7 @@ class Promo {
 
     private function deletePhysicalImage($filename) {
         if (!empty($filename)) {
-            $path = "../gambar_promo/" . $filename;
+            $path = "../../gambar_promo/" . $filename;
             if (file_exists($path)) unlink($path);
         }
     }

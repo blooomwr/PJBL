@@ -1,6 +1,6 @@
 <?php 
 // Menggunakan Class Promo (OOP)
-require_once 'backend_admin/Promo.php'; 
+require_once 'backend/models/Promo.php'; 
 $promoObj = new Promo();
 $promoObj->requireAdmin();
 ?>
@@ -66,7 +66,7 @@ $promoObj->requireAdmin();
     <div class="modal fade" id="modalTambahPromo" tabindex="-1">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
-                <form action="backend_admin/promo-insert.php" method="POST" enctype="multipart/form-data">
+                <form action="backend/controllers/promo-insert.php" method="POST" enctype="multipart/form-data">
                     <div class="modal-header custom-header">
                         <a href="#" class="modal-back-btn" data-bs-dismiss="modal" aria-label="Close">
                             <i class="bi bi-arrow-left"></i>
@@ -165,7 +165,7 @@ $promoObj->requireAdmin();
         </table>
     </div>
 
-</div> <form id="deleteForm" action="backend_admin/promo-delete.php" method="POST">
+</div> <form id="deleteForm" action="backend/controllers/promo-delete.php" method="POST">
     <input type="hidden" name="ids" id="delete_ids">
 </form>
 
@@ -202,7 +202,7 @@ $(document).ready(function() {
     $('#modalEditPromo').on('show.bs.modal', function(event) {
         let id = $(event.relatedTarget).data('id');
         $('#editPromoContent').html('<div class="p-5 text-center text-muted"><div class="spinner-border"></div><p class="mt-3">Memuat data...</p></div>');
-        $.get('backend_admin/promo-edit.php', { id: id }, function(data) {
+        $.get('backend/views/promo-edit.php', { id: id }, function(data) {
             $('#editPromoContent').html(data);
         });
     });
@@ -225,7 +225,7 @@ $(document).ready(function() {
         submitBtn.prop('disabled', true).text('Menyimpan...');
 
         $.ajax({
-            url: 'backend_admin/promo-update.php', 
+            url: 'backend/controllers/promo-update.php', 
             type: 'POST',
             data: formData,
             processData: false, 

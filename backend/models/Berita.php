@@ -1,5 +1,6 @@
 <?php
-require_once 'Database.php';
+// Gunakan __DIR__ untuk memastikan path absolut
+require_once __DIR__ . '/../config/database.php';
 
 class Berita {
     private $db;
@@ -16,7 +17,7 @@ class Berita {
                 echo json_encode(['status' => 'error', 'message' => 'Akses ditolak.']);
                 exit();
             } else {
-                header("Location: ../login.php");
+                header("Location: ../../login.php");
                 exit();
             }
         }
@@ -150,7 +151,7 @@ class Berita {
     // --- HELPERS ---
 
     private function uploadImage($file) {
-        $folder = "../gambar_berita/";
+        $folder = __DIR__ . '/../../gambar_berita/';
         if (!is_dir($folder)) mkdir($folder, 0777, true);
         
         $nama_file = uniqid() . "_" . $file['name'];
@@ -160,7 +161,7 @@ class Berita {
 
     private function deletePhysicalImage($filename) {
         if (!empty($filename)) {
-            $path = "../gambar_berita/" . $filename;
+            $path = __DIR__ . "../../gambar_berita/" . $filename;
             if (file_exists($path)) unlink($path);
         }
     }
