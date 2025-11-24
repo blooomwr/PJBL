@@ -189,24 +189,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <button type="submit" class="btn btn-signup">Sign Up</button>
         </form>
 
-        <div class="divider-text">Or sign up with</div>
+            <div class="divider-text">Or sign up with</div>
 
-        <div class="social-icons d-flex justify-content-center gap-3 mt-3">
-            <a href="auth_google.php" class="btn btn-light border" style="width: 120px; color: #555;">
-                <i class="bi bi-google"></i> Google
-            </a>
+             <p class="mt-4">Have an account? <a href="login.php" class="text-decoration-none" style="color:#ae4c02; font-weight: bold;">Login</a></p>
 
-            <a href="#" class="btn btn-light border" style="width: 120px; color: #555; background-color: #eee;">
-                <i class="bi bi-facebook"></i> Facebook
-            </a>
-
-            <a href="#" class="btn btn-light border" style="width: 120px; color: #555; background-color: #eee;">
-                <i class="bi bi-twitter-x"></i> X
-            </a>
-        </div>
-
-        <p class="mt-4">Have an account? <a href="login.php" class="text-decoration-none" style="color:#ae4c02; font-weight: bold;">Login</a></p>
-
+            </div>
     </div>
 
     <?php include 'footer.php'; // Termasuk bagian footer 
