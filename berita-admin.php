@@ -23,7 +23,7 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
 
-    <link rel="stylesheet" href="dash.css">
+    <link rel="stylesheet" href="css01/dash.css">
 
     <style>
         /* ===================================
