@@ -38,6 +38,7 @@ if (empty($gambarProduk)) {
 // 4. Ambil Produk Lainnya
 $resultLainnya = $produkObj->getRelated($id_produk);
 
+// 5. Varian
 $varianList = !empty($produk['varian']) ? explode(',', $produk['varian']) : [];
 ?>
 
@@ -103,6 +104,7 @@ $varianList = !empty($produk['varian']) ? explode(',', $produk['varian']) : [];
                     }
                     ?>
 
+                    // Rating Produk
                     <?php if (!$is_logged_in): ?>
                         <span class="rating-text" onclick="alert('Silakan login sebagai Pembeli untuk memberi ulasan!'); window.location.href='login.php';" title="Login untuk review">
                             <i class="bi bi-star-fill text-warning" style="color:#ffc107;"></i> 
@@ -147,7 +149,7 @@ $varianList = !empty($produk['varian']) ? explode(',', $produk['varian']) : [];
                             <p><?= nl2br(htmlspecialchars($produk['deskripsi'])); ?></p>
                         </div>
                     </div>
-
+                    
                     <div class="info-right-col">
                         
                         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:5px;">
@@ -211,6 +213,8 @@ $varianList = !empty($produk['varian']) ? explode(',', $produk['varian']) : [];
 
     <?php include 'footer.php'; ?>
 
+
+    // JavaScript Section
     <script>
         function changeImage(element) {
             document.getElementById('mainImage').src = element.src;
@@ -223,7 +227,7 @@ $varianList = !empty($produk['varian']) ? explode(',', $produk['varian']) : [];
         function openRatingModal() { document.getElementById('ratingModal').style.display = 'flex'; }
         function closeRatingModal() { document.getElementById('ratingModal').style.display = 'none'; }
 
-        // [BARU] LOGIKA COUNTER & WHATSAPP
+        // LOGIKA COUNTER & WHATSAPP
         let currentQty = 1;
         const qtyInput = document.getElementById('qtyValue');
         const btnWa = document.getElementById('btnWa');
@@ -246,6 +250,7 @@ $varianList = !empty($produk['varian']) ? explode(',', $produk['varian']) : [];
         // Jalankan sekali saat load
         updateWaLink();
 
+        // LOGIKA SUBMIT RATING
         document.getElementById('formRating').addEventListener('submit', function(e) {
             e.preventDefault();
             const rating = document.querySelector('input[name="rating"]:checked');

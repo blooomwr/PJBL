@@ -1,5 +1,4 @@
 <?php 
-// Pastikan file 'katalog-logic.php' ada di folder yang sama dengan file ini
 require 'backend/controllers/katalog-logic.php'; 
 ?>
 
@@ -29,6 +28,7 @@ require 'backend/controllers/katalog-logic.php';
     }
     ?>
 
+    // Konten Utama Katalog
     <main>
         <form action="" method="GET" class="catalog-controls-form">
             

@@ -1,18 +1,10 @@
 
     body {
-        /* Gradasi dari #FFEFD2 (atas) ke putih (bawah), selesai di 80% tinggi layar */
         background: linear-gradient(to bottom, #FFEFD2 0%, #ffffff 80%);
-        
-        /* PENTING: Paksa body setidaknya setinggi layar */
         min-height: 100vh;
-        
-        /* PENTING: Buat background diam di tempat saat di-scroll */
         background-attachment: fixed;
-        
         font-family: "Inria Serif", serif;
     }
-
-    /* ... Sisa kode CSS Anda yang lain ... */
 
     .page-title { display:flex; align-items:center; gap:10px; margin:30px 0; }
     .page-title i { font-size:28px; color:#8a4b1e; }
@@ -109,7 +101,7 @@
     }
 
     /* ===================================
-       STYLE BARU (SESUAI GAMBAR)
+       STYLE BARU 
     ====================================== */
 
     /* Sembunyikan label "Search" */
@@ -120,7 +112,7 @@
         display: inline-block !important;
     }
 
-    /* Menambahkan ikon pencarian (dari Bootstrap Icons) */
+    /* Menambahkan ikon pencarian */
     .dataTables_filter label::before {
         content: "\f52a"; /* Kode untuk ikon 'bi-search' */
         font-family: "bootstrap-icons" !important;
@@ -153,7 +145,7 @@
     /* Mengatur warna placeholder "Cari" */
     .dataTables_filter input::placeholder {
         color: #000000 !important;
-        opacity: 0.7; /* Sedikit lebih pudar */
+        opacity: 0.7; 
     }
 
     /* Khusus untuk Select Kategori */
@@ -193,7 +185,8 @@
             height: 50px !important;
         }
     }
-    /* ===================================
+
+/* ===================================
    STYLE MODAL & TOMBOL SIMPAN
 ====================================== */
 
@@ -219,7 +212,7 @@
     overflow: hidden; /* Penting agar header ikut bulat */
 }
 
-/* Header Modal (sesuai gambar) */
+/* Header Modal */
 .modal-header.custom-header {
     background-color: #FFEFD2 !important; /* Warna gradasi atas */
     border-bottom: none !important;

@@ -4,6 +4,7 @@ include 'connlog.php';
 $error = '';
 $success = '';
 
+// Proses form saat disubmit
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = $conn->real_escape_string($_POST['email']);
     $username = $conn->real_escape_string($_POST['username']);
@@ -11,6 +12,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $confirm_password = $_POST['confirm_password'];
     $nama_pembeli = $username; // Menggunakan username sebagai nama default
 
+    // Validasi password dan konfirmasi password
     if ($password !== $confirm_password) {
         $error = "Konfirmasi password tidak cocok.";
     } else {
@@ -199,6 +201,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <?php include 'footer.php'; // Termasuk bagian footer 
     ?>
 
+// Script untuk Bootstrap dan toggle password visibility
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         document.querySelectorAll('.toggle-password').forEach(icon => {

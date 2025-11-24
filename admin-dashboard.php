@@ -92,7 +92,7 @@ body {
   color: #6b3600;
 }
 
-/* Label Menu (Opsional, agar user tau icon apa) */
+/* Label Menu*/
 .menu-label {
   margin-top: 10px;
   font-weight: bold;

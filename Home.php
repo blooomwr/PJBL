@@ -92,7 +92,7 @@ $resultBest = mysqli_query($conn, $queryBest);
                 <div class="col-lg-4 col-md-12 mb-4 mb-lg-0">
                     <h2 class="judul-testimoni">APA KATA<br>PELANGGAN<br>KAMI?</h2>
                 </div>
-
+                    
                 <div class="col-lg-8 col-md-12 d-flex align-items-center testimonial-wrapper">
                     <div class="testimoni-scroll flex-grow-1 me-lg-3">
                         <div class="row g-3">
@@ -166,7 +166,7 @@ $resultBest = mysqli_query($conn, $queryBest);
             arrowDown.classList.remove('disabled');
         }
     }
-
+    
     if (arrowUp && arrowDown && scrollContainer) {
         arrowUp.addEventListener('click', () => {
             scrollContainer.scrollBy({ top: -200, behavior: 'smooth' });

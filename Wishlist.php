@@ -23,6 +23,7 @@ $id_user = $_SESSION['id_user'];
 // AMBIL NAMA PEMBELI DARI SESSION (Sesuaikan key session nama Anda)
 $namaPembeli = isset($_SESSION['nama_user']) ? $_SESSION['nama_user'] : 'Pelanggan';
 
+// Hapus Item dari Wishlist
 if (isset($_GET['remove'])) {
     $wishlistObj->removeItem($_GET['remove']);
     header("Location: wishlist.php");
@@ -36,12 +37,13 @@ $keyword = $_GET['cari'] ?? '';
 
 $items = $wishlistObj->getUserWishlist($id_user, $keyword, $kategori, $sort);
 
-// --- LOGIKA CHECKOUT WA (DIPERBARUI) ---
+// --- LOGIKA CHECKOUT WA ---
 $totalHargaSemua = 0;
 $waMessage = "Halo Admin Rumah Que-Que, saya ingin memesan:%0A%0A";
 $hasItems = false;
 $listItems = []; 
 
+// Siapkan pesan WhatsApp dengan detail item
 if ($items && $items->num_rows > 0) {
     while ($row = $items->fetch_assoc()) {
         $listItems[] = $row;
@@ -57,7 +59,7 @@ if ($items && $items->num_rows > 0) {
 
 // Tambahkan Total & Nama Pembeli
 $waMessage .= "%0A*Total Pembayaran: Rp " . number_format($totalHargaSemua, 0, ',', '.') . "*";
-$waMessage .= "%0A*Atas nama:* " . $namaPembeli; // <-- BAGIAN INI DITAMBAHKAN
+$waMessage .= "%0A*Atas nama:* " . $namaPembeli; 
 $waMessage .= "%0A%0AMohon info nomor rekening untuk pembayaran. Terima kasih!";
 
 // Data Tambahan
@@ -248,6 +250,7 @@ $listPromo = $promoObj->query("SELECT * FROM promo ORDER BY terakhir_edit DESC")
 
     <?php include 'footer.php'; ?>
 
+    // Bootstrap JS
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>

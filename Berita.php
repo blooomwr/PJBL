@@ -3,6 +3,7 @@
 require_once 'backend/models/Berita.php'; 
 require_once 'backend/models/Promo.php'; 
 
+// Inisialisasi Object
 $beritaObj = new Berita();
 $promoObj = new Promo(); 
 
@@ -19,6 +20,7 @@ if (isset($_SESSION['role']) && $_SESSION['role'] === 'pembeli') {
 $q_main = $beritaObj->query("SELECT * FROM berita WHERE is_berita_utama = 'Yes' LIMIT 1");
 $berita_utama = $q_main->fetch_assoc();
 
+// Jika tidak ada berita utama, ambil berita terbaru
 if (!$berita_utama) {
     $q_main = $beritaObj->query("SELECT * FROM berita ORDER BY tanggal DESC LIMIT 1");
     $berita_utama = $q_main->fetch_assoc();

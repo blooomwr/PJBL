@@ -36,11 +36,11 @@ $kisah = file_get_contents('AssetTentangKami/kisah1.txt');
             background: transparent !important; 
             margin: 0 !important; 
             
-            /* Paksa font header jadi Inria Serif */
+            
             font-family: 'Inria Serif', serif !important;
         }
 
-        /* Pastikan link navbar juga Inria Serif */
+        
         header.header-container .nav-link, 
         header.header-container .auth-links a {
             font-family: 'Inria Serif', serif !important;

@@ -5,6 +5,7 @@ $beritaObj = new Berita();
 $beritaObj->requireAdmin();
 
 // ================== PENJAGA KEAMANAN ==================
+// Cek apakah admin sudah login
 if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
     header("Location: login.php");
     exit();
@@ -258,7 +259,7 @@ $(document).ready(function() {
         $(".cb-product").prop('checked', this.checked);
     });
 
-    // LOAD EDIT MODAL (Kode Anda sudah benar)
+    // LOAD EDIT MODAL
     $('#modalEditBerita').on('show.bs.modal', function(event) {
         let id = $(event.relatedTarget).data('id');
         $('#editBeritaContent').html('<div class="p-5 text-center text-muted"><div class="spinner-border"></div><p class="mt-3">Memuat data...</p></div>');
@@ -267,7 +268,7 @@ $(document).ready(function() {
         });
     });
 
-    // DELETE MULTIPLE (Kode Anda sudah benar)
+    // DELETE MULTIPLE
     $("#btnDeleteBerita").click(function() {
         let selected = [];
         $(".cb-product:checked").each(function() { selected.push($(this).val()); });
@@ -278,9 +279,7 @@ $(document).ready(function() {
         }
     });
 
-    // ======================================================
-    // (TAMBAHAN) AJAX UNTUK SIMPAN EDIT BERITA
-    // ======================================================
+    // AJAX UNTUK SIMPAN EDIT BERITA
     $(document).on('submit', '#form-edit-berita', function(e) {
         e.preventDefault(); // Hentikan form submit biasa
 

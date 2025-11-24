@@ -14,7 +14,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($result_admin && $result_admin->num_rows > 0) {
         $admin = $result_admin->fetch_assoc();
 
-        // Cek password Admin (menggunakan perbandingan langsung karena di DB masih '12345')
+        // Cek password Admin 
         if (password_verify($password, $admin['password'])) {
             $_SESSION['role'] = 'admin';
             $_SESSION['id_user'] = $admin['id_admin'];
@@ -45,7 +45,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Jika tidak ada yang cocok
     $error = "Username atau password salah.";
 }
-// ... (sisa kode HTML) ...
 ?>
 
 <!DOCTYPE html>
@@ -136,12 +135,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             color: #777;
         }
 
-        /* === TAMBAHKAN INI === */
         footer {
             width: 100%;
         }
-
-        /* ===================== */
     </style>
 </head>
 
@@ -177,9 +173,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     </div>
 
-    <?php include 'footer.php'; // Termasuk bagian footer 
+    <?php include 'footer.php'; 
     ?>
 
+    // Bootstrap JS
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         document.querySelectorAll('.toggle-password').forEach(icon => {
