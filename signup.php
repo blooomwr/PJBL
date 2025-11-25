@@ -201,7 +201,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <?php include 'footer.php'; // Termasuk bagian footer 
     ?>
 
-// Script untuk Bootstrap dan toggle password visibility
+<!-- // Script untuk Bootstrap dan toggle password visibility -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         document.querySelectorAll('.toggle-password').forEach(icon => {

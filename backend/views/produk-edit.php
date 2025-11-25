@@ -9,6 +9,8 @@ $id = $_GET['id'];
 // Ambil Data Produk & Gambar
 $produk = $produkObj->getById($id);
 $gambarList = $produkObj->getImages($id);
+$varianArray = $produkObj->getVarians($id);
+$varianString = implode(', ', $varianArray);
 ?>
 <div class="modal-header custom-header">
   <a href="#" class="modal-back-btn" data-bs-dismiss="modal" aria-label="Close">
@@ -18,7 +20,7 @@ $gambarList = $produkObj->getImages($id);
   <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
 </div>
 
-<form action="backend_admin/produk-update.php" method="POST" enctype="multipart/form-data" id="form-edit-produk">
+<form action="backend/controllers/produk-update.php" method="POST" enctype="multipart/form-data" id="form-edit-produk">
   <div class="modal-body">
     <input type="hidden" name="id_produk" value="<?php echo $produk['id_produk']; ?>">
 
@@ -70,7 +72,10 @@ $gambarList = $produkObj->getImages($id);
 
     <div class="mb-3">
       <label class="form-label">Varian</label>
-      <input type="text" name="varian" class="form-control" value="<?php echo htmlspecialchars($produk['varian']); ?>" placeholder="Contoh: Pedas, Original, 500gr, dll.">
+      <input type="text" name="varian" class="form-control" 
+             value="<?php echo htmlspecialchars($varianString); ?>" 
+             placeholder="Contoh: Pedas, Original, 500gr (Pisahkan dengan koma)">
+    </div>
     </div>
 
     <div class="mb-3">

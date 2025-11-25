@@ -1,15 +1,14 @@
 <?php
-require_once __DIR__ . '/../config/Database.php';
+require_once __DIR__ . '/../config/database.php';
 
 class Produk {
     private $db;
 
     public function __construct() {
         $this->db = new Database();
-        // HAPUS checkAuth() DARI SINI agar halaman publik bisa akses
     }
 
-    // Cek Keamanan Admin (Dipanggil Manual)
+    // --- SECURITY ---
     public function checkAuth() {
         if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
             if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
@@ -22,7 +21,7 @@ class Produk {
         }
     }
 
-    // Generate ID
+    // --- GENERATORS & LOGS ---
     private function generateId() {
         $query = "SELECT MAX(id_produk) AS max_id FROM produk";
         $result = $this->db->conn->query($query);
@@ -32,7 +31,6 @@ class Produk {
         return "P" . sprintf("%02s", $no);
     }
 
-    // Generate Kode Review
     private function generateReviewCode() {
         $chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
         do {
@@ -42,7 +40,6 @@ class Produk {
         return $code;
     }
 
-    // Log History
     private function logHistory($aksi, $detail) {
         $id_admin = $_SESSION['id_user'] ?? 'SYSTEM';
         $nama_admin = $_SESSION['nama_user'] ?? 'System';
@@ -51,50 +48,49 @@ class Produk {
         $this->db->conn->query($sql);
     }
 
-    // --- FITUR RATING ---
-
-    public function hasRated($id_produk, $id_pembeli) {
-        $id_produk = $this->db->escape($id_produk);
-        $id_pembeli = $this->db->escape($id_pembeli);
-        $query = "SELECT id_review FROM produk_review WHERE id_produk = '$id_produk' AND id_pembeli = '$id_pembeli'";
-        $result = $this->db->conn->query($query);
-        return ($result && $result->num_rows > 0);
-    }
-
-    public function addRating($id_produk, $rating, $input_kode, $id_pembeli) {
+    // --- VARIAN HELPERS (NEW) ---
+    
+    // Get array of variant names: ['Spicy', 'Sweet']
+    public function getVarians($id_produk) {
         $id = $this->db->escape($id_produk);
-        $kode = strtoupper(trim($this->db->escape($input_kode)));
-        $rating = (int) $rating;
-        $id_user = $this->db->escape($id_pembeli);
-
-        $q = "SELECT kode_review FROM produk WHERE id_produk = '$id'";
-        $res = $this->db->conn->query($q);
-        $data = $res->fetch_assoc();
-
-        if (!$data || $data['kode_review'] !== $kode) {
-            return ['status' => 'error', 'message' => 'Kode Review salah!'];
+        $sql = "SELECT nama_varian FROM varian_produk WHERE id_produk = '$id'";
+        $res = $this->db->conn->query($sql);
+        $varians = [];
+        while ($row = $res->fetch_assoc()) {
+            $varians[] = $row['nama_varian'];
         }
-
-        if ($this->hasRated($id, $id_user)) {
-            return ['status' => 'error', 'message' => 'Anda sudah memberikan rating untuk produk ini.'];
-        }
-
-        $sql_insert = "INSERT INTO produk_review (id_produk, id_pembeli, rating) VALUES ('$id', '$id_user', '$rating')";
-        $sql_update = "UPDATE produk SET total_score = total_score + $rating, total_reviewers = total_reviewers + 1 WHERE id_produk = '$id'";
-
-        if ($this->db->conn->query($sql_insert) && $this->db->conn->query($sql_update)) {
-            return ['status' => 'success', 'message' => 'Terima kasih atas penilaian Anda!'];
-        }
-
-        return ['status' => 'error', 'message' => 'Gagal menyimpan rating.'];
+        return $varians;
     }
 
-    // --- ADMIN METHODS ---
+    // Save variants from string (Comma Separated) or Array
+    private function saveVarians($id_produk, $varianData) {
+        $id_produk = $this->db->escape($id_produk);
+        
+        // 1. Delete old variants (Reset)
+        $this->db->conn->query("DELETE FROM varian_produk WHERE id_produk = '$id_produk'");
+
+        // 2. Check input (String separated by comma, or Array)
+        if (is_string($varianData)) {
+            $varianData = explode(',', $varianData);
+        }
+
+        if (!empty($varianData) && is_array($varianData)) {
+            foreach ($varianData as $v) {
+                $nama_varian = trim($this->db->escape($v));
+                if (!empty($nama_varian)) {
+                    $this->db->conn->query("INSERT INTO varian_produk (id_produk, nama_varian) VALUES ('$id_produk', '$nama_varian')");
+                }
+            }
+        }
+    }
+
+    // --- ADMIN METHODS (UPDATED) ---
 
     public function create($data, $files) {
         $this->checkAuth(); 
         $id = $this->generateId();
         
+        // Logic Review Code
         $kode_review = "";
         if (!empty($data['kode_review'])) {
             $input_kode = strtoupper(trim($this->db->escape($data['kode_review'])));
@@ -110,14 +106,19 @@ class Produk {
         $harga = $data['harga'];
         $stok = $data['stok'];
         $kategori = $data['kategori'];
-        $varian = $this->db->escape($data['varian']);
         $is_bestseller = isset($data['is_bestseller']) ? 'Yes' : 'No';
 
-        $sql = "INSERT INTO produk (id_produk, kode_review, nama, deskripsi, harga, varian, stok, kategori, is_bestseller)
-                VALUES ('$id', '$kode_review', '$nama', '$deskripsi', '$harga', '$varian', '$stok', '$kategori', '$is_bestseller')";
+        // INSERT QUERY (Variant column removed from here)
+        $sql = "INSERT INTO produk (id_produk, kode_review, nama, deskripsi, harga, stok, kategori, is_bestseller)
+                VALUES ('$id', '$kode_review', '$nama', '$deskripsi', '$harga', '$stok', '$kategori', '$is_bestseller')";
 
         if ($this->db->conn->query($sql)) {
-            $this->logHistory("Menambah produk baru", "$nama (ID: $id) - Kode: $kode_review");
+            // SAVE VARIANTS TO NEW TABLE
+            if (isset($data['varian'])) {
+                $this->saveVarians($id, $data['varian']);
+            }
+
+            $this->logHistory("Menambah produk baru", "$nama (ID: $id)");
             $this->uploadImages($id, $files);
             return true;
         }
@@ -128,13 +129,12 @@ class Produk {
         $this->checkAuth();
         $id = $this->db->escape($data['id_produk']);
         
+        // Update Review Code (Optional Logic)
         $kode_baru = strtoupper(trim($this->db->escape($data['kode_review'])));
         if (!empty($kode_baru)) {
             $check = $this->db->conn->query("SELECT id_produk FROM produk WHERE kode_review = '$kode_baru' AND id_produk != '$id'");
             if ($check->num_rows == 0) {
                 $this->db->conn->query("UPDATE produk SET kode_review='$kode_baru' WHERE id_produk='$id'");
-            } else {
-                return false; 
             }
         }
 
@@ -143,13 +143,18 @@ class Produk {
         $harga = $data['harga'];
         $stok = $data['stok'];
         $kategori = $data['kategori'];
-        $varian = $this->db->escape($data['varian']);
         $is_bestseller = isset($data['is_bestseller']) ? 'Yes' : 'No';
 
+        // UPDATE QUERY (Variant column removed from here)
         $sql = "UPDATE produk SET nama='$nama', deskripsi='$deskripsi', harga='$harga', 
-                varian='$varian', stok='$stok', kategori='$kategori', is_bestseller='$is_bestseller' WHERE id_produk='$id'";
+                stok='$stok', kategori='$kategori', is_bestseller='$is_bestseller' WHERE id_produk='$id'";
 
         if ($this->db->conn->query($sql)) {
+            // UPDATE VARIANTS IN NEW TABLE
+            if (isset($data['varian'])) {
+                $this->saveVarians($id, $data['varian']);
+            }
+
             $this->logHistory("Mengubah produk", "$nama (ID: $id)");
             $this->uploadImages($id, $files);
             return true;
@@ -160,6 +165,8 @@ class Produk {
     public function delete($ids) {
         $this->checkAuth();
         if (empty($ids)) return false;
+        
+        // Delete Physical Images
         foreach ($ids as $id) {
             $q = "SELECT nama_file FROM produk_gambar WHERE id_produk='$id'";
             $res = $this->db->conn->query($q);
@@ -168,8 +175,11 @@ class Produk {
                 if (file_exists($path)) unlink($path);
             }
         }
+
+        // DELETE DATABASE (Cascade will automatically delete data in varian_produk and produk_gambar)
         $idList = "'" . implode("','", $ids) . "'";
         $sql = "DELETE FROM produk WHERE id_produk IN ($idList)";
+        
         if ($this->db->conn->query($sql)) {
             $count = count($ids);
             $this->logHistory("Menghapus produk", "Total $count dihapus.");
@@ -188,7 +198,6 @@ class Produk {
             $path = "../../gambar_produk/" . $data['nama_file'];
             if (file_exists($path)) unlink($path);
             $this->db->conn->query("DELETE FROM produk_gambar WHERE id_gambar='$id_gambar'");
-            $this->logHistory("Menghapus gambar", $data['nama_file']);
             return true;
         }
         return false;
@@ -202,6 +211,7 @@ class Produk {
         $result = $this->db->conn->query($query);
         return $result->fetch_assoc();
     }
+
     public function getImages($id) {
         $id = $this->db->escape($id);
         $query = "SELECT * FROM produk_gambar WHERE id_produk = '$id'";
@@ -210,12 +220,14 @@ class Produk {
         while ($row = $result->fetch_assoc()) { $data[] = $row; }
         return $data;
     }
+
     public function getRelated($id, $limit=5) {
         $id = $this->db->escape($id);
         $query = "SELECT p.*, (SELECT nama_file FROM produk_gambar pg WHERE pg.id_produk = p.id_produk LIMIT 1) as gambar 
                   FROM produk p WHERE id_produk != '$id' ORDER BY RAND() LIMIT $limit";
         return $this->db->conn->query($query);
     }
+
     public function getAll($keyword="", $kategori="", $sort="", $start=0, $perPage=8) {
         $whereClauses = [];
         if (!empty($keyword)) {
@@ -240,6 +252,8 @@ class Produk {
                   FROM produk p $sqlWhere $sqlOrder LIMIT $start, $perPage";
         return $this->db->conn->query($query);
     }
+    
+    // --- RESTORED countAll METHOD ---
     public function countAll($keyword = "", $kategori = "") {
         $whereClauses = [];
         if (!empty($keyword)) {
@@ -256,6 +270,17 @@ class Produk {
         $row = $result->fetch_assoc();
         return $row['total'];
     }
+
+    // Feature Rating (Remains the same)
+    public function hasRated($id_produk, $id_pembeli) {
+        $id_produk = $this->db->escape($id_produk);
+        $id_pembeli = $this->db->escape($id_pembeli);
+        $query = "SELECT id_review FROM produk_review WHERE id_produk = '$id_produk' AND id_pembeli = '$id_pembeli'";
+        $result = $this->db->conn->query($query);
+        return ($result && $result->num_rows > 0);
+    }
+
+    // Helper Query
     public function query($sql) { 
         return $this->db->conn->query($sql); 
     }

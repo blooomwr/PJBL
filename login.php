@@ -37,7 +37,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $_SESSION['id_user'] = $pembeli['id_pembeli'];
             $_SESSION['nama_user'] = $pembeli['nama_pembeli'];
 
-            header("Location: Home.php");
+            header("Location: index.php");
             exit();
         }
     }
@@ -176,7 +176,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <?php include 'footer.php'; 
     ?>
 
-    // Bootstrap JS
+    <!-- // Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         document.querySelectorAll('.toggle-password').forEach(icon => {

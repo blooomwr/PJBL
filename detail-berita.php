@@ -64,7 +64,7 @@ function tgl_indo($tanggal){
                 <?= nl2br(htmlspecialchars($berita['teks_berita'])); ?>
             </div>
             
-            <a href="berita.php" class="back-link">← Kembali ke Berita</a>
+            <a href="Berita.php" class="back-link">← Kembali ke Berita</a>
         </article>
 
         <aside class="news-sidebar">

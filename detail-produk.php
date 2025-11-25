@@ -39,7 +39,7 @@ if (empty($gambarProduk)) {
 $resultLainnya = $produkObj->getRelated($id_produk);
 
 // 5. Varian
-$varianList = !empty($produk['varian']) ? explode(',', $produk['varian']) : [];
+$varianList = $produkObj->getVarians($id_produk);
 ?>
 
 <!DOCTYPE html>
@@ -104,7 +104,7 @@ $varianList = !empty($produk['varian']) ? explode(',', $produk['varian']) : [];
                     }
                     ?>
 
-                    // Rating Produk
+                    <!-- // Rating Produk -->
                     <?php if (!$is_logged_in): ?>
                         <span class="rating-text" onclick="alert('Silakan login sebagai Pembeli untuk memberi ulasan!'); window.location.href='login.php';" title="Login untuk review">
                             <i class="bi bi-star-fill text-warning" style="color:#ffc107;"></i> 
@@ -214,7 +214,7 @@ $varianList = !empty($produk['varian']) ? explode(',', $produk['varian']) : [];
     <?php include 'footer.php'; ?>
 
 
-    // JavaScript Section
+    <!-- // JavaScript Section -->
     <script>
         function changeImage(element) {
             document.getElementById('mainImage').src = element.src;

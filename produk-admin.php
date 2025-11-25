@@ -188,14 +188,14 @@ $produkObj->checkAuth();
     </div>
 </div> 
 
-// Form untuk mengirim data produk yang akan dihapus
+<!-- //Form untuk mengirim data produk yang akan dihapus -->
 <form id="deleteForm" action="backend/controllers/produk-delete.php" method="POST">
     <input type="hidden" name="ids" id="delete_ids">
 </form>
 
 <?php include 'footer.php'; ?>
 
-// Skrip JS
+<!--// Skrip JS-->
 <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>

@@ -11,7 +11,7 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'pembeli') {
 }
 
 // 3. Panggil Backend
-require_once 'backend/models/Wishlist.php'; 
+require_once 'backend/models/wishlist.php'; 
 require_once 'backend/models/Produk.php'; 
 require_once 'backend/models/Promo.php'; 
 
@@ -250,7 +250,7 @@ $listPromo = $promoObj->query("SELECT * FROM promo ORDER BY terakhir_edit DESC")
 
     <?php include 'footer.php'; ?>
 
-    // Bootstrap JS
+    <!-- // Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>

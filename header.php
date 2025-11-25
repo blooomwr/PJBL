@@ -142,9 +142,9 @@
 
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav mx-auto">
-          <li class="nav-item"><a class="nav-link" href="home.php">Beranda</a></li>
+          <li class="nav-item"><a class="nav-link" href="index.php">Beranda</a></li>
           <li class="nav-item"><a class="nav-link" href="katalog.php">Katalog</a></li>
-          <li class="nav-item"><a class="nav-link" href="berita.php">Berita</a></li>
+          <li class="nav-item"><a class="nav-link" href="Berita.php">Berita</a></li>
           <li class="nav-item"><a class="nav-link" href="tentang.php">Tentang Kami</a></li>
         </ul>
 

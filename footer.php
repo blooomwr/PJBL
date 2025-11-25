@@ -172,7 +172,7 @@
       </div>
 
     <div class="footer-links">
-      <a href="home.php">Beranda</a>
+      <a href="index.php">Beranda</a>
       <a href="katalog.php">Katalog Produk</a>
       <a href="tentang.php">Tentang Kami</a>
     </div>
