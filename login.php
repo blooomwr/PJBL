@@ -1,21 +1,19 @@
 <?php
 include 'connlog.php';
-require_once 'backend/models/Pembeli.php'; // Panggil Class Pembeli
 
 $error = '';
-$pembeliObj = new Pembeli(); // Instansiasi Class
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Amankan input manual (model juga mengamankan, tapi ini untuk Admin check yang masih raw)
     $username = $conn->real_escape_string($_POST['username']);
     $password = $_POST['password'];
 
-    // 1. Cek di tabel ADMIN (Logika Admin TETAP di sini karena Pembeli.php fokus pada Pembeli)
+    // 1. Cek di tabel ADMIN
     $sql_admin = "SELECT * FROM admin WHERE username = '$username'";
     $result_admin = $conn->query($sql_admin);
 
     if ($result_admin && $result_admin->num_rows > 0) {
         $admin = $result_admin->fetch_assoc();
+
         // Cek password Admin 
         if (password_verify($password, $admin['password'])) {
             $_SESSION['role'] = 'admin';
@@ -26,19 +24,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     }
 
-    // 2. Cek di tabel PEMBELI MENGGUNAKAN CLASS MODEL
-    $loginResult = $pembeliObj->login($username, $password);
-    
-    if ($loginResult['status'] === 'success') {
-        $pembeli = $loginResult['data'];
-        $_SESSION['role'] = 'pembeli';
-        $_SESSION['id_user'] = $pembeli['id_pembeli'];
-        $_SESSION['nama_user'] = $pembeli['nama_pembeli'];
+    // 2. Cek di tabel PEMBELI HANYA JIKA BUKAN ADMIN
+    $sql_pembeli = "SELECT * FROM pembeli WHERE username = '$username' OR email_pembeli = '$username'";
+    $result_pembeli = $conn->query($sql_pembeli);
 
-        header("Location: index.php");
-        exit();
+    if ($result_pembeli && $result_pembeli->num_rows > 0) {
+        $pembeli = $result_pembeli->fetch_assoc();
+
+        // Verifikasi password yang sudah di-hash untuk Pembeli
+        if (password_verify($password, $pembeli['password'])) {
+            $_SESSION['role'] = 'pembeli';
+            $_SESSION['id_user'] = $pembeli['id_pembeli'];
+            $_SESSION['nama_user'] = $pembeli['nama_pembeli'];
+
+            header("Location: Home.php");
+            exit();
+        }
     }
-    
+
     // Jika tidak ada yang cocok
     $error = "Username atau password salah.";
 }
@@ -56,7 +59,85 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 
     <style>
-        /* ... styles remain the same ... */
+        body {
+            font-family: 'Playfair Display', serif;
+            background: linear-gradient(to bottom, #fdeedc, #fffaf3);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .login-container {
+            width: 100%;
+            max-width: 450px;
+            padding: 20px;
+            margin-top: 100px;
+            text-align: center;
+            position: relative;
+        }
+
+        .back-link {
+            position: absolute;
+            top: -50px;
+            /* Disesuaikan agar berada di atas logo */
+            left: -50px;
+            font-size: 30px;
+            color: #ae4c02;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .back-link:hover {
+            color: #8a3c02;
+        }
+
+        .form-control {
+            background-color: #ffeccf !important;
+            border: none !important;
+            border-radius: 30px !important;
+            height: 55px;
+            padding: 0 20px;
+            margin-bottom: 20px;
+        }
+
+        .btn-login {
+            background-color: #ae4c02 !important;
+            border: none !important;
+            color: white !important;
+            font-weight: bold;
+            padding: 12px 0;
+            width: 100%;
+            border-radius: 30px;
+            transition: background-color 0.3s;
+            margin-top: 15px;
+        }
+
+        .btn-login:hover {
+            background-color: #8a3c02 !important;
+        }
+
+        .logo-top {
+            width: 70px;
+            margin-bottom: 50px;
+        }
+
+        .form-group {
+            position: relative;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #777;
+        }
+
+        footer {
+            width: 100%;
+        }
     </style>
 </head>
 
@@ -95,6 +176,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <?php include 'footer.php'; 
     ?>
 
+    // Bootstrap JS
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         document.querySelectorAll('.toggle-password').forEach(icon => {
@@ -109,4 +191,5 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         });
     </script>
 </body>
+
 </html>
