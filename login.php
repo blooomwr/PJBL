@@ -1,19 +1,21 @@
 <?php
 include 'connlog.php';
+require_once 'backend/models/Pembeli.php'; // Panggil Class Pembeli
 
 $error = '';
+$pembeliObj = new Pembeli(); // Instansiasi Class
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Amankan input manual (model juga mengamankan, tapi ini untuk Admin check yang masih raw)
     $username = $conn->real_escape_string($_POST['username']);
     $password = $_POST['password'];
 
-    // 1. Cek di tabel ADMIN
+    // 1. Cek di tabel ADMIN (Logika Admin TETAP di sini karena Pembeli.php fokus pada Pembeli)
     $sql_admin = "SELECT * FROM admin WHERE username = '$username'";
     $result_admin = $conn->query($sql_admin);
 
     if ($result_admin && $result_admin->num_rows > 0) {
         $admin = $result_admin->fetch_assoc();
-
         // Cek password Admin 
         if (password_verify($password, $admin['password'])) {
             $_SESSION['role'] = 'admin';
@@ -24,24 +26,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     }
 
-    // 2. Cek di tabel PEMBELI HANYA JIKA BUKAN ADMIN
-    $sql_pembeli = "SELECT * FROM pembeli WHERE username = '$username' OR email_pembeli = '$username'";
-    $result_pembeli = $conn->query($sql_pembeli);
+    // 2. Cek di tabel PEMBELI MENGGUNAKAN CLASS MODEL
+    $loginResult = $pembeliObj->login($username, $password);
+    
+    if ($loginResult['status'] === 'success') {
+        $pembeli = $loginResult['data'];
+        $_SESSION['role'] = 'pembeli';
+        $_SESSION['id_user'] = $pembeli['id_pembeli'];
+        $_SESSION['nama_user'] = $pembeli['nama_pembeli'];
 
-    if ($result_pembeli && $result_pembeli->num_rows > 0) {
-        $pembeli = $result_pembeli->fetch_assoc();
-
-        // Verifikasi password yang sudah di-hash untuk Pembeli
-        if (password_verify($password, $pembeli['password'])) {
-            $_SESSION['role'] = 'pembeli';
-            $_SESSION['id_user'] = $pembeli['id_pembeli'];
-            $_SESSION['nama_user'] = $pembeli['nama_pembeli'];
-
-            header("Location: Home.php");
-            exit();
-        }
+        header("Location: index.php");
+        exit();
     }
-
+    
     // Jika tidak ada yang cocok
     $error = "Username atau password salah.";
 }
