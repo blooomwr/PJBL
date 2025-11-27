@@ -26,20 +26,33 @@ $kisah = file_get_contents('AssetTentangKami/kisah1.txt');
             box-sizing: border-box;
         }
 
-        /* === 2. HEADER TRANSPARAN KHUSUS HALAMAN INI === */
+        /* === 2. PERBAIKAN HEADER AGAR NEMPEL (FIXED) === */
         header.header-container {
-            position: absolute !important; 
-            top: 20px !important;          
+            /* Ganti absolute menjadi fixed agar nempel saat scroll */
+            position: fixed !important; 
+            
+            /* Ubah top jadi 0 agar nempel di ujung atas layar */
+            top: 0 !important;          
             left: 0;
             width: 100%;
             z-index: 999; 
+            
+            /* Tetap transparan */
             background: transparent !important; 
             margin: 0 !important; 
             
-            
             font-family: 'Inria Serif', serif !important;
+            
+            /* Reset padding jika perlu, agar sama dengan header.php */
+            padding-top: 25px !important; 
         }
 
+        /* Responsive adjustment untuk mobile jika diperlukan */
+        @media (max-width: 991px) {
+            header.header-container {
+                padding-top: 10px !important;
+            }
+        }
         
         header.header-container .nav-link, 
         header.header-container .auth-links a {

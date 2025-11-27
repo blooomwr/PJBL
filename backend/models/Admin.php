@@ -2,7 +2,7 @@
 
 require_once __DIR__ . '/../config/database.php';
 
-class Dashboard {
+class Admin {
     private $db;
 
     public function __construct() {

@@ -1,16 +1,16 @@
 <?php
 // Panggil Class Dashboard
-require_once 'backend/models/Dashboard.php'; 
+require_once 'backend/models/Admin.php'; 
 
 // Inisialisasi Object (Otomatis cek login & start session)
-$dashboard = new Dashboard();
+$admin = new Admin();
 
 // Ambil Data Admin dari Session
 $nama_admin = $_SESSION['nama_user'];
 $id_admin = $_SESSION['id_user'];
 
 // Ambil Data Histori via Method Class
-$logs = $dashboard->getRecentLogs();
+$logs = $admin->getRecentLogs();
 ?>
 
 <!DOCTYPE html>

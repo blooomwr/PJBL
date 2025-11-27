@@ -1,5 +1,4 @@
 <?php
-include 'connlog.php';
 require_once 'backend/models/Pembeli.php'; // Panggil Class Pembeli
 
 $error = '';

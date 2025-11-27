@@ -1,52 +1,44 @@
 <?php
-include 'connlog.php';
-require_once 'backend/models/Pembeli.php'; // Panggil Class Pembeli
+// require_once 'connlog.php'; // Tidak perlu lagi jika sudah pakai Class
+require_once 'backend/models/Pembeli.php'; 
 
 $error = '';
-$pembeliObj = new Pembeli(); // Instansiasi Class
+$pembeliObj = new Pembeli(); 
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Amankan input manual (model juga mengamankan, tapi ini untuk Admin check yang masih raw)
-    $username = $conn->real_escape_string($_POST['username']);
+    $username = $_POST['username'];
     $password = $_POST['password'];
 
-    // 1. Cek di tabel ADMIN (Logika Admin TETAP di sini karena Pembeli.php fokus pada Pembeli)
-    $sql_admin = "SELECT * FROM admin WHERE username = '$username'";
-    $result_admin = $conn->query($sql_admin);
-
-    if ($result_admin && $result_admin->num_rows > 0) {
-        $admin = $result_admin->fetch_assoc();
-        // Cek password Admin 
-        if (password_verify($password, $admin['password'])) {
-            $_SESSION['role'] = 'admin';
-            $_SESSION['id_user'] = $admin['id_admin'];
-            $_SESSION['nama_user'] = $admin['nama_admin'];
-            header("Location: admin-dashboard.php");
-            exit();
-        }
-    }
-
-    // 2. Cek di tabel PEMBELI MENGGUNAKAN CLASS MODEL
+    // Panggil satu method untuk semua (Admin & Pembeli)
     $loginResult = $pembeliObj->login($username, $password);
     
     if ($loginResult['status'] === 'success') {
-        $pembeli = $loginResult['data'];
-        $_SESSION['role'] = 'pembeli';
-        $_SESSION['id_user'] = $pembeli['id_pembeli'];
-        $_SESSION['nama_user'] = $pembeli['nama_pembeli'];
+        $userData = $loginResult['data'];
+        $role = $loginResult['role'];
 
-        header("Location: index.php");
+        // Set Session Umum
+        $_SESSION['role'] = $role;
+
+        // Redirect Berdasarkan Role
+        if ($role === 'admin') {
+            $_SESSION['id_user'] = $userData['id_admin'];
+            $_SESSION['nama_user'] = $userData['nama_admin'];
+            header("Location: admin-dashboard.php");
+        } else {
+            // Role Pembeli
+            $_SESSION['id_user'] = $userData['id_pembeli'];
+            $_SESSION['nama_user'] = $userData['nama_pembeli'];
+            header("Location: index.php");
+        }
         exit();
+    } else {
+        $error = $loginResult['message'];
     }
-    
-    // Jika tidak ada yang cocok
-    $error = "Username atau password salah.";
 }
 ?>
 
 <!DOCTYPE html>
 <html lang="id">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -77,7 +69,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         .back-link {
             position: absolute;
             top: -50px;
-            /* Disesuaikan agar berada di atas logo */
             left: -50px;
             font-size: 30px;
             color: #ae4c02;
@@ -170,10 +161,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     </div>
 
-    <?php include 'footer.php'; 
-    ?>
+    <?php include 'footer.php'; ?>
 
-    // Bootstrap JS
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         document.querySelectorAll('.toggle-password').forEach(icon => {
@@ -188,5 +177,4 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         });
     </script>
 </body>
-
 </html>

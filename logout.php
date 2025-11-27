@@ -1,6 +1,5 @@
 <?php
 // Panggil koneksi (agar session start)
-include 'connlog.php'; 
 // Panggil model yang berisi logic logout
 require_once 'backend/models/Pembeli.php'; 
 

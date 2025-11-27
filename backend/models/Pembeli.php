@@ -5,49 +5,68 @@ class Pembeli {
     private $db;
 
     public function __construct() {
-        // Class Database otomatis memulai session
         $this->db = new Database(); 
     }
     
-    /*Memproses login pembeli (menggunakan username atau email) dan memverifikasi password.*/
+    // --- METHOD LOGIN (UPDATE: ADMIN & PEMBELI) ---
     public function login($username, $password) {
         $conn = $this->db->conn;
         $username_safe = $this->db->escape($username);
 
-        // Cari di tabel 'pembeli' (berdasarkan username atau email)
-        $sql = "SELECT * FROM pembeli WHERE username = '$username_safe' OR email_pembeli = '$username_safe'";
-        $result = $conn->query($sql);
+        // 1. CEK DI TABEL ADMIN DULU
+        $sql_admin = "SELECT * FROM admin WHERE username = '$username_safe'";
+        $result_admin = $conn->query($sql_admin);
 
-        if ($result && $result->num_rows > 0) {
-            $pembeli = $result->fetch_assoc();
+        if ($result_admin && $result_admin->num_rows > 0) {
+            $admin = $result_admin->fetch_assoc();
+            
+            // Verifikasi password Admin
+            if (password_verify($password, $admin['password'])) {
+                return [
+                    'status' => 'success', 
+                    'role' => 'admin', 
+                    'data' => $admin
+                ];
+            }
+        }
 
-            // Verifikasi password yang sudah di-hash
+        // 2. JIKA BUKAN ADMIN, CEK DI TABEL PEMBELI
+        // (Bisa login pakai username atau email)
+        $sql_pembeli = "SELECT * FROM pembeli WHERE username = '$username_safe' OR email_pembeli = '$username_safe'";
+        $result_pembeli = $conn->query($sql_pembeli);
+
+        if ($result_pembeli && $result_pembeli->num_rows > 0) {
+            $pembeli = $result_pembeli->fetch_assoc();
+
+            // Verifikasi password Pembeli
             if (password_verify($password, $pembeli['password'])) {
-                // Mengembalikan data pembeli untuk diatur di session oleh file login.php
-                return ['status' => 'success', 'data' => $pembeli];
+                return [
+                    'status' => 'success', 
+                    'role' => 'pembeli', 
+                    'data' => $pembeli
+                ];
             }
         }
         
+        // Jika tidak ada yang cocok di kedua tabel
         return ['status' => 'error', 'message' => 'Username atau password salah.'];
     }
 
-    /*Memproses registrasi pembeli baru.*/
+    // --- METHOD REGISTER ---
     public function register($email, $username, $password) {
         $conn = $this->db->conn;
         $email_safe = $this->db->escape($email);
         $username_safe = $this->db->escape($username);
         $nama_pembeli = $username_safe; 
 
-        // 1. Cek duplikasi email atau username
+        // Cek duplikasi
         $check = $conn->query("SELECT email_pembeli, username FROM pembeli WHERE email_pembeli='$email_safe' OR username='$username_safe'");
         if ($check->num_rows > 0) {
             return ['status' => 'error', 'message' => 'Email atau Username sudah terdaftar.'];
         }
         
-        // 2. Hash password sebelum disimpan
         $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
-        // 3. Insert data
         $sql = "INSERT INTO pembeli (email_pembeli, username, password, nama_pembeli) 
                 VALUES ('$email_safe', '$username_safe', '$hashed_password', '$nama_pembeli')";
 
@@ -58,8 +77,7 @@ class Pembeli {
         }
     }
 
-    /**
-     * Menghapus semua data sesi (session_unset, session_destroy)*/
+    // --- METHOD LOGOUT ---
     public function logout() {
         session_unset(); 
         session_destroy(); 
