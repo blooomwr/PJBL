@@ -67,9 +67,9 @@ $bodyPadding = in_array($currentPage, $pagesWithBanner) ? '0' : '140px';
 
   /* Efek Hover (Saat kursor diarahkan) */
   .navbar-custom .nav-link:hover { 
-      color: #ffe6c7 !important; /* Warna Kuning/Oren Terang */
+      color: #f5a623 !important; /* Warna Kuning/Oren Terang */
       opacity: 1;
-      transform: translateY(-1px);
+      transform: translateY(-3px);
   }
 
   /* === LINK AKTIF (Saat berada di halaman tersebut) === */
