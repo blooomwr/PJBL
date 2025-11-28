@@ -97,7 +97,7 @@ $bodyPadding = in_array($currentPage, $pagesWithBanner) ? '0' : '140px';
     cursor: pointer;
   }
   
-  .auth-links a:hover { color: #ffe6c7; }
+  .auth-links a:hover { color: #f5a623; }
   .divider { color: #fffaf3; margin: 0 5px; }
 
   .navbar-toggler { border: none; padding: 0; }
