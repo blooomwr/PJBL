@@ -74,7 +74,7 @@ $bodyPadding = in_array($currentPage, $pagesWithBanner) ? '0' : '140px';
 
   /* === LINK AKTIF (Saat berada di halaman tersebut) === */
   .navbar-custom .nav-link.active {
-      color: #ffe6c7 !important; /* SAMA DENGAN HOVER (Oren Terang) */
+      color: #f5a623 !important; /* SAMA DENGAN HOVER (Oren Terang) */
       font-weight: 700 !important; /* Tebal */
 
       opacity: 1;
