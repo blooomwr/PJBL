@@ -62,6 +62,34 @@ class Produk {
         return $varians;
     }
 
+    public function addRating($id_produk, $rating, $input_kode, $id_pembeli) {
+        $id = $this->db->escape($id_produk);
+        $kode = strtoupper(trim($this->db->escape($input_kode)));
+        $rating = (int) $rating;
+        $id_user = $this->db->escape($id_pembeli);
+
+        $q = "SELECT kode_review FROM produk WHERE id_produk = '$id'";
+        $res = $this->db->conn->query($q);
+        $data = $res->fetch_assoc();
+
+        if (!$data || $data['kode_review'] !== $kode) {
+            return ['status' => 'error', 'message' => 'Kode Review salah!'];
+        }
+
+        if ($this->hasRated($id, $id_user)) {
+            return ['status' => 'error', 'message' => 'Anda sudah memberikan rating untuk produk ini.'];
+        }
+
+        $sql_insert = "INSERT INTO produk_review (id_produk, id_pembeli, rating) VALUES ('$id', '$id_user', '$rating')";
+        $sql_update = "UPDATE produk SET total_score = total_score + $rating, total_reviewers = total_reviewers + 1 WHERE id_produk = '$id'";
+
+        if ($this->db->conn->query($sql_insert) && $this->db->conn->query($sql_update)) {
+            return ['status' => 'success', 'message' => 'Terima kasih atas penilaian Anda!'];
+        }
+
+        return ['status' => 'error', 'message' => 'Gagal menyimpan rating.'];
+    }
+
     // Save variants from string (Comma Separated) or Array
     private function saveVarians($id_produk, $varianData) {
         $id_produk = $this->db->escape($id_produk);
